@@ -667,6 +667,23 @@ class Admin extends MX_Controller {
         }
     }
 
+// pass module controller
+function pass($args = null, $id = null, $roomid = null) {
+    $passmod = modules::load('pass/passback/');
+    if (!method_exists($passmod, 'index')) {
+        redirect('admin');
+    }
+    if ($args == "") {
+        $passmod->index();
+    } elseif ($args == "add") {
+        $passmod->add();
+    } elseif ($args == "settings") {
+        $passmod->settings();
+    } elseif ($args == "manage") {
+        $passmod->manage($id);
+    } 
+}
+
 // cars module controller
     function cars($args = null, $id = null, $lang = null) {
         $carsmod = modules::load('cars/carsback/');
