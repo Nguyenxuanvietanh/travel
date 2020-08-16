@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1597411728;currencysymbol|s:1:"$";currencycode|s:3:"USD";currencyname|s:3:"USD";currencyrate|s:1:"1";invalid|N;BOOKING_ID|i:7;REF_NO|s:4:"6089";paymentGatewayAfterCompleteRedirect|s:40:"/php_web_travel/invoice?id=7&sessid=6089";checkout_amount|s:4:"19.8";checkout_total|s:3:"198";

@@ -1,0 +1,336 @@
+section{display:block}
+a{background-color:transparent;-webkit-text-decoration-skip:objects}
+b,strong{font-weight:inherit;font-weight:bolder}
+img{border-style:none}
+svg:not(:root){overflow:hidden}
+button,input{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}
+button,input{overflow:visible}
+button{text-transform:none}
+[type=submit],button,html [type=button]{-webkit-appearance:button}
+[type=button]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}
+[type=button]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}
+.row{box-sizing:border-box;display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex:0 1 auto;-webkit-box-flex:0;flex:0 1 auto;-ms-flex-direction:row;-webkit-box-direction:normal;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-right:-1rem;margin-left:-1rem}
+.row{-webkit-box-orient:horizontal}
+.col-xs-12{box-sizing:border-box;-ms-flex:0 0 auto;-webkit-box-flex:0;flex:0 0 auto;padding-right:1rem;padding-left:1rem}
+.col-xs-12{-ms-flex-preferred-size:100%;flex-basis:100%;max-width:100%}
+.top-xs{-ms-flex-align:start;-webkit-box-align:start;align-items:flex-start}
+@media only screen and (min-width:48em){.col-sm-6{box-sizing:border-box;-ms-flex:0 0 auto;-webkit-box-flex:0;flex:0 0 auto;padding-right:1rem;padding-left:1rem}
+.col-sm-6{-ms-flex-preferred-size:50%;flex-basis:50%;max-width:50%}
+}.c-dark-blue{color:#073590}
+.c-bright-blue{color:#2091eb}
+.c-main-yellow{color:#456cf1}
+.c-very-dark-grey{color:#2e2e2e}
+.c-text-grey{color:#828790}
+.c-light-base{color:#fff}
+.c-success-green-text{color:#1d7703}
+.c-primary-blue{color:#073590}
+.c-light-blue{color:#2091eb}
+.c-price-red{color:#cf2e1d}
+h2{font-weight:400}
+h2{font-size:1.75rem}
+h4{font-weight:700}
+h4{font-size:1.312rem}
+p{font-size:1rem}
+.text-l{font-size:1.313rem;font-weight:700}
+.text-m{font-size:1.125rem;font-weight:500}
+.text-s-regular{font-size:.875rem;font-weight:400}
+.text-s-medium{font-size:.875rem;font-weight:500}
+.text-xs-regular{font-size:.75rem;font-weight:400}
+@media(min-width:64em){.text-l-md{font-size:1.313rem;font-weight:700}
+}@media(min-width:48em){.text-m-sm{font-size:1.125rem;font-weight:500}
+}@media(min-width:48em){.text-s-regular-sm{font-size:.875rem;font-weight:400}
+}.h2{font-size:1.125rem;line-height:1.4375rem}
+@media(min-width:48em){.h2{font-size:1.625rem;line-height:2.125rem}
+}.h3{font-size:1rem;line-height:1.3125rem}
+@media(min-width:48em){.h3{font-size:1.375rem;line-height:1.75rem}
+}.h4{font-size:.875rem;line-height:1.125rem}
+@media(min-width:48em){.h4{font-size:1.125rem;line-height:1.5rem}
+}*,:after,:before{box-sizing:border-box}
+.core-btn,.core-btn-primary{background-color:transparent;background-image:none;border:1px solid transparent;border-radius:0;box-sizing:border-box;cursor:pointer;display:inline-block;font-size:.875rem;font-weight:700;margin-bottom:0;min-width:98px;padding:.6428571429em 1.1428571429em;text-align:center;touch-action:manipulation;transition:color .2s ease-out,background .2s ease-out;user-select:none;vertical-align:middle;white-space:normal;word-break:normal;word-wrap:normal}
+.core-btn-primary:focus,.core-btn:focus{text-decoration:none}
+.core-btn-primary:active,.core-btn-primary:hover,.core-btn:active,.core-btn:hover{outline:0;text-decoration:none}
+.core-btn-primary{background-color:#456cf1;border-color:#456cf1;color:white}
+.core-btn-primary:focus{color:#073590;outline:0}
+.core-btn-primary:active,.core-btn-primary:hover{background-color:#2554ef;border-color:#2554ef;color:#fff}
+.core-btn-primary:active{background-color:#2554ef;background-image:none;border-color:#2554ef}
+.core-btn-primary:focus{border-color:#967d20}
+label{font-weight:700}
+.icon-12{height:.75rem;width:.75rem}
+.icon-14{height:.875rem;width:.875rem}
+.icon-16{height:1rem;width:1rem}
+.icon-18{height:1.125rem;width:1.125rem}
+.icon-24{height:1.5rem;width:1.5rem}
+.hidden-xs{display:none!important}
+@media(min-width:48em){.hidden-xs{display:block!important}
+}@media(min-width:48em){.visible-xs{display:none!important}
+}.text-center{text-align:center!important}
+.text-500{font-weight:500!important}
+.text-700{font-weight:700!important}
+button,input{font-family:Roboto,sans-serif}
+.hidden{display:none!important;visibility:hidden!important}
+.ellipsis{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+button{outline:0}
+svg path{fill:currentColor}
+/*! CSS Used from: Embedded */.acc-details__body{background-color:#fff;-webkit-box-shadow:0 0 17px 0 rgba(117,129,147,.12);box-shadow:0 0 17px 0 rgba(117,129,147,.12);margin:0 auto}
+@media(min-width:48em){.acc-details__body{max-width:980px}
+}.acc-details__description{padding:1.475rem .5rem}
+@media(min-width:48em){.acc-details__description{padding:1.475rem .5rem}
+}.acc-details__banner{font-family:Impact,Roboto,sans-serif;font-weight:900;letter-spacing:.02rem}
+@media(min-width:48em){.acc-details__banner{padding:0 1.6875rem}
+}.acc-details .banner.banner{background-image:url(https://rooms.ryanair.com/assets/ryanair/rooms/v2/travel_credit/tc-banner-bg-img.png),-webkit-gradient(linear,left top,right top,from(#ecb707),to(#456cf1));background-image:url(https://rooms.ryanair.com/assets/ryanair/rooms/v2/travel_credit/tc-banner-bg-img.png),linear-gradient(90deg,#ecb707,#456cf1);background-position:top;background-repeat:no-repeat;height:49px;margin-bottom:0}
+.acc-details .banner.banner .banner__icon.banner__icon{background-color:#0d49c0}
+@media(min-width:48em){.acc-details .banner.banner{border-radius:4px;margin-bottom:1rem}
+}.acc-details section{padding:.75rem}
+@media(min-width:48em){.acc-details section{padding:0 1.6875rem}
+}.acc-details section:last-child{padding-bottom:50px}
+@media(min-width:48em){.acc-details section:last-child{padding-bottom:146px}
+}.acc-details__facilities_section,.acc-details__info-section{margin-top:2.5rem}
+.acc-details__rooms-section{margin-top:1.25rem}
+.acc-details__search-header{display:table;margin-bottom:1rem;min-height:28px;width:100%}
+.acc-details__search-header__title{float:left;max-width:240px}
+.acc-details__search-results{border:0;display:-webkit-box;display:-ms-flexbox;display:flex;margin:0}
+.acc-details__provider{-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;float:right;margin-top:.3rem}
+.acc-details__provider__text{display:none}
+@media(min-width:48em){.acc-details__provider__text{display:inline}
+}@media(min-width:30em){.acc-details__search-header__title{max-width:100%}
+}/*! CSS Used from: Embedded */[_nghost-c17]{display:inline-block}
+[_nghost-c17] svg{fill:inherit;height:100%;width:100%}
+._container[_ngcontent-c17]{display:inline-block;vertical-align:middle}
+/*! CSS Used from: Embedded */.hidden-xs{display:none!important}
+@media(min-width:48em){.hidden-xs{display:block!important}
+}@media(min-width:48em){.visible-xs{display:none!important}
+}/*! CSS Used from: Embedded */[_nghost-c34]{float:left;position:relative;z-index:100}
+/*! CSS Used from: Embedded */h2{font-weight:400}
+h2{font-size:1.75rem}
+h4{font-weight:700}
+h4{font-size:1.312rem}
+p{font-size:1rem}
+.text-l{font-size:1.313rem;font-weight:700}
+.text-m{font-size:1.125rem;font-weight:500}
+.text-s-regular{font-size:.875rem;font-weight:400}
+.text-s-medium{font-size:.875rem;font-weight:500}
+.text-xs-regular{font-size:.75rem;font-weight:400}
+@media(min-width:64em){.text-l-md{font-size:1.313rem;font-weight:700}
+}@media(min-width:48em){.text-m-sm{font-size:1.125rem;font-weight:500}
+}@media(min-width:48em){.text-s-regular-sm{font-size:.875rem;font-weight:400}
+}.h2{font-size:1.125rem;line-height:1.4375rem}
+@media(min-width:48em){.h2{font-size:1.625rem;line-height:2.125rem}
+}.h3{font-size:1rem;line-height:1.3125rem}
+@media(min-width:48em){.h3{font-size:1.375rem;line-height:1.75rem}
+}.h4{font-size:.875rem;line-height:1.125rem}
+@media(min-width:48em){.h4{font-size:1.125rem;line-height:1.5rem}
+}.description{display:block;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;margin:0 auto}
+.description__btn{background-color:#fff;border-style:none;margin:0;padding:0;text-decoration:underline}
+.description__header{display:-webkit-box;display:-ms-flexbox;display:flex}
+.description__header{-webkit-box-flex:1;-ms-flex:1 100%;flex:1 100%}
+.description__title{-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto}
+.description__address{margin-top:.25rem}
+.description__address-text{vertical-align:bottom}
+.description__rating{background-image:-webkit-gradient(linear,left top,right top,from(#073590),to(#073590));background-image:linear-gradient(90deg,#073590,#073590);border-radius:2px;padding:0 .125rem}
+@media(min-width:48em){.description__rating{background:#0d3a93;border-radius:2px;padding:2px 1rem;margin:10px}
+.description__address-text,.description__btn{vertical-align:middle}
+.description__btn{cursor:pointer;margin-left:.375rem}
+.description__title{-webkit-box-flex:0;-ms-flex:none;flex:none;margin-right:.5625rem}
+.description__rating{margin-top:3px}
+.description__header{-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}
+}h2{font-weight:400}
+h2{font-size:1.75rem}
+h4{font-weight:700}
+h4{font-size:1.312rem}
+p{font-size:1rem}
+.text-l{font-size:1.313rem;font-weight:700}
+.text-m{font-size:1.125rem;font-weight:500}
+.text-s-regular{font-size:.875rem;font-weight:400}
+.text-s-medium{font-size:.875rem;font-weight:500}
+.text-xs-regular{font-size:.75rem;font-weight:400}
+@media(min-width:64em){.text-l-md{font-size:1.313rem;font-weight:700}
+}@media(min-width:48em){.text-m-sm{font-size:1.125rem;font-weight:500}
+}@media(min-width:48em){.text-s-regular-sm{font-size:.875rem;font-weight:400}
+}.h2{font-size:1.125rem;line-height:1.4375rem}
+@media(min-width:48em){.h2{font-size:1.625rem;line-height:2.125rem}
+}.h3{font-size:1rem;line-height:1.3125rem}
+@media(min-width:48em){.h3{font-size:1.375rem;line-height:1.75rem}
+}.h4{font-size:.875rem;line-height:1.125rem}
+@media(min-width:48em){.h4{font-size:1.125rem;line-height:1.5rem}
+}.rooms-search__container.details-page-view{background:0;margin:0 24px;padding-top:34px;width:auto}
+@media(min-width:30em){.rooms-search__container.details-page-view{margin:0 auto}
+}@media(min-width:48em){.rooms-search__container.details-page-view{padding-top:0;width:100%}
+}@media(min-width:64em){.rooms-search__container.details-page-view{}
+}.rooms-search__container.details-page-view form{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+@media(min-width:48em){.rooms-search__container.details-page-view form{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;margin:0}
+.rooms-search__container.details-page-view form div.last-child{border:0;border-radius:2px;margin-right:0}
+}.rooms-search__container.details-page-view form label{color:white;text-align:left}
+@media(min-width:48em){}
+.rooms-search__container.details-page-view form input{font-size:1.125rem;font-weight:500;height:1.25rem}
+.rooms-search__container.details-page-view form input::-webkit-input-placeholder{font-size:1.125rem;font-weight:500;color:#828790}
+.rooms-search__container.details-page-view form input:-moz-placeholder,.rooms-search__container.details-page-view form input::-moz-placeholder{font-size:1.125rem;font-weight:500;color:#828790}
+.rooms-search__container.details-page-view form input:-ms-input-placeholder{font-size:1.125rem;font-weight:500;color:#828790}
+@media(min-width:48em){.rooms-search__container.details-page-view form .rooms-search__button{border-radius:2px;display:block;height:47px}
+}.rooms-search__container.details-page-view form .rooms-search__container__item{margin:0 0 8px}
+@media(min-width:48em){.rooms-search__container.details-page-view form .rooms-search__container__item{border-radius:0;-webkit-box-shadow:none;box-shadow:none;margin:0 7px 0 0}
+}.rooms-search__container.details-page-view form .rooms-search__container__item{-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-range__item,.rooms-search__container.details-page-view form .rooms-search__container__item .guests__item{border:1px solid #1e44c6;-webkit-box-shadow:none;box-shadow:none}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-range__item--left{margin:0 0 8px}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input input.dd,.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input input.mm{width:100%}
+.rooms-search__container.details-page-view form .rooms-search__container__item .guests__item--left{margin-bottom:.5rem}
+@media(min-width:48em){.rooms-search__container.details-page-view form .rooms-search__container__item .date-range__item{border-radius:0;-webkit-box-shadow:none;box-shadow:none;margin:0}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-range__item--left{border-radius:0;border-right:1px solid rgba(192,203,218,.5);-webkit-box-shadow:none;box-shadow:none;margin:0 7px 0 0}
+.rooms-search__container.details-page-view form .rooms-search__container__item .guests{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}
+.rooms-search__container.details-page-view form .rooms-search__container__item .guests__item{-webkit-box-shadow:none;box-shadow:none;min-width:80px}
+.rooms-search__container.details-page-view form .rooms-search__container__item .guests__item--left{border-right:1px solid rgba(192,203,218,.5);-webkit-box-shadow:none;box-shadow:none;margin:0 7px 0 0;min-width:74px}
+.rooms-search__container.details-page-view form .rooms-search__container__item .rich-input__container__group input{margin:0}
+}.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group{display:-webkit-box;display:-ms-flexbox;display:flex}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group .yyyy{margin-left:.375rem;width:100%}
+@media(min-width:48em){.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group{padding-bottom:0;width:7.1875rem}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group span{margin-top:0}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group input{margin-bottom:0;margin-top:0;padding:0}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group input::-webkit-input-placeholder{font-size:.875rem;font-weight:500}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group input:-moz-placeholder,.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group input::-moz-placeholder{font-size:.875rem;font-weight:500}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group input:-ms-input-placeholder{font-size:.875rem;font-weight:500}
+.rooms-search__container.details-page-view form .rooms-search__container__item .date-input__input__group .yyyy{-webkit-box-flex:0;-ms-flex:0 1 2.5rem;flex:0 1 2.5rem;margin-left:.125rem;margin-right:0}
+}.rooms-search__container.details-page-view .rooms-search__header{display:none}
+@media(min-width:48em){.rooms-search__container.details-page-view .rooms-search__container__item:first-of-type{width:32%}
+.rooms-search__container.details-page-view .rooms-search__container__item:nth-of-type(2){width:41%}
+.rooms-search__container.details-page-view .rooms-search__container__item:last-of-type{width:13%}
+}.rooms-search__container.details-page-view .rich-input__container__dropdown-handle{-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex}
+.rooms-search{-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto}
+.rooms-search__container{background:rgba(7,53,144,.82);border-radius:2px;margin:0 auto;max-width:405px}
+@media(min-width:48em){.rooms-search__container{margin:0;max-width:inherit;min-width:419px}
+}@media(min-width:64em){.rooms-search__container{min-width:480px}
+}.rooms-search__container form{-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;margin:auto}
+.rooms-search__container__item{border-radius:2px;cursor:pointer;margin:.375rem 1rem;width:100%}
+.rooms-search__container__item .rooms-search__button{background-color:#ff5e00;text-transform:uppercase;letter-spacing:2px;font-weight:900;border:0;border-radius:2px;color:#fff;cursor:pointer;height:3.375rem;width:100%}
+.rooms-search__container__item .rooms-search__button:hover{background-color:#456cf1}
+.rooms-search__container__item .rooms-search__button__text{margin-left:.313em;vertical-align:middle}
+.rooms-search__container__item .guests__item--left{margin-bottom:1rem}
+@media(min-width:48em){.rooms-search__container__item .guests__item--left{margin-bottom:0;margin-right:1rem}
+}.rooms-search__container__grouped-item{background-color:transparent}
+@media(min-width:64em){.rooms-search__container__grouped-item{background-color:transparent}
+}.rooms-search__container .rooms-search__lead{margin:0 auto .6875rem}
+@media(min-width:64em){.rooms-search__container .rooms-search__lead{margin-top:1.188rem;text-shadow:0 0 7px #062b71}
+}.rooms-search__container .rooms-search__logo{text-align:center}
+.rooms-search__container .rooms-search__logo img{display:none;height:24px}
+@media(min-width:48em){.rooms-search__container .rooms-search__logo img{height:37px}
+}@media(min-width:64em){.rooms-search__container .rooms-search__logo img{display:inline-block;height:60px}
+}.rooms-search__container .rooms-search__header{display:block}
+/*! CSS Used from: Embedded */.date-range{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+@media(min-width:48em){.date-range{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}
+}.date-range__item{background-color:#fff;border-radius:2px;-webkit-box-shadow:1px 1px 6px 0 rgba(0,24,35,.15);box-shadow:1px 1px 6px 0 rgba(0,24,35,.15);-webkit-box-flex:1;-ms-flex:1;flex:1;min-width:0;position:relative}
+@media(min-width:64em){.date-range__item{-webkit-box-shadow:2px 1px 17px 0 rgba(0,24,35,.41);box-shadow:2px 1px 17px 0 rgba(0,24,35,.41)}
+}.date-range__item--left{margin-bottom:1rem}
+@media(min-width:48em){.date-range__item--left{margin-bottom:0;margin-right:1rem}
+}/*! CSS Used from: Embedded */.guests{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+@media(min-width:48em){.guests{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}
+}.guests__item{background-color:#fff;border-radius:2px;-webkit-box-shadow:1px 1px 6px 0 rgba(0,24,35,.15);box-shadow:1px 1px 6px 0 rgba(0,24,35,.15);width:100%}
+@media(min-width:64em){.guests__item{-webkit-box-shadow:2px 1px 17px 0 rgba(0,24,35,.41);box-shadow:2px 1px 17px 0 rgba(0,24,35,.41)}
+}.guests morph-popup{width:100%}
+.guests .rich-input .rich-input__container__dropdown-handle{padding-left:0}
+.guests .rich-input input{-webkit-text-fill-color:#073590}
+/*! CSS Used from: Embedded */.date-picker__label{display:block;-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto;outline:0;padding:.563rem .688rem 0}
+.date-picker input{background-color:#fff;border:0;-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto;outline:0}
+.date-picker input::-webkit-input-placeholder{-webkit-text-fill-color:#d2d6d9;color:#d2d6d9;font-size:.9375rem}
+.date-picker input:-moz-placeholder,.date-picker input::-moz-placeholder{color:#d2d6d9;font-size:.9375rem}
+.date-picker input:-ms-input-placeholder{color:#d2d6d9;font-size:.9375rem}
+.date-picker morph-popup.rooms-morph-popup{width:100%}
+.date-picker .end-date,.date-picker .start-date{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+/*! CSS Used from: Embedded */.date-input{background:#fff;border-radius:2px;-webkit-box-sizing:border-box;box-sizing:border-box;display:inline-block;position:relative;width:100%}
+.date-input span.separator-char{color:#073590;font-size:18px;vertical-align:middle}
+.date-input__input{position:relative}
+.date-input__input__group{display:inherit}
+@media(min-width:48em){.date-input__input__group{display:-webkit-box;display:-ms-flexbox;display:flex;padding-bottom:3px} }
+.date-input__input input.dd{margin-left:.625rem;width:1.625rem}
+.date-input__input input.dd::-webkit-input-placeholder{letter-spacing:-1px!important;padding-left:2px!important}
+.date-input__input input.dd::-webkit-input-placeholder,.date-input__input input.dd::placeholder{letter-spacing:-1px!important;padding-left:2px!important}
+.date-input__input input.mm{margin-left:0;margin-right:0;max-width:30px;text-align:center;width:1.625rem}
+.date-input__input input.mm::-webkit-input-placeholder{letter-spacing:-1px!important;padding-left:0!important}
+.date-input__input input.mm::-webkit-input-placeholder,.date-input__input input.mm::placeholder{letter-spacing:-1px!important;padding-left:0!important}
+.date-input__input input.yyyy{width:3.25rem}
+.date-input__input input:disabled{opacity:1}
+.rich-input__container{border-radius:2px;display:-webkit-box;display:-ms-flexbox;display:flex}
+.rich-input__container__group{background:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;width:100%}
+.rich-input__container__group input{background-color:#fff;border:0;-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto;margin-bottom:5px;outline:0;padding:0 .75rem;text-overflow:ellipsis;text-transform:capitalize;width:100%}
+.rich-input__container__group input[disabled]{opacity:1;pointer-events:none}
+.rich-input__container__group input::-webkit-input-placeholder{color:#d2d6d9;font-size:1.125rem;font-weight:500;letter-spacing:.05rem;text-transform:none}
+.rich-input__container__group input:-moz-placeholder,.rich-input__container__group input::-moz-placeholder{color:#d2d6d9;font-size:1.125rem;font-weight:500;letter-spacing:.05rem;text-transform:none}
+.rich-input__container__group input:-ms-input-placeholder{color:#d2d6d9;font-size:1.125rem;font-weight:500;letter-spacing:.05rem;text-transform:none}
+.rich-input__container__group label{-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto;outline:0;padding:.4rem .75rem .3rem}
+.rich-input__container__dropdown-handle{background:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:.4rem .75rem}
+.rich-input__container__dropdown-handle__chevron{color:#2091eb}
+/*! CSS Used from: Embedded */.hotel-facilities__container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-ms-flex-wrap:nowrap;flex-wrap:nowrap}
+@media(min-width:48em){.hotel-facilities__container{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap}
+}.hotel-facilities__container rooms-hotel-facility{width:100%}
+@media(min-width:48em){.hotel-facilities__container rooms-hotel-facility{width:33.33%}
+}.hotel-facilities__container rooms-hotel-facility:nth-child(n+4){display:none}
+@media(min-width:48em){.hotel-facilities__container rooms-hotel-facility:nth-child(n+4){display:-webkit-box;display:-ms-flexbox;display:flex}
+}.hotel-facilities__details{display:none;line-height:1.43;margin:1.4375rem 0 0}
+.hotel-facilities .hotel-facilities__button{color:#2091eb;margin:1.4375rem 0 0;padding:0;text-align:left}
+/*! CSS Used from: Embedded */.other-info{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+.other-info__text{-ms-flex-preferred-size:auto;flex-basis:auto;width:100%}
+.other-info__text+.other-info__text{margin:1rem 0 0}
+/*! CSS Used from: Embedded */.room-cards{-ms-flex-line-pack:start;align-content:flex-start;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:0;-ms-flex:0 1 100%;flex:0 1 100%;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
+.room-cards__see-more{margin:1rem 0 0}
+.room-cards .point-grey{background:#828790;border-radius:50%;display:inline-block;height:.25rem;margin-right:1rem;vertical-align:middle;width:.25rem}
+@media(min-width:48em){.room-cards .visible-xs{display:none}
+}/*! CSS Used from: Embedded */.room-card{background:#fff;border:1px solid #d2d6d9;display:block;margin:-1px 0 0}
+.room-card__header{padding:.5rem 1rem 0}
+.room-card__header p{margin:.5rem 0}
+.room-card__body{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:100%;-ms-flex:100%;flex:100%;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;padding:.5rem 1rem 1rem}
+.room-card__image-box{background-position:50%;background-size:cover;border-radius:2px;cursor:pointer;height:5rem;margin-right:1rem;position:relative;width:5rem}
+@media(min-width:48em){.room-card__image-box{height:auto;width:11.25rem}
+}.room-card__image{height:100%;-o-object-fit:cover;object-fit:cover;position:absolute;width:100%}
+.room-card__zoom-icon{background:#073590;border-radius:2px;bottom:.25rem;-webkit-box-sizing:content-box;box-sizing:content-box;height:1rem;opacity:.63;padding:10px;position:absolute;right:.25rem;width:1rem}
+@media(min-width:48em){.room-card__zoom-icon{height:1.5rem;width:1.5rem}
+}.room-card__facilities{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}
+@media(min-width:48em){.room-card__facilities{-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}
+}.room-card__content{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;width:100%}
+.room-card__content--left{-webkit-box-flex:100%;-ms-flex:100%;flex:100%}
+.room-card__content--left button{min-width:0;padding:0}
+.room-card__content--left p{margin:.5rem 0}
+.room-card__content--left p:first-child{margin-top:0}
+@media(min-width:36rem){.room-card__content--left{-webkit-box-flex:1;-ms-flex:1;flex:1}
+}@media(min-width:64em){.room-card__content--left{-webkit-box-flex:1;max-width:100%}
+}.room-card__content--right{-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:1;-ms-flex:1 0 auto;flex:1 0 auto;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;margin:0;padding:.5rem 0 0;text-align:left;width:100%}
+@media(min-width:48em){.room-card__content--right{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;margin:0 0 0 1rem;padding:0;text-align:right;width:auto}
+}@media(min-width:64em){.room-card__content--right{-webkit-box-flex:1;-ms-flex:1;flex:1}
+}.room-card__content--right button{margin-left:0;margin-right:auto;padding-left:1.75rem;padding-right:1.75rem}
+@media(min-width:48em){.room-card__content--right button{margin-left:auto;margin-right:0}
+}.room-card__content--right>button{margin:.5rem 0}
+.room-card__information{display:none;letter-spacing:.7px;line-height:1.43;padding:0 1rem 1.5rem}
+.room-card__information__list{list-style:none;margin:.25rem 0 0;padding-left:.75rem}
+.room-card__information b,.room-card__information strong{color:#073590;font-weight:500}
+.room-card__book-now-btn{display:block;width:100%}
+@media(min-width:48em){.room-card__book-now-btn{width:auto}
+}@media(min-width:48em){.room-card .visible-xs{display:none}
+}.room-card__room-name{vertical-align:middle}
+/*! CSS Used from: Embedded */.cancellation-policy-badge__container[_ngcontent-c61]{display:inline-block;position:relative}
+.cancellation-policy-badge__label[_ngcontent-c61]{margin-right:.25rem;white-space:nowrap}
+.cancellation-policy-badge__container[_ngcontent-c61] morph-popup{bottom:30px;cursor:auto;position:absolute;right:-253px}
+.cancellation-policy-badge__container[_ngcontent-c61] icon{display:-webkit-box;display:-ms-flexbox;display:flex}
+.cancellation-policy-badge__container[_ngcontent-c61] icon ._container{width:100%}
+/*! CSS Used from: Embedded */label{font-weight:700}
+.room-price{-ms-flex-line-pack:center;align-content:center;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}
+.room-price span{text-align:right}
+.room-price__container{-webkit-box-align:baseline;-ms-flex-align:baseline;align-items:baseline;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}
+@media(min-width:48em){.room-price__container{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}
+}/*! CSS Used from: Embedded */.hotel-facility{-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start}
+.hotel-facility span{margin-left:.5rem;padding:.5rem 0}
+/*! CSS Used from: Embedded */.text-s-regular[_ngcontent-c63]{font-size:.875rem;font-weight:400}
+[_nghost-c63]{width:100%}
+.travel-credit-badge__container[_ngcontent-c63],[_nghost-c63]{display:-webkit-box;display:-ms-flexbox;display:flex}
+.travel-credit-badge__container[_ngcontent-c63]{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;margin-left:auto;margin-top:5px;position:relative}
+@media(min-width:48em){.travel-credit-badge__container[_ngcontent-c63]{-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end}
+}.travel-credit-badge__container--default[_ngcontent-c63] .travel-credit-badge__logo{height:1.3rem;width:1.3rem}
+.travel-credit-badge__label-wrapper[_ngcontent-c63]{-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex;padding:0}
+.travel-credit-badge__label[_ngcontent-c63]{-ms-flex-negative:0;flex-shrink:0;text-align:left}
+.travel-credit-badge__logo{background:#073590;border:2px solid #fff;border-radius:50%;color:#456cf1;margin:0 .5rem 0 .25rem;padding:1px}
+/*! CSS Used from: Embedded */.badge[_ngcontent-c65]{-webkit-box-align:center;-ms-flex-align:center;align-items:center;border-radius:100px;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:.1875rem .5rem;-webkit-transition:background-color .5s ease;transition:background-color .5s ease}
+.badge--success[_ngcontent-c65]{background:#eaf7e7;color:#1d7703;padding-left:.7rem;padding-right:.7rem}
+.badge--promotion[_ngcontent-c65]{background:#456cf1;border:2px solid #fff;-webkit-box-shadow:0 2px 13px rgba(46,46,46,.3);box-shadow:0 2px 13px rgba(46,46,46,.3);color:#2e2e2e;padding-left:.15rem;padding-right:.75rem}
+/*! CSS Used from: Embedded */.price{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;white-space:nowrap}
+/*! CSS Used from: Embedded */.static-map__img{background:#fff 50%;background-repeat:no-repeat;background-size:cover;height:455px}
+.static-map__button{background-color:hsla(0,0%,100%,.8);border-radius:5px;cursor:pointer;left:50%;position:relative;top:-75px;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+.selectx{font-weight:bold;width:50px;height:43px;padding-top:.4em;padding-left:10px!important;padding-bottom:.4em;background:#ffffff00;border:0 solid #fff;font-size:17px;color:#0d3a93;position:absolute;margin-left:70px}
+.selectx:hover{background-color:rgba(238,238,238,0.4392156862745098)}
+.badge{background:#00df50;color:#fff;font-size:12px;border-radius:3px;padding:6px 10px;font-weight:normal;margin:0 3px;line-height:12px;position:relative;vertical-align:top}
+#map{width:100%;height:450px!important;margin-left:3px;background:#bdd2eb}
+.availability-search{background:#456cf1;border:1px solid #2850d8;padding:14px}
