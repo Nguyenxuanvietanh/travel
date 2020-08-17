@@ -3100,7 +3100,16 @@ $this->db->or_where('MATCH (pt_pass.pass_city) AGAINST ("'. $searchtxt .'")', NU
         /*************End Hotel Settings Functions**************/
 
 
+		function get_pass_orders($id = null){
+			$this->db->select('pt_pass_booking.*, pt_pass.name as pass_name, pt_pass.ammount');
+			$this->db->join('pt_pass', 'pt_pass_booking.pass_id = pt_pass.id', 'left');
 
+			if($id){
+				$this->db->where('pt_pass_booking.id', $id);
+			}
+
+            return $this->db->get('pt_pass_booking')->result();
+		}
 
 
 }

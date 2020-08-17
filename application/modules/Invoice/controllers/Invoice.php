@@ -30,6 +30,16 @@ class Invoice extends MX_Controller {
     $this->output->set_content_type('text/html');
     $this->output->set_output($invoice_view);
   }
+
+  public function pass(){
+    $this->load->model('Pass/Pass_model');
+    $bookingid  = $this->input->get('id');
+    $this->data['pass_order'] = $this->Pass_model->get_pass_orders($bookingid)[0];
+    $invoice_view = $this->theme->partial('modules/pass/invoice', $this->data, TRUE);
+    $this->output->set_content_type('text/html');
+    $this->output->set_output($invoice_view);
+  }
+
   public function index() {
 // Redirect to the same page after complete payment transaction
 // This logic is for credimax gateway, checkout Credimaxinvoice controller

@@ -51,7 +51,7 @@ class Passback extends MX_Controller {
     $this->load->helper('Pass/pass');
     $this->data['languages'] = pt_get_languages();
     $this->load->helper('xcrud');
-    $this->data['c_model'] = $this->countries_model;
+    // $this->data['c_model'] = $this->countries_model;
     $this->data['tripadvisor'] = $this->ptmodules->is_mod_available_enabled("tripadvisor");
     $this->data['addpermission'] = true;
     if ($this->role == "supplier" || $this->role == "admin") {
@@ -213,6 +213,39 @@ class Passback extends MX_Controller {
         $this->data['passid']         = $this->data['hdata'][0]->pass_id;
         $this->load->view('Admin/template', $this->data);
       }
+    }
+  }
+
+  //Orders
+  public function orders(){
+    $isadmin = $this->session->userdata('pt_logged_admin');
+    $userid = '';
+    if (empty($isadmin)) {
+      $userid = $this->session->userdata('pt_logged_supplier');
+    }
+    if (!$this->data['addpermission'] && !$this->editpermission && !$this->deletepermission) {
+      backError_404($this->data);
+    }
+    else {
+      // $pass_orders = $this->Pass_model->get_pass_orders();
+      $xc = "xcrud";
+      $xc = xcrud_get_instance();
+      $xc->table('pt_pass_booking');
+      $xc->join('pass_id', 'pt_pass', 'id');
+      $xc->order_by('id', 'asc');
+      $xc->columns('fullname,email,phone,pt_pass.name,pt_pass.ammount');
+      $xc->label('fullname', 'Full Name')->label('email', 'Email')->label('phone', 'Phone')->label('pt_pass.name', 'Pass')->label('pt_pass.ammount', 'Price');
+      $xc->button(base_url() . 'invoice/pass/?id={id}', 'View Invoice', 'fa fa-search-plus', 'btn btn-primary', array('target' => '_blank'));
+      $xc->label('fullname', 'Name')->label('email', 'Email')->label('phone', 'Phone');
+      $xc->unset_add();
+      $xc->unset_edit();
+      $xc->unset_remove();
+      $xc->unset_view();
+      $this->data['content'] = $xc->render();
+      $this->data['main_content'] = 'temp_view';
+      $this->data['page_title'] = 'Pass Orders';
+      $this->data['header_title'] = 'Pass Orders';
+      $this->load->view('Admin/template', $this->data);
     }
   }
 
