@@ -59,7 +59,7 @@
             <label class="col-md-2 control-label text-left">Ammount</label>
             <div class="col-md-4">
               <input name="ammount" type="text" placeholder="Ammount" class="form-control"
-                value="<?php echo @$hdata[0]->name;?>" />
+                value="<?php echo @$hdata[0]->ammount;?>" />
             </div>
           </div>
           <div class="row form-group">
@@ -99,7 +99,7 @@
             <label class="col-md-2 control-label text-left">Sales date</label>
             <div class="col-md-2">
               <input name="sales_date" type="text" placeholder="Sales date" class="form-control dpd1"
-                value="<?php echo @$hdata[0]->sales_date; ?>" />
+                value="<?php echo pt_show_date_php(@$hdata[0]->sales_date); ?>" />
             </div>
             <?php } ?>
           </div>
@@ -174,9 +174,8 @@
       </div>
 
       <div class="panel-footer">
-        <input type="hidden" id="slug" value="<?php echo @$hdata[0]->pass_slug;?>" />
         <input type="hidden" name="submittype" value="<?php echo $submittype;?>" />
-        <input type="hidden" name="passid" value="<?php echo @$passid;?>" />
+        <input type="hidden" name="pass_id" value="<?php echo  @$hdata[0]->id;?>" />
         <button class="btn btn-primary submitfrm" id="<?php echo $submittype; ?>">Submit</button>
       </div>
     </div>

@@ -65,6 +65,8 @@ class Passback extends MX_Controller {
     $this->data['isadmin'] = $this->session->userdata('pt_logged_admin');
     $this->data['isSuperAdmin'] = $this->session->userdata('pt_logged_super_admin');
   }
+
+  // Index
   function index() {
     if (!$this->data['addpermission'] && !$this->editpermission && !$this->deletepermission) {
       backError_404($this->data);
@@ -103,6 +105,7 @@ class Passback extends MX_Controller {
     }
   }
 
+  // Setting
   function settings() {
     $isadmin = $this->session->userdata('pt_logged_admin');
     if (empty($isadmin)) {
@@ -134,7 +137,8 @@ class Passback extends MX_Controller {
     $this->data['page_title'] = 'Pass Settings';
     $this->load->view('Admin/template', $this->data);
   }
-// Add Pass
+
+  // Add Pass
   public function add() {
     if (!$this->data['addpermission']) {
       backError_404($this->data);
@@ -168,10 +172,9 @@ class Passback extends MX_Controller {
     }
   }
 
+  //Manage
   function manage($id) {
-    echo '<pre>';
-    print_r($id);
-    echo '</pre>';die;
+    // echo $id;die;
     if (empty($id)) {
       redirect($this->data['adminsegment'] . '/pass/');
     }
@@ -182,67 +185,32 @@ class Passback extends MX_Controller {
     else {
       $updatepass = $this->input->post('submittype');
       $this->data['submittype'] = "update";
-      $passid = $this->input->post('id');
+      $pass_id = $this->input->post('pass_id');
       if (!empty($updatepass)) {
         $this->form_validation->set_rules('name', 'Pass Name', 'trim|required');
-        $this->form_validation->set_rules('passdesc', 'Description', 'trim|required');
-        $this->form_validation->set_rules('passcity', 'Location', 'trim|required');
+        $this->form_validation->set_rules('ammount', 'Ammount', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
           echo '<div class="alert alert-danger">' . validation_errors() . '</div><br>';
         }
         else {
-          $this->Pass_model->update_pass($passid);
+          $this->Pass_model->update_pass($pass_id);
           // $this->Pass_model->update_translation($this->input->post('translated'), $passid);
           $this->session->set_flashdata('flashmsgs', 'Pass Updated Successfully');
           echo "done";
         }
       }
       else {
-        @ $this->data['hdata'] = $this->Pass_model->get_pass_data($passlug);
-        $comfixed = @ $this->data['hdata'][0]->pass_comm_fixed;
-        $comper = $this->data['hdata'][0]->pass_comm_percentage;
-        if ($comfixed > 0) {
-          $this->data['passdepositval'] = $comfixed;
-          $this->data['passdeposittype'] = "fixed";
-        }
-        else {
-          $this->data['passdepositval'] = $comper;
-          $this->data['passdeposittype'] = "percentage";
-        }
-        $taxfixed = $this->data['hdata'][0]->pass_tax_fixed;
-        $taxper = $this->data['hdata'][0]->pass_tax_percentage;
-        if ($taxfixed > 0) {
-          $this->data['passtaxval'] = $taxfixed;
-          $this->data['passtaxtype'] = "fixed";
-        }
-        else {
-          $this->data['passtaxval'] = $taxper;
-          $this->data['passtaxtype'] = "percentage";
-        }
-        if ($this->data['adminsegment'] == "supplier") {
-          if ($this->data['userloggedin'] != $this->data['hdata'][0]->pass_owned_by) {
-            redirect($this->data['adminsegment'] . '/pass/');
-          }
-        }
-        $this->data['main_content'] = 'Pass/manage';
-        $this->data['page_title'] = 'Manage Pass';
-        $this->data['headingText'] = 'Update ' . $this->data['hdata'][0]->pass_title;
-        $locInfo = pt_LocationsInfo($this->data['hdata'][0]->pass_city);
-        $this->data['locationName'] = $locInfo->city . ", " . $locInfo->country;
-        $this->data['checkin'] = $this->data['hdata'][0]->pass_check_in;
-        $this->data['checkout'] = $this->data['hdata'][0]->pass_check_out;
-        $this->data['hrelated'] = explode(",", $this->data['hdata'][0]->pass_related);
-        $this->data['featuredfrom'] = pt_show_date_php($this->data['hdata'][0]->pass_featured_from);
-        $this->data['featuredto'] = pt_show_date_php($this->data['hdata'][0]->pass_featured_to);
-        $this->data['htypes'] = pt_get_hsettings_data("htypes");
-        $this->data['hamts'] = pt_get_hsettings_data("hamenities");
-        $this->data['passamt'] = explode(",", $this->data['hdata'][0]->pass_amenities);
-        $this->data['hpayments'] = pt_get_hsettings_data("hpayments");
-        $this->data['passpaytypes'] = explode(",", $this->data['hdata'][0]->pass_payment_opt);
-        $this->data['all_pass'] = $this->Pass_model->select_related_pass($this->data['userloggedin']);
+        @ $this->data['hdata'] = $this->Pass_model->get_pass_data($id);
+        $this->data['main_content']   = 'Pass/manage';
+        $this->data['page_title']     = 'Manage Pass';
+        $this->data['headingText']    = 'Update ' . $this->data['hdata'][0]->pass_title;
+        $this->data['pass_categories']= $this->Pass_model->get_pass_categories_data();
+        $this->data['hpayments']      = pt_get_hsettings_data("hpayments");
+        $this->data['passpaytypes']   = explode(",", $this->data['hdata'][0]->pass_payment_opt);
+        $this->data['all_pass']       = $this->Pass_model->select_related_pass($this->data['userloggedin']);
         $this->load->model('Admin/Locations_model');
-        $this->data['locations'] = $this->Locations_model->getLocationsBackend();
-        $this->data['passid'] = $this->data['hdata'][0]->pass_id;
+        $this->data['locations']      = $this->Locations_model->getLocationsBackend();
+        $this->data['passid']         = $this->data['hdata'][0]->pass_id;
         $this->load->view('Admin/template', $this->data);
       }
     }

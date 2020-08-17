@@ -941,17 +941,9 @@ class Pass_model extends CI_Model {
 
 // get all data of single pass by slug
 
-		function get_pass_data($passlug) {
-
+		function get_pass_data($id) {
 				$this->db->select('pt_pass.*');
-
-				$this->db->where('pt_pass.pass_slug', $passlug);
-
-/* $this->db->where('pt_pass_images.himg_type','default');
-
-
-
-$this->db->join('pt_pass_images','pt_pass.pass_id = pt_pass_images.himg_pass_id','left');*/
+				$this->db->where('pt_pass.id', $id);
 
 				return $this->db->get('pt_pass')->result();
 
@@ -1015,194 +1007,19 @@ $this->db->join('pt_pass_images','pt_pass.pass_id = pt_pass_images.himg_pass_id'
 
 		function update_pass($id) {
 
-
-
-			    $amenities = @ implode(",", $this->input->post('passamenities'));
-
-				$paymentopt = @ implode(",", $this->input->post('passpayments'));
-
-				$relatedpass = @ implode(",", $this->input->post('relatedpass'));
-
-				$featured = $this->input->post('isfeatured');
-
-
-
-				if(empty($featured)){
-
-
-
-					$featured = "no";
-
-				}
-
-
-
-                $ffrom = $this->input->post('ffrom');
-
-				$fto = $this->input->post('fto');
-
-
-
-				if(empty($ffrom) || empty($fto) && $featured == "yes" ){
-
-                    $isforever = 'forever';
-
-				}else{
-
-				  	$isforever = '';
-
-				}
-
-
-
-				if($featured == "no"){
-
-					$isforever = '';
-
-				}
-
-
-
-                $depval = floatval($this->input->post('depositvalue'));
-
-                $deptype = $this->input->post('deposittype');
-
-
-
-                $taxval = floatval($this->input->post('taxvalue'));
-
-                $taxtype = $this->input->post('taxtype');
-
-
-
-                if($deptype == "fixed"){
-
-                 $commfixed = $depval;
-
-                 $commper = 0;
-
-                }else{
-
-                 $commfixed = 0;
-
-                 $commper = $depval;
-
-                }
-
-
-
-                if($taxtype == "fixed"){
-
-                 $taxfixed = $taxval;
-
-                 $taxper = 0;
-
-                }else{
-
-                 $taxfixed = 0;
-
-                 $taxper = $taxval;
-
-                }
-
-
-
-				$hslug = create_url_slug($this->input->post('passname'));
-
-
-
-				$stars = $this->input->post('passtars');
-
-				if(empty($stars)){
-
-					$stars = 1;
-
-				}
-
-
-
-				$data = array(
-
-                'pass_title' => $this->input->post('passname'),
-
-                'pass_slug' => $hslug,
-
-                'pass_desc' => $this->input->post('passdesc'),
-
-                'pass_website' => $this->input->post('passwebsite'),
-
-			//	'pass_admin_review' => $this->input->post('adminreview'),
-
-                'pass_stars' => intval($stars),
-
-                'pass_is_featured' => $featured,
-
-                'pass_featured_from' => convert_to_unix($ffrom),
-
-                'pass_featured_to' => convert_to_unix($fto),
-
-                'pass_type' => $this->input->post('passtype'),
-
-                'pass_city' => $this->input->post('passcity'),
-
-                'pass_latitude' => $this->input->post('latitude'),
-
-                'pass_longitude' => $this->input->post('longitude'),
-
-                'pass_meta_title' => $this->input->post('passmetatitle'),
-
-                'pass_meta_keywords' => $this->input->post('passkeywords'),
-
-                'pass_meta_desc' => $this->input->post('passmetadesc'),
-
-                'pass_amenities' => $amenities,
-
-                'pass_payment_opt' => $paymentopt,
-
-           //     'pass_adults' => $this->input->post('adults'),
-
-           //     'pass_children' => $this->input->post('children'),
-
-                'pass_check_in' => $this->input->post('checkintime'),
-
-                'pass_check_out' => $this->input->post('checkouttime'),
-
-				'pass_policy' => $this->input->post('passpolicy'),
-
-				'pass_status' => $this->input->post('passtatus'),
-
-                'pass_related' => $relatedpass,
-
-                'pass_comm_fixed' => $commfixed,
-
-                'pass_comm_percentage' => $commper,
-
-                'pass_tax_fixed' => $taxfixed,
-
-                'pass_tax_percentage' => $taxper,
-
-                'pass_email' => $this->input->post('passemail'),
-
-                'pass_phone' => $this->input->post('passphone'),
-
-                'pass_website' => $this->input->post('passwebsite'),
-
-            //  'pass_map_address' => $this->input->post('passaddress'),
-
-                'pass_map_city' => $this->input->post('passmapaddress'),
-
-                'tripadvisor_id' => $this->input->post('tripadvisor'),
-
-                'pass_featured_forever' => $isforever
-
-                );
-
-				$this->db->where('pass_id', $id);
-
-				$this->db->update('pt_pass', $data);
-
-
-
+			$data = array(
+				'name' 			=> $this->input->post('name'),
+				'ammount' 		=> $this->input->post('ammount'),
+				'sales_date'	=> convert_to_unix($this->input->post('sales_date')),
+				'status' 		=> $this->input->post('status'),
+				'type' 			=> $this->input->post('type'),
+				'category_id'	=> $this->input->post('category_id'),
+				'note' 			=> $this->input->post('note'),
+				'html_note' 	=> $this->input->post('html_note'),
+			);
+
+			$this->db->where('id', $id);
+			$this->db->update('pt_pass', $data);
 		}
 
 
@@ -1632,95 +1449,7 @@ $this->db->join('pt_pass_images','pt_pass.pass_id = pt_pass_images.himg_pass_id'
 // Delete Hotel
 
 		function delete_pass($passid) {
-
-				$passimages = $this->pass_images($passid);
-
-				foreach ($passimages['all_slider'] as $sliderimg) {
-
-						$this->delete_image($sliderimg->himg_image,$sliderimg->himg_id, $passid);
-
-				}
-
-
-
-			    $this->db->select('room_id,room_pass');
-
-				$this->db->where('room_pass', $passid);
-
-				$rooms = $this->db->get('pt_rooms')->result();
-
-				foreach ($rooms as $r) {
-
-						$this->db->select('rimg_room_id,rimg_image');
-
-						$this->db->where('rimg_room_id', $r->room_id);
-
-						$roomimgs = $this->db->get('pt_room_images')->result();
-
-						foreach ($roomimgs as $rmimg) {
-
-								@ unlink(PT_ROOMS_THUMBS_UPLOAD . $rmimg->rimg_image);
-
-								@ unlink(PT_ROOMS_IMAGES_UPLOAD . $rmimg->rimg_image);
-
-
-
-								$this->db->where('rimg_room_id', $rmimg->rimg_room_id);
-
-								$this->db->delete('pt_room_images');
-
-						}
-
-
-
- 			$this->db->where('room_id',$r->room_id);
-
-            $this->db->delete('pt_rooms_availabilities');
-
-
-
-            $this->db->where('room_id',$r->room_id);
-
-            $this->db->delete('pt_rooms_prices');
-
-
-
-
-
-
-
-                $this->db->where('item_id', $r->room_id);
-
-                $this->db->delete('pt_rooms_translation');
-
-
-
-				}
-
-
-
-				$this->db->where('room_pass', $passid);
-
-				$this->db->delete('pt_rooms');
-
-
-
-				$this->db->where('review_itemid', $passid);
-
-				$this->db->where('review_module', 'pass');
-
-				$this->db->delete('pt_reviews');
-
-
-
-                $this->db->where('item_id', $passid);
-
-                $this->db->delete('pt_pass_translation');
-
-
-
-				$this->db->where('pass_id', $passid);
-
+				$this->db->where('id', $passid);
 				$this->db->delete('pt_pass');
 
 		}
