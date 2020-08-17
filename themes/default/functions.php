@@ -64,6 +64,10 @@
                 {
                     require $themeurl.'views/modules/hotels/main_search.php';
                 }
+                if ($module == "pass")
+                {
+                    require $themeurl.'views/modules/pass/main_search.php';
+                }
                 if ($module == "flights")
                 {
                     require $themeurl.'views/modules/flights/main_search.php';

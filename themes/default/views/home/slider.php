@@ -54,6 +54,14 @@
                     </div>
                     <!-- Hotels  -->
                     <?php } ?>
+                    <?php  if(isModuleActive('pass')){ ?>
+                    <?php $module = 'pass'; ?>
+                    <!-- Hotels  -->
+                    <div role="tabpanel" class="tab-pane fade <?=($active_menu == 'pass')?'active in':''?>" id="pass" aria-labelledby="home-tab">
+                        <?php echo searchForm('hotels'); ?>
+                    </div>
+                    <!-- Hotels  -->
+                    <?php } ?>
                     <?php  if(isModuleActive('ean')){ ?>
                     <?php $module = 'ean'; ?>
                     <!-- Expedia Hotels  -->
