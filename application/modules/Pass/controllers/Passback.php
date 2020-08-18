@@ -174,7 +174,6 @@ class Passback extends MX_Controller {
 
   //Manage
   function manage($id) {
-    // echo $id;die;
     if (empty($id)) {
       redirect($this->data['adminsegment'] . '/pass/');
     }

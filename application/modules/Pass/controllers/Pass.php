@@ -67,112 +67,16 @@ class Pass extends MX_Controller {
     $_SESSION['custom_pass_checkout'] = date('d-m-Y', strtotime('+1 days'));
   }
 
-  public function detail(...$args)
-  {
-      if(count($args) == 2) {
-        list($city,$passname) = $args;
-        $searchform_checkin = $_SESSION['custom_pass_checkin'];
-        $searchform_checkout = $_SESSION['custom_pass_checkout'];
-        $adults = 2;
-        $childs = 0;
-      } else {
-        list($city,$passname,$searchform_checkin,$searchform_checkout,$adults,$childs) = $args;
-        if(empty($searchform_checkin)) {
-          $searchform_checkin = $_SESSION['custom_pass_checkin'];
-          $searchform_checkout = $_SESSION['custom_pass_checkout'];
-        }
-        $_SESSION['search_pass_checkin'] = '';
-        $_SESSION['search_pass_checkout'] = '';
-      }
-      if(!empty($_SESSION['search_pass_checkin'])) {
-        $searchform_checkin = $_SESSION['search_pass_checkin'];
-      }
-      if(!empty($_SESSION['search_pass_checkout'])) {
-        $searchform_checkout = $_SESSION['search_pass_checkout'];
-      }
-      $_GET['checkin'] = $searchform_checkin;
-      $_GET['checkout'] = $searchform_checkout;
-      $_GET['adults'] = $adults;
-      $_GET['child'] = $childs;
-      $_GET['searching'] = "";
-      $_GET['roomscount'] = "";
-      $this->Pass_lib->checkin = $searchform_checkin;
-      $this->Pass_lib->checkout = $searchform_checkout;
-      $this->Pass_lib->stay = pt_count_days($searchform_checkin, $searchform_checkout);
-      $this->Pass_lib->adults = $adults;
-      $this->Pass_lib->children = $childs;
-      $this->load->library('Pass/Pass_calendar_lib');
-      $this->data['loadMap'] = TRUE;
-      $this->data['calendar'] = $this->Pass_calendar_lib;
-      $settings = $this->Settings_model->get_front_settings('pass');
-      $this->data['minprice'] = $settings[0]->front_search_min_price;
-      $this->data['maxprice'] = $settings[0]->front_search_max_price;
-      $this->data['checkin'] = $searchform_checkin;
-      $this->data['checkout'] = $searchform_checkout;
-      $check = $this->Pass_model->pass_exists($passname);
-      if ($check && !empty($passname)) {
-        $this->Pass_lib->set_passid($passname);
-        $this->data['module'] = $this->Pass_lib->pass_details();
-        $this->data['hasRooms'] = $this->Pass_lib->totalRooms($this->data['module']->id);
-        $this->data['rooms'] = $this->Pass_lib->pass_rooms($this->data['module']->id);
-        // Availability Calender settings variables
-        $this->data['from1'] = date("F Y");
-        $this->data['to1'] = date("F Y", strtotime('+5 months'));
-        $this->data['from2'] = date("F Y", strtotime('+6 months'));
-        $this->data['to2'] = date("F Y", strtotime('+11 months'));
-        $this->data['from3'] = date("F Y", strtotime('+12 months'));
-        $this->data['to3'] = date("F Y", strtotime('+17 months'));
-        $this->data['from4'] = date("F Y", strtotime('+18 months'));
-        $this->data['to4'] = date("F Y", strtotime('+23 months'));
-        $this->data['first'] = date("m") . "," . date("Y");
-        $this->data['second'] = date("m", strtotime('+6 months')) . "," . date("Y", strtotime('+6 months'));
-        $this->data['third'] = date("m", strtotime('+12 months')) . "," . date("Y", strtotime('+12 months'));
-        $this->data['fourth'] = date("m", strtotime('+18 months')) . "," . date("Y", strtotime('+18 months'));
-        // End Availability Calender settings variables
-        $this->data['tripadvisorinfo'] = tripAdvisorInfo($this->data['module']->tripadvisorid);
-        if (!empty($this->data['tripadvisorinfo']->rating)) {
-            $tripAdvisorReviews = $this->Pass_lib->tripAdvisorData($this->data['module']->tripadvisorid, $this->data['tripadvisorinfo']);
-            $this->data['reviews'] = $tripAdvisorReviews->reviews;
-        }
-        else {
-            $this->data['reviews'] = $this->Pass_lib->passReviews($this->data['module']->id);
-            $this->data['avgReviews'] = $this->Pass_lib->passReviewsAvg($this->data['module']->id);
-        }
-        $this->data['checkinMonth'] = strtoupper(date("F", convert_to_unix($this->Pass_lib->checkin)));
-        $this->data['checkinDay'] = date("d", convert_to_unix($this->Pass_lib->checkin));
-        $this->data['checkoutMonth'] = strtoupper(date("F", convert_to_unix($this->Pass_lib->checkout)));
-        $this->data['checkoutDay'] = date("d", convert_to_unix($this->Pass_lib->checkout));
-        // Split date for new date desing on pass single page
-        $checkin = explode("/", $this->Pass_lib->checkin);
-        $this->data['d1first'] = $checkin[0];
-        $this->data['d1second'] = $checkin[1];
-        $this->data['d1third'] = $checkin[2];
-        $checkout = explode("/", $this->Pass_lib->checkout);
-        $this->data['d2first'] = $checkout[0];
-        $this->data['d2second'] = $checkout[1];
-        $this->data['d2third'] = $checkout[2];
-        $this->data['checkin'] = $this->Pass_lib->checkin;
-        $this->data['checkout'] = $this->Pass_lib->checkout;
-        // end Split date for new date desing on pass single page
-        $this->lang->load("front", $this->data['lang_set']);
-        $datetime1 = new DateTime($this->data['checkin']);
-        $datetime2 = new DateTime($this->data['checkout']);
-        $interval = $datetime1->diff($datetime2)->format('%a');
-        $this->data['totalStay'] = $interval;
-        $this->data['modulelib']->stay = $this->data['totalStay'];
-        $this->data['adults'] = (empty($adults))?$this->Pass_lib->adults:$adults;
-        $this->data['child'] = (empty($childs))?(int)$this->Pass_lib->children:$childs;
-        $this->data['currencySign'] = $this->Pass_lib->currencysign;
-        $this->data['lowestPrice'] = $this->Pass_lib->bestPrice($this->data['module']->id);
-        $this->data['langurl'] = base_url() . "pass/{langid}/" . $this->data['module']->slug;
-        $this->setMetaData($this->data['module']->title, $this->data['module']->metadesc, $this->data['module']->keywords);
-        $this->data['city'] = $city;
-        $this->data['checkin'] = (!empty($searchform_checkin))?$searchform_checkin:$this->data['checkin'];
-        $this->data['checkin'] = str_replace('-','/',$this->data['checkin']);
-        $this->data['checkout'] = (!empty($searchform_checkout))?$searchform_checkout:$this->data['checkout'];
-        $this->data['checkout'] = str_replace('-','/',$this->data['checkout']);
-        $this->data['passname'] = $passname;
-        $this->data['city'] = $city;
+  public function detail()
+{
+      $id = $this->input->get('id');
+      if ($id) {
+        $this->load->library('currconverter');
+        $curr = $this->currconverter;
+        $detail = $this->Pass_model->get_pass_detail($id)[0];
+        $detail->ammount_text = $curr->code . ' ' . $curr->symbol . ' ' . $detail->ammount;
+        $this->data['pass'] = $detail;
+
         $this->theme->view('modules/pass/details', $this->data, $this);
       }
       else {
@@ -258,7 +162,6 @@ class Pass extends MX_Controller {
   function listing($page = 1)
 
   {
-    echo 'xxxx';die;
       // Pagination
 
       $this->load->library('pagination');
@@ -434,137 +337,22 @@ class Pass extends MX_Controller {
 
 
 
-  function search(...$args)
-
+  function search($name = null, $type = null, $category = null, $price = null)
   {
-      $this->data['loadMap'] = TRUE;
-      $country = "NULL";
+      
+      $search_params = [
+        'name'        => $this->input->get('name'),
+        'type'        => $this->input->get('type'),
+        'category_id' => $this->input->get('category'),
+        'ammount'     => $this->input->get('price')
+      ];
+      // $search_result = $this->Pass_model->get_search_result($search_params);
+      $search_result = $this->Pass_lib->show_pass($search_params);
 
-      $city = "NULL";
+      $this->data['module'] = $search_result['all_pass'];
 
-      $priceRange = 0;
-
-      $stars = 0;
-
-      $propertyTypes = "";
-
-      $amenities = "";
-
-      $this->load->model('Pass/Pass_model');
-
-      $fswitch = true;
-
-      if(count($args) == 6) {
-
-        list($country,$city,$checkin,$checkout,$adults,$childs) = $args;
-
-        $select2 = array(
-
-            "id" => $country.'/'.$city,
-
-            "text" => ucwords($city).', '.ucwords(str_replace('-',' ',$country)),
-
-            "type" => 'location'
-
-        );
-
-        $dataset = $this->Pass_model->searchByLocation($city);
-
-      } else if(count($args) == 5) {
-
-        // Deprecated
-
-        list($passname,$checkin,$checkout,$adults,$childs) = $args;
-
-        $select2 = array(
-
-            "id" => $passname,
-
-            "text" => ucwords(str_replace('-',' ',$passname)),
-
-            "type" => 'pass'
-
-        );
-
-        $dataset = $this->Pass_model->searchByHotelname($passname);
-
-      } else if(count($args) == 4) { // filters if user came from header menus
-
-          list($stars,$priceRange,$propertyTypes,$amenities) = $args;
-
-          $dataset = $this->Pass_model->getAllPassByFilter($args);
-
-          $this->data['uri'] = base_url('pass/search');
-
-          $fswitch = false;
-
-      } else {
-
-          list($country,$city,$checkin,$checkout,$adults,$childs,$stars,$priceRange,$propertyTypes,$amenities) = $args;
-
-          $dataset = $this->Pass_model->searchByFilters($args);
-
-      }
-
-      $this->session->set_userdata(array(
-
-          "pass_select2" => $select2,
-
-          "pass_checkin" => str_replace('-','/',$checkin),
-
-          "pass_checkout" => str_replace('-','/',$checkout),
-
-          "pass_adults" => $adults,
-
-          "pass_child" => $childs,
-
-          "custom_pass_checkin" => $checkin,
-
-          "custom_pass_checkout" => $checkout
-
-      ));
-
-      $_SESSION['search_pass_checkin'] = $checkin;
-      $_SESSION['search_pass_checkout'] = $checkout;
-
-      $this->data['module'] = $dataset;
-
-      $this->lang->load("front", $this->data['lang_set']);
-
-      $this->data['amenities'] = $this->Pass_lib->getHotelAmenities();
-
-      $this->data['moduleTypes'] = $this->Pass_lib->getHotelTypes();
-
-      $settings = $this->Settings_model->get_front_settings('pass');
-
-      $this->data['minprice'] = $this->Pass_lib->convertAmount($settings[0]->front_search_min_price);
-
-      $this->data['maxprice'] = $this->Pass_lib->convertAmount($settings[0]->front_search_max_price);
-
-      $this->data['currCode'] = $this->Pass_lib->currencycode;
-
-      $this->data['currSign'] = $this->Pass_lib->currencysign;
-
-      $this->data['langurl']  = base_url() . "pass/{langid}";
-
-      $this->data['country'] = $country;
-
-      $this->data['city'] = $city;
-
-      $this->data['priceRange'] = $priceRange;
-
-      $this->data['starsCount'] = $stars;
-
-      $this->data['fpropertyTypes'] = $propertyTypes;
-
-      $this->data['famenities'] = $amenities;
-
-      if($fswitch) {
-
-        $this->data['uri'] = base_url('pass/search/'.$country.'/'.$city.'/'.$checkin.'/'.$checkout.'/'.$adults.'/'.$childs);
-
-      }
-
+      $this->data['info'] = $search_result['paginationinfo'];
+      $this->data['pass_list'] = $search_result;
       $this->data['detailpage_uri'] = base_url('pass/detail/%s/%s/'.$checkin.'/'.$checkout.'/'.$adults.'/'.$childs);
 
       $this->setMetaData('Search Results', $country . " " . $city, $country . " " . $city);
@@ -771,105 +559,15 @@ class Pass extends MX_Controller {
 
   }
 
-    function book($passname)
+    function book()
     {
 
-        $this->load->model('Admin/Countries_model');
+      if($this->input->post()){
 
-        $this->data['allcountries'] = $this->Countries_model->get_all_countries();
-
-        $check = $this->Pass_model->pass_exists($passname);
-
-        $this->load->library("Paymentgateways");
-
-        $this->data['hideHeader'] = "1";
-
-
-        if ($check && !empty($passname)) {
-
-            $this->load->model('Admin/Payments_model');
-
-            $this->data['error'] = "";
-
-            $this->Pass_lib->set_passid($passname);
-
-            $passID = $this->Pass_lib->get_id();
-
-            $roomID = $this->input->get('roomid');
-            $rooms = $this->input->get('rooms');
-            $roomsCount = $this->input->get('roomscount');
-            $extrabeds = $this->input->get('extrabeds');
-
-            $this->data['rooms'] = array();
-            $this->data['module'] = array();
-            $this->data['subitemid'] = array();
-            $this->data['roomscount'] = array();
-            $this->data['bedscount'] = array();
-            $this->data['extrabedcharges'] = 0;
-            $this->load->library('currconverter');
-
-            foreach ($rooms as $index => $roomID) {
-                $bookInfo = $this->Pass_lib->getBookResultObject($passID, $roomID, $roomsCount[$roomID], $extrabeds[$roomID]);
-                array_push($this->data['module'], $bookInfo['pass']);
-                $this->data['module'] = $bookInfo['pass'];
-
-                $this->data['extraChkUrl'] = $bookInfo['pass']->extraChkUrl;
-
-                $room = $bookInfo['room'];
-
-                if ($room->price < 1 || $room->stay < 1) {
-
-                    $this->data['error'] = "error";
-
-                }
-
-                $this->data['module_adults'] += $bookInfo['pass']->adults;
-                $this->data['currSymbol'] = $room->currSymbol;
-                $this->data['currCode'] = $room->currCode;
-
-                // $taxAmount = $this->currconverter->removeComma($bookInfo['pass']->taxAmount);
-                // $this->data['taxAmount'] += $taxAmount;
-                // $depositAmount = $this->currconverter->removeComma($bookInfo['pass']->depositAmount);
-                // $this->data['depositAmount'] += $depositAmount;
-
-                $price = $this->currconverter->removeComma($room->price);
-                $this->data['price'] += $price;
-
-                array_push($this->data['rooms'], $room);
-                array_push($this->data['subitemid'], $roomID);
-                array_push($this->data['roomscount'], $roomsCount[$roomID]);
-                // array_push($this->data['bedscount'], $extrabeds[$roomID]);
-                $extrabedcharges = $this->currconverter->removeComma($room->extraBedCharges);
-                $this->data['extrabedcharges'] += $extrabedcharges;
-            }
-            $this->data['bedscount'] = json_encode($extrabeds);
-            $this->Pass_lib->setTax($this->data['price']);
-            $this->data['taxAmount'] = $this->currconverter->convertPrice($this->Pass_lib->taxamount);
-            $this->Pass_lib->setDeposit($this->data['price']);
-            $this->data['depositAmount'] = $this->currconverter->convertPrice($this->Pass_lib->deposit);
-            $this->load->library('Pass/Pass_lib');
-            $this->Pass_lib->setDeposit($this->data['price']);
-            $this->data['depositAmount'] = $this->Pass_lib->deposit;
-            $this->data['price'] += $this->Pass_lib->taxamount;
-
-            $this->load->model('Admin/Accounts_model');
-
-            $loggedin = $this->loggedin = $this->session->userdata('pt_logged_customer');
-
-            $this->lang->load("front", $this->data['lang_set']);
-
-            $this->data['profile'] = $this->Accounts_model->get_profile_details($loggedin);
-            $this->data['stay'] = pt_count_days($this->data['module']->checkin, $this->data['module']->checkout);
-
-            $this->setMetaData($this->data['module']->title, $this->data['module']->metadesc, $this->data['module']->keywords);
-            $this->theme->view('modules/pass/booking', $this->data, $this);
-
-        } else {
-
-            redirect("pass");
-
-        }
-
+      }else{
+        $this->data['pass_id'] = $this->input->get('pass_id');
+        $this->theme->view('modules/pass/booking', $this->data, $this);
+      }
     }
 
 
@@ -931,7 +629,7 @@ class Pass extends MX_Controller {
 
         $this->data['maxprice'] = $this->Pass_lib->convertAmount($settings[0]->front_search_max_price);
 
-        $allpass = $this->Pass_lib->showPassByLocation($result, $result->offset);
+        // $allpass = $this->Pass_lib->showPassByLocation($result, $result->offset);
 
         $this->data['moduleTypes'] = $this->Pass_lib->getHotelTypes();
 

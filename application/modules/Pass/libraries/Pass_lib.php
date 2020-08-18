@@ -340,7 +340,7 @@ $result = $this->db->get('pt_pass')->result();*/
 
   }
 
-  function show_pass($offset = null) {
+  function show_pass($params = null, $offset = null) {
 
     $totalSegments = $this->ci->uri->total_segments();
 
@@ -364,15 +364,10 @@ $result = $this->db->get('pt_pass')->result();*/
 
     }
 
-// $passlist = $this->passwithrooms();
-
-    $rh = $this->ci->Pass_model->list_pass_front();
-
-//	$data['all_pass'] = $this->ci->Pass_model->list_pass_front($perpage, $offset, $orderby);
-
-    $pass = $this->ci->Pass_model->list_pass_front($perpage, $offset, $orderby);
-
+    $rh = $this->ci->Pass_model->list_pass_front($params);
+    $pass = $this->ci->Pass_model->list_pass_front($params, $perpage, $offset, $orderby);
     $data['all_pass'] = $this->getResultObject($pass['all']);
+    // $data['all_pass'] = $pass['all'];
 
     $data['paginationinfo'] = array('base' => 'pass/listing', 'totalrows' => $rh['rows'], 'perpage' => $perpage,'urisegment' => $totalSegments);
 
@@ -708,123 +703,14 @@ $result = $this->db->get('pt_pass')->result();*/
     $this->db->where('id', $this->passid);
 
     $details = $this->db->get('pt_pass')->result();
-    echo '<pre>';
-    print_r($this->passid);
-    echo '</pre>';die;
+
     $detailResults = (object) array('id' => $details[0]->pass_id, 'title' => $title, 'slug' => $slug, 'bookingSlug' => $bookingSlug, 'thumbnail' => $thumbnail, 'stars' => pt_create_stars($stars), 'starsCount' => $stars, 'location' => $city->city, 'desc' => $desc, 'amenities' => $amenities, 'latitude' => $latitude, 'longitude' => $longitude, 'sliderImages' => $sliderImages, 'relatedItems' => $relatedPass, 'paymentOptions' => $paymentOptions, 'defcheckin' => $defcheckin, 'defcheckout' => $defcheckout, 'metadesc' => $metadesc, 'keywords' => $keywords, 'policy' => $policy, 'tripadvisorid' => $tripadvisorid, 'mapAddress' => $details[0]->pass_map_city);
 
     return $detailResults;
 
   }
 
-  function pass_short_details($id = null) {
-
-    if (empty($id)) {
-
-      $id = $this->passid;
-
-    }
-
-    $this->db->select('pass_id,pass_phone,pass_email,pass_website,pass_title,pass_desc,pass_policy,tripadvisor_id,pass_city,pass_basic_price,pass_basic_discount,pass_is_featured,
-
-
-
-   pass_trusted,pass_best_price,pass_stars,pass_slug,pass_refundable,pass_ratings,pass_arrivalpay,thumbnail_image,pass_amenities,pass_latitude,pass_longitude,pass_meta_keywords,pass_meta_desc,pass_created_at');
-
-    $this->db->where('pass_id', $id);
-
-    $details = $this->db->get('pt_pass')->result();
-
-    $this->tripadvisorid = $details[0]->tripadvisor_id;
-
-    $this->title = $this->get_title($details[0]->pass_title);
-
-    $this->stars = $details[0]->pass_stars;
-
-    $this->desc = $this->get_description($details[0]->pass_desc);
-
-    $this->policy = $this->get_policy($details[0]->pass_policy, NULL);
-
-    $this->keywords = $this->get_keywords($details[0]->pass_meta_keywords, $details[0]->pass_id);
-
-    $this->metadesc = $this->get_metaDesc($details[0]->pass_meta_desc, $details[0]->pass_id);
-
-    $this->createdAt = $details[0]->pass_created_at;
-
-    $passAmenities = explode(",", $details[0]->pass_amenities);
-
-    foreach ($passAmenities as $hm) {
-
-      $amenities[] = $this->amenitiesTranslation($hm);
-
-    }
-
-    $this->amenities = $amenities;
-
-    $this->thumbnail = PT_HOTELS_SLIDER_THUMBS . $details[0]->thumbnail_image;
-
-    $this->isspecial = pt_is_special('pass', $this->passid);
-
-//get country and city name for url slug
-
-    $locationInfoUrl = pt_LocationsInfo($details[0]->pass_city);
-
-    $countryName = url_title($locationInfoUrl->country, 'dash', true);
-
-    $cityName = url_title($locationInfoUrl->city, 'dash', true);
-
-    $this->slug = $countryName . '/' . $cityName . '/' . $details[0]->pass_slug . $this->checkinout;
-
-    $this->bookingSlug = $details[0]->pass_slug . $this->checkinout;
-
-//		$pricing = $this->pass_price($details[0]->pass_basic_price, $details[0]->pass_basic_discount);
-
-//			$this->basicprice = $pricing['basic'];
-
-//			$this->discountprice = $pricing['discount'];
-
-    $city = pt_LocationsInfo($details[0]->pass_city, $this->lang);
-
-    $this->location = $city->city;
-
-//	$this->country = $location[0]->short_name;
-
-    $this->isfeatured = $this->is_featured();
-
-    $this->trusted = $details[0]->pass_trusted;
-
-//	$this->bestprice = $details[0]->pass_best_price;
-
-    $this->refundable = $details[0]->pass_refundable;
-
-    $this->arrivalpay = $details[0]->pass_arrivalpay;
-
-    $this->website = $details[0]->pass_website;
-
-    $this->phone = $details[0]->pass_phone;
-
-    $this->email = $details[0]->pass_email;
-
-    $taxcom = $this->pass_tax_commision();
-
-    $this->comm_type = $taxcom['commtype'];
-
-    $this->comm_value = $taxcom['commval'];
-
-    $this->tax_type = $taxcom['taxtype'];
-
-    $this->tax_value = $taxcom['taxval'];
-
-    $this->latitude = $details[0]->pass_latitude;
-
-    $this->longitude = $details[0]->pass_longitude;
-
-    $this->sliderImages = $this->passImages(NULL);
-
-    return $details;
-
-  }
-
+ 
   function get_title($deftitle, $passid = null) {
 
     if (empty($passid)) {
@@ -1105,10 +991,6 @@ $result = $this->db->get('pt_pass')->result();*/
 
     $this->db->where('sett_status', 'Yes');
 
-    $re = $this->db->get('pt_pass_types_settings')->result();
-
-    $result->icon = PT_HOTELS_ICONS . $re[0]->sett_img;
-
     if ($language == $this->langdef) {
 
       $result->name = $re[0]->sett_name;
@@ -1122,20 +1004,6 @@ $result = $this->db->get('pt_pass')->result();*/
       $this->db->where('sett_id', $id);
 
       $this->db->where('trans_lang', $language);
-
-      $r = $this->db->get('pt_pass_types_settings_translation')->result();
-
-      if (empty($r[0]->trans_name)) {
-
-        $result->name = $re[0]->sett_name;
-
-      }
-
-      else {
-
-        $result->name = $r[0]->trans_name;
-
-      }
 
     }
 
@@ -1341,7 +1209,7 @@ $result = $this->db->get('pt_pass')->result();*/
 
       $this->db->select_avg('review_comfort', 'comfort');
 
-      $this->db->select_avg('review_location', 'location');
+      // $this->db->select_avg('review_location', 'location');
 
       $this->db->where('review_status', 'Yes');
 
@@ -1355,7 +1223,7 @@ $result = $this->db->get('pt_pass')->result();*/
 
       $comfort = round($res[0]->comfort, 1);
 
-      $location = round($res[0]->location, 1);
+      // $location = round($res[0]->location, 1);
 
       $facilities = round($res[0]->facilities, 1);
 
@@ -1367,37 +1235,37 @@ $result = $this->db->get('pt_pass')->result();*/
 
     }
 
-    $result = (object) array('clean' => $clean, 'comfort' => $comfort, 'location' => $location, 'facilities' => $facilities, 'staff' => $staff, 'totalReviews' => $totalreviews, 'overall' => $overall);
+    $result = (object) array('clean' => $clean, 'comfort' => $comfort,'facilities' => $facilities, 'staff' => $staff, 'totalReviews' => $totalreviews, 'overall' => $overall);
 
     return $result;
 
   }
 
-  function getLocationsList() {
+  // function getLocationsList() {
 
-    $resultLocations = array();
+  //   $resultLocations = array();
 
-    $this->db->select('pass_city');
+  //   $this->db->select('pass_city');
 
-    $this->db->group_by('pass_city');
+  //   $this->db->group_by('pass_city');
 
-    $locations = $this->db->get('pt_pass')->result();
+  //   $locations = $this->db->get('pt_pass')->result();
 
-    foreach ($locations as $loc) {
+  //   foreach ($locations as $loc) {
 
-      $locInfo = pt_LocationsInfo($loc->pass_city, $this->lang);
+  //     $locInfo = pt_LocationsInfo($loc->pass_city, $this->lang);
 
-      if (!empty($locInfo->city)) {
+  //     if (!empty($locInfo->city)) {
 
-        $resultLocations[] = (object) array('id' => $locInfo->id, 'name' => $locInfo->city);
+  //       $resultLocations[] = (object) array('id' => $locInfo->id, 'name' => $locInfo->city);
 
-      }
+  //     }
 
-    }
+  //   }
 
-    return $resultLocations;
+  //   return $resultLocations;
 
-  }
+  // }
 
   function translated_data($lang) {
 
@@ -2102,65 +1970,30 @@ $result = $this->db->get('pt_pass')->result();*/
 //make a result object all data of pass array
 
   function getResultObject($pass) {
-
     $this->ci->load->library('currconverter');
 
     $result = array();
 
     $curr = $this->ci->currconverter;
 
-    foreach ($pass as $h) {
-
-      $this->set_id($h->pass_id);
-
-      $this->pass_short_details();
-
-      $bestprice = $this->bestPrice();
-
-      $price = $bestprice;
-
-      $tripAdvisorID = $this->tripadvisorid;
-
-      $tripStatus = $this->tripAdvisorStatus();
-
-      if ($tripStatus && !empty($tripAdvisorID)) {
-
-        $avgReviews = $this->tripAdvisorData($tripAdvisorID);
-
-        if (empty($avgReviews->overall)) {
-
-          $avgReviews = $this->passReviewsAvg();
-
-        }
-
-      }
-
-      else {
-
-        $avgReviews = $this->passReviewsAvg(NULL);
-
-      }
-
-      $priceRange = $this->priceRange(@$_GET['price']);
-
-      if (!empty($_GET['price'])) {
-
-        if (($price >= $priceRange->minprice) && ($price <= $priceRange->maxprice)) {
-
-          $result[] = (object) array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'desc' => strip_tags($this->desc), 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'amenities' => $this->amenities, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
-
-        }
-
-      }
-
-      else {
-
-        $result[] = (object) array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'desc' => strip_tags($this->desc), 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'amenities' => $this->amenities, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
-
-      }
-
+    foreach ($pass as $item) {
+      $result[] = (object) array(
+        'id' => $item->id, 
+        'name' => $item->name, 
+        'url' => base_url() . 'pass/detail?id=' . $item->id, 
+        'status' =>$item->status, 
+        'sales_date' => $item->sales_date, 
+        'type' => ($item->type) ? 'InterNational' : 'National', 
+        'category_id' => $item->category_id, 
+        'category_name' => $item->category_name, 
+        'ammount' => $item->ammount, 
+        'note' => $item->note, 
+        'html_note' => $item->html_note, 
+        'currCode'  => $curr->code,
+        'currSymbol' => $curr->symbol, 
+      );
     }
-
+    
     $this->currencycode = $curr->code;
 
     $this->currencysign = $curr->symbol;

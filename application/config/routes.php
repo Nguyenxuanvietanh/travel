@@ -118,3 +118,5 @@ $route['admin/viator(.*)'] = 'viator/viatorback$1';
 // Pass
 $route['admin/pass/orders'] = 'pass/passback/orders';
 $route['pass/invoice'] = 'travelport_flight/invoice/index';
+$route['pass/detail/(.*)'] = 'pass/pass/detail';
+$route['pass/book/(.*)'] = 'pass/pass/book';

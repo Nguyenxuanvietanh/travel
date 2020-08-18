@@ -949,6 +949,14 @@ class Pass_model extends CI_Model {
 
 		}
 
+		function get_pass_detail($id){
+			$this->db->select('pt_pass.*, pt_pass_categories.name as category_name');
+			$this->db->join('pt_pass_categories', 'pt_pass.category_id = pt_pass_categories.id', 'left');
+			$this->db->where('pt_pass.id', $id);
+
+			return $this->db->get('pt_pass')->result();
+		}
+
 
 
 // get data of single pass by id for maps
@@ -1513,7 +1521,7 @@ $this->db->join('pt_pass_images','pt_pass.pass_id = pt_pass_images.himg_pass_id'
 
 // List all pass on front listings page
 
-		function list_pass_front($perpage = null, $offset = null, $orderby = null) {
+		function list_pass_front($params, $perpage = null, $offset = null, $orderby = null) {
 
 				$data = array();
 
@@ -1525,78 +1533,19 @@ $this->db->join('pt_pass_images','pt_pass.pass_id = pt_pass_images.himg_pass_id'
 
 				}
 
-				$this->db->select('pt_pass.pass_id,pt_pass.pass_stars,pt_pass.pass_title,pt_pass.pass_order,pt_pass.pass_order,pt_rooms.room_basic_price as price');
+				$this->db->select('pt_pass.*, pt_pass_categories.name as category_name');
+                $this->db->join('pt_pass_categories', 'pt_pass.category_id = pt_pass_categories.id', 'left');
+				$this->db->where('pt_pass.status', 'Yes');
 
-				if ($orderby == "za") {
-
-						$this->db->order_by('pt_pass.pass_title', 'desc');
-
+				foreach ($params as $key => $value) {
+					if($value && $value != ''){
+						$this->db->where($key, $value);
+					}
 				}
-
-				elseif ($orderby == "az") {
-
-						$this->db->order_by('pt_pass.pass_title', 'asc');
-
-				}
-
-				elseif ($orderby == "oldf") {
-
-						$this->db->order_by('pt_pass.pass_id', 'asc');
-
-				}
-
-				elseif ($orderby == "newf") {
-
-						$this->db->order_by('pt_pass.pass_id', 'desc');
-
-				}
-
-				elseif ($orderby == "ol") {
-
-						$this->db->order_by('pt_pass.pass_order', 'asc');
-
-				}
-
-				elseif ($orderby == "p_lh") {
-
-						$this->db->order_by('pt_rooms.room_basic_price', 'asc');
-
-				}
-
-				elseif ($orderby == "p_hl") {
-
-						$this->db->order_by('pt_rooms.room_basic_price', 'desc');
-
-				}
-
-				elseif ($orderby == "s_lh") {
-
-						$this->db->order_by('pt_pass.pass_stars', 'asc');
-
-				}
-
-				elseif ($orderby == "s_hl") {
-
-						$this->db->order_by('pt_pass.pass_stars', 'desc');
-
-				}
-
-               // $this->db->where_in('pt_pass.pass_id', $passlist);
-
-				//$this->db->select_avg('pt_reviews.review_overall', 'overall');
-
-				$this->db->group_by('pt_pass.pass_id');
-
-                $this->db->join('pt_rooms', 'pt_pass.pass_id = pt_rooms.room_pass', 'left');
-
-			    //$this->db->join('pt_reviews', 'pt_pass.pass_id = pt_reviews.review_itemid', 'left');
-
-				$this->db->where('pt_pass.pass_status', 'Yes');
 
 				$query = $this->db->get('pt_pass', $perpage, $offset);
 
 				$data['all'] = $query->result();
-
 				$data['rows'] = $query->num_rows();
 
 				return $data;
@@ -2127,7 +2076,16 @@ $this->db->or_where('MATCH (pt_pass.pass_city) AGAINST ("'. $searchtxt .'")', NU
 
 
 
-
+		function get_search_result($params){
+			$this->db->select('*');
+			foreach ($params as $key => $value) {
+				if($value && $value != ''){
+					$this->db->where($key, $value);
+				}
+			}
+			
+			return $this->db->get('pt_pass')->result();
+		}
 
 
 
