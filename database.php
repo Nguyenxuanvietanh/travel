@@ -5,9 +5,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => "db",
+	'hostname' => "localhost",
 	'username' => "root",
-	'password' => "123456",
+	'password' => "",
 	'database' => "phptravel",
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

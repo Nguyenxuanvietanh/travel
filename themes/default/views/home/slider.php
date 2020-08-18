@@ -46,18 +46,18 @@
                   <?php include 'menu.php'; ?>
                 </ul>
                 <div class="tab-content shad RTL_shad search-form" style="border-radius: 0px 25px 25px 0">
+                    <?php  if(isModuleActive('pass')){ ?>
+                        <?php $module = 'pass'; ?>
+                        <!-- Hotels  -->
+                        <div role="tabpanel" class="tab-pane fade <?=($active_menu == 'pass')?'active in':''?>" id="pass" aria-labelledby="home-tab">
+                            <?php echo searchForm('pass',$data); ?>
+                        </div>
+                        <!-- Hotels  -->
+                    <?php } ?>
                     <?php  if(isModuleActive('hotels')){ ?>
                     <?php $module = 'hotels'; ?>
                     <!-- Hotels  -->
                     <div role="tabpanel" class="tab-pane fade <?=($active_menu == 'hotels')?'active in':''?>" id="hotels" aria-labelledby="home-tab">
-                        <?php echo searchForm('hotels'); ?>
-                    </div>
-                    <!-- Hotels  -->
-                    <?php } ?>
-                    <?php  if(isModuleActive('pass')){ ?>
-                    <?php $module = 'pass'; ?>
-                    <!-- Hotels  -->
-                    <div role="tabpanel" class="tab-pane fade <?=($active_menu == 'pass')?'active in':''?>" id="pass" aria-labelledby="home-tab">
                         <?php echo searchForm('hotels'); ?>
                     </div>
                     <!-- Hotels  -->
