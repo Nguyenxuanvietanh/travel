@@ -1539,7 +1539,11 @@ $this->db->join('pt_pass_images','pt_pass.pass_id = pt_pass_images.himg_pass_id'
 
 				foreach ($params as $key => $value) {
 					if($value && $value != ''){
-						$this->db->where($key, $value);
+						if($key == 'name'){
+							$this->db->like('pt_pass.' . $key, $value);
+						}else{
+							$this->db->where('pt_pass.' . $key, $value);
+						}
 					}
 				}
 

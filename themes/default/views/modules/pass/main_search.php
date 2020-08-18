@@ -65,7 +65,7 @@
             // let p_2 = data['pass_sales_date']; (p_2) ? p_2.replace(/\/+/g, '-') : "null";
             let p_3 = data['ammount'];p_3 = (p_3) ? p_3 : 0;
             let p_4 = data['type'];p_4 = (p_4) ? p_4 : 0;
-            let p_5 = data['category_id']p_5 = (p_5) ? p_5 : "null";
+            let p_5 = data['category_id'];p_5 = (p_5) ? p_5 : "null";
             let url = "";
             if(p_1 !== "null") { url += "/"+p_1; }
             return url+"/"+p_1+"/"+p_3+"/"+p_4+"/"+p_5;
