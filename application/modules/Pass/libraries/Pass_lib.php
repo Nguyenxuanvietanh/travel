@@ -1,781 +1,770 @@
 <?php
 
-class Pass_lib {
+class Pass_lib
+{
 
-/**
+    /**
+     * Protected variables
+     */
 
-* Protected variables
+    protected $ci = NULL; //codeigniter instance
 
-*/
+    protected $db; //database instatnce instance
 
-  protected $ci = NULL; //codeigniter instance
+    public $passid;
 
-  protected $db; //database instatnce instance
+    public $appSettings;
 
-  public $passid;
+    public $tripadvisorid;
 
-  public $appSettings;
+    public $title;
 
-  public $tripadvisorid;
+    public $slug;
 
-  public $title;
+    public $bookingSlug;
 
-  public $slug;
+    public $stars;
 
-  public $bookingSlug;
+    public $basicprice;
 
-  public $stars;
+    public $discountprice;
 
-  public $basicprice;
+    public $desc;
 
-  public $discountprice;
+    public $location;
 
-  public $desc;
+    public $country;
 
-  public $location;
+    public $policy;
 
-  public $country;
+    public $roomid;
 
-  public $policy;
+    public $roomtitle;
 
-  public $roomid;
+    public $roomdesc;
 
-  public $roomtitle;
+    public $roomprice;
 
-  public $roomdesc;
+    public $roompernight;
 
-  public $roomprice;
+    public $thumbnail;
 
-  public $roompernight;
+    public $isspecial;
 
-  public $thumbnail;
+    public $currencysign;
 
-  public $isspecial;
+    public $currencycode;
 
-  public $currencysign;
+    public $isfeatured;
 
-  public $currencycode;
+    public $trusted;
 
-  public $isfeatured;
+    public $bestprice;
 
-  public $trusted;
+    public $refundable;
 
-  public $bestprice;
+    public $arrivalpay;
 
-  public $refundable;
+    public $comm_type;
 
-  public $arrivalpay;
+    public $comm_value;
 
-  public $comm_type;
+    public $tax_type;
 
-  public $comm_value;
+    public $tax_value;
 
-  public $tax_type;
+    public $deposit = 0;
 
-  public $tax_value;
+    public $taxamount = 0;
 
-  public $deposit = 0;
+    public $bookingtotal = 0;
 
-  public $taxamount = 0;
+    public $phone;
 
-  public $bookingtotal = 0;
+    public $email;
 
-  public $phone;
+    public $website;
 
-  public $email;
+    public $checkin;
 
-  public $website;
+    public $checkout;
 
-  public $checkin;
+    public $defcheckin;
 
-  public $checkout;
+    public $defcheckout;
 
-  public $defcheckin;
+    public $adults;
 
-  public $defcheckout;
+    public $children;
 
-  public $adults;
+    public $stay = 1;
 
-  public $children;
+    public $roomscount = 1;
 
-  public $stay = 1;
+    public $stayerror = "";
 
-  public $roomscount = 1;
+    public $roomscounterror = "";
 
-  public $stayerror = "";
+    public $checkinout = "";
 
-  public $roomscounterror = "";
+    public $langdef;
 
-  public $checkinout = "";
+    public $lowestprice;
 
-  public $langdef;
+    public $roomsavailable = false;
 
-  public $lowestprice;
+    public $amenities;
 
-  public $roomsavailable = false;
+    public $paymentOptions;
 
-  public $amenities;
+    public $sliderImages;
 
-  public $paymentOptions;
+    public $latitude;
 
-  public $sliderImages;
+    public $logitude;
 
-  public $latitude;
+    public $relatedPass;
 
-  public $logitude;
+    public $selectedLocation;
 
-  public $relatedPass;
+    public $keywords;
 
-  public $selectedLocation;
+    public $metadesc;
 
-  public $keywords;
+    public $createdAt;
 
-  public $metadesc;
+    protected $lang;
 
-  public $createdAt;
-
-  protected $lang;
-
-  function __construct() {
+    function __construct()
+    {
 
 //get the CI instance
 
-    $this->ci = & get_instance();
+        $this->ci = &get_instance();
 
-    $this->db = $this->ci->db;
+        $this->db = $this->ci->db;
 
-    $this->appSettings = $this->ci->Settings_model->get_settings_data();
+        $this->appSettings = $this->ci->Settings_model->get_settings_data();
 
-    $this->ci->load->model('Pass/Pass_model');
+        $this->ci->load->model('Pass/Pass_model');
 
-    $this->currencysign = $this->appSettings[0]->currency_sign;
+        $this->currencysign = $this->appSettings[0]->currency_sign;
 
-    $this->currencycode = $this->appSettings[0]->currency_code;
+        $this->currencycode = $this->appSettings[0]->currency_code;
 
-    $this->checkin = $this->ci->input->get('checkin');
+        $this->checkin = $this->ci->input->get('checkin');
 
-    $this->checkout = $this->ci->input->get('checkout');
+        $this->checkout = $this->ci->input->get('checkout');
 
-    $loc = $this->ci->input->get('searching');
+        $loc = $this->ci->input->get('searching');
 
-    $this->children = 0;
+        $this->children = 0;
 
-    $adultss = $this->ci->input->get('adults');
+        $adultss = $this->ci->input->get('adults');
 
-    if (empty($adultss)) {
+        if (empty($adultss)) {
 
-      $this->adults = 2;
+            $this->adults = 2;
 
-    }
+        } else {
 
-    else {
+            $this->adults = $this->ci->input->get('adults');
 
-      $this->adults = $this->ci->input->get('adults');
+        }
 
-    }
+        $childd = $this->ci->input->get('child');
 
-    $childd = $this->ci->input->get('child');
+        if (empty($childd)) {
 
-    if (empty($childd)) {
+            $this->children = 0;
 
-      $this->children = 0;
+        } else {
 
-    }
+            $this->children = $this->ci->input->get('child');
 
-    else {
+        }
 
-      $this->children = $this->ci->input->get('child');
+        $rcc = $this->ci->input->get('roomscount');
 
-    }
+        if (empty($rcc)) {
 
-    $rcc = $this->ci->input->get('roomscount');
+            $this->roomscount = 1;
 
-    if (empty($rcc)) {
+        } else {
 
-      $this->roomscount = 1;
+            $this->roomscount = $this->ci->input->get('roomscount');
 
-    }
+        }
 
-    else {
+        $this->stay = pt_count_days($this->checkin, $this->checkout);
 
-      $this->roomscount = $this->ci->input->get('roomscount');
+        if (empty($this->checkin) || empty($this->checkout)) {
 
-    }
+            $this->stay = 1;
 
-    $this->stay = pt_count_days($this->checkin, $this->checkout);
+            $this->checkin = date($this->appSettings[0]->date_f, strtotime('+' . CHECKIN_SPAN . ' day', time()));
 
-    if (empty($this->checkin) || empty($this->checkout)) {
+            $this->checkout = date($this->appSettings[0]->date_f, strtotime('+' . CHECKOUT_SPAN . ' day', time()));
 
-      $this->stay = 1;
+        }
 
-      $this->checkin = date($this->appSettings[0]->date_f, strtotime('+' . CHECKIN_SPAN . ' day', time()));
+        $unixcheckin = convert_to_unix($this->checkin);
 
-      $this->checkout = date($this->appSettings[0]->date_f, strtotime('+' . CHECKOUT_SPAN . ' day', time()));
+        $unixcheckout = convert_to_unix($this->checkout);
 
-    }
+        $current = strtotime(date('m/d/Y'));
 
-    $unixcheckin = convert_to_unix($this->checkin);
-
-    $unixcheckout = convert_to_unix($this->checkout);
-
-    $current = strtotime(date('m/d/Y'));
-
-    if (empty($this->checkin) || empty($this->checkout)) {
+        if (empty($this->checkin) || empty($this->checkout)) {
 
 //	$this->showprice = false;
 
-    }
+        } elseif ($unixcheckin < $current || $unixcheckout < $current || $unixcheckin > $unixcheckout) {
 
-    elseif ($unixcheckin < $current || $unixcheckout < $current || $unixcheckin > $unixcheckout) {
+            $this->stayerror = "1";
 
-      $this->stayerror = "1";
+        } else {
 
-    }
+            $getVariables = $this->ci->input->get();
 
-    else {
+            if (!empty($getVariables)) {
 
-      $getVariables = $this->ci->input->get();
+                $this->checkinout = "?&checkin=" . $this->checkin . "&checkout=" . $this->checkout . "&adults=" . $this->adults . "&child=" . $this->children;
 
-      if (!empty($getVariables)) {
+            }
 
-        $this->checkinout = "?&checkin=" . $this->checkin . "&checkout=" . $this->checkout . "&adults=" . $this->adults . "&child=" . $this->children;
+        }
 
-      }
+        if (!empty($loc)) {
 
-    }
+            $this->selectedLocation = $loc;
 
-    if (!empty($loc)) {
+        } else {
 
-      $this->selectedLocation = $loc;
+            $this->selectedLocation = "";
 
-    }
+        }
 
-    else {
+        $this->set_lang($this->ci->session->userdata('set_lang'));
 
-      $this->selectedLocation = "";
-
-    }
-
-    $this->set_lang($this->ci->session->userdata('set_lang'));
-
-    $this->langdef = DEFLANG;
-
-  }
-
-  function set_passid($passlug) {
-
-    $this->db->select('id');
-
-    $this->db->where('name', $passlug);
-
-    $r = $this->db->get('pt_pass')->result();
-
-    $this->passid = $r[0]->pass_id;
-
-  }
-
-  function set_lang($lang) {
-
-    if (empty($lang)) {
-
-      $defaultlang = pt_get_default_language();
-
-      $this->lang = $defaultlang;
+        $this->langdef = DEFLANG;
 
     }
 
-    else {
+    function set_passid($passlug)
+    {
 
-      $this->lang = $lang;
+        $this->db->select('id');
+
+        $this->db->where('name', $passlug);
+
+        $r = $this->db->get('pt_pass')->result();
+
+        $this->passid = $r[0]->pass_id;
 
     }
 
-  }
+    function set_lang($lang)
+    {
+
+        if (empty($lang)) {
+
+            $defaultlang = pt_get_default_language();
+
+            $this->lang = $defaultlang;
+
+        } else {
+
+            $this->lang = $lang;
+
+        }
+
+    }
 
 //set pass id by id
 
-  function set_id($id) {
+    function set_id($id)
+    {
 
-    $this->passid = $id;
+        $this->passid = $id;
 
-  }
+    }
 
-  function get_id() {
+    function get_id()
+    {
 
-    return $this->passid;
+        return $this->passid;
 
-  }
+    }
 
-  function settings() {
+    function settings()
+    {
 
-    return $this->ci->Settings_model->get_front_settings('pass');
+        return $this->ci->Settings_model->get_front_settings('pass');
 
-  }
+    }
 
-  function wishListInfo($id) {
+    function wishListInfo($id)
+    {
 
-/* $this->db->select('pass_title,pass_slug,thumbnail_image,pass_city,pass_stars');
+        /* $this->db->select('pass_title,pass_slug,thumbnail_image,pass_city,pass_stars');
 
-$this->db->where('pass_id',$id);
+        $this->db->where('pass_id',$id);
 
-$result = $this->db->get('pt_pass')->result();*/
+        $result = $this->db->get('pt_pass')->result();*/
 
-    $this->pass_short_details($id);
+        $this->pass_short_details($id);
 
-    $title = $this->title;
+        $title = $this->title;
 
-    $slug = base_url() . 'pass/' . $this->slug;
+        $slug = base_url() . 'pass/' . $this->slug;
 
-    $thumbnail = $this->thumbnail;
+        $thumbnail = $this->thumbnail;
 
-    $location = $this->location;
+        $location = $this->location;
 
 //pt_LocationsInfo($result[0]->pass_city, $this->lang);
 
-    $stars = pt_create_stars($this->stars);
+        $stars = pt_create_stars($this->stars);
 
-    $res = array("title" => $title, "slug" => $slug, "thumbnail" => $thumbnail, "location" => $location->city, "stars" => $stars);
+        $res = array("title" => $title, "slug" => $slug, "thumbnail" => $thumbnail, "location" => $location->city, "stars" => $stars);
 
-    return $res;
-
-  }
-
-  function show_pass($offset = null) {
-
-    $totalSegments = $this->ci->uri->total_segments();
-
-    $data = array();
-
-    $settings = $this->settings();
-
-    $sortby = $this->ci->input->get('sortby');
-
-    $perpage = $settings[0]->front_listings;
-
-    if (!empty($sortby)) {
-
-      $orderby = $sortby;
+        return $res;
 
     }
 
-    else {
+    function show_pass($offset = null)
+    {
 
-      $orderby = $settings[0]->front_listings_order;
+        $totalSegments = $this->ci->uri->total_segments();
 
-    }
+        $data = array();
+
+        $settings = $this->settings();
+
+        $sortby = $this->ci->input->get('sortby');
+
+        $perpage = $settings[0]->front_listings;
+
+        if (!empty($sortby)) {
+
+            $orderby = $sortby;
+
+        } else {
+
+            $orderby = $settings[0]->front_listings_order;
+
+        }
 
 // $passlist = $this->passwithrooms();
 
-    $rh = $this->ci->Pass_model->list_pass_front();
+        $rh = $this->ci->Pass_model->list_pass_front();
 
 //	$data['all_pass'] = $this->ci->Pass_model->list_pass_front($perpage, $offset, $orderby);
 
-    $pass = $this->ci->Pass_model->list_pass_front($perpage, $offset, $orderby);
+        $pass = $this->ci->Pass_model->list_pass_front($perpage, $offset, $orderby);
 
-    $data['all_pass'] = $this->getResultObject($pass['all']);
+        $data['all_pass'] = $this->getResultObject($pass['all']);
 
-    $data['paginationinfo'] = array('base' => 'pass/listing', 'totalrows' => $rh['rows'], 'perpage' => $perpage,'urisegment' => $totalSegments);
+        $data['paginationinfo'] = array('base' => 'pass/listing', 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => $totalSegments);
 
-    return $data;
-
-  }
-
-  function showPassByLocation($locs, $offset = null) {
-
-    $data = array();
-
-    $settings = $this->settings();
-
-    $sortby = $this->ci->input->get('sortby');
-
-    $perpage = $settings[0]->front_listings;
-
-    if (!empty($sortby)) {
-
-      $orderby = $sortby;
+        return $data;
 
     }
 
-    else {
+    function showPassByLocation($locs, $offset = null)
+    {
 
-      $orderby = $settings[0]->front_listings_order;
+        $data = array();
 
-    }
+        $settings = $this->settings();
+
+        $sortby = $this->ci->input->get('sortby');
+
+        $perpage = $settings[0]->front_listings;
+
+        if (!empty($sortby)) {
+
+            $orderby = $sortby;
+
+        } else {
+
+            $orderby = $settings[0]->front_listings_order;
+
+        }
 
 // $passlist = $this->passwithrooms();
 
-    $rh = $this->ci->Pass_model->listPassByLocation($locs->locations);
+        $rh = $this->ci->Pass_model->listPassByLocation($locs->locations);
 
 //	$data['all_pass'] = $this->ci->Pass_model->list_pass_front($perpage, $offset, $orderby);
 
-    $pass = $this->ci->Pass_model->listPassByLocation($locs->locations, $perpage, $offset, $orderby);
+        $pass = $this->ci->Pass_model->listPassByLocation($locs->locations, $perpage, $offset, $orderby);
 
-    $data['all_pass'] = $this->getResultObject($pass['all']);
+        $data['all_pass'] = $this->getResultObject($pass['all']);
 
-    $data['paginationinfo'] = array('base' => 'pass/' . $locs->urlBase, 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => $locs->uriSegment);
+        $data['paginationinfo'] = array('base' => 'pass/' . $locs->urlBase, 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => $locs->uriSegment);
 
-    return $data;
-
-  }
-
-  function search_pass($offset = null) {
-
-    $data = array();
-
-    $settings = $this->settings();
-
-    $sortby = $this->ci->input->get('sortby');
-
-    $perpage = $settings[0]->front_search;
-
-    if (!empty($sortby)) {
-
-      $orderby = $sortby;
+        return $data;
 
     }
 
-    else {
+    function search_pass($offset = null)
+    {
 
-      $orderby = $settings[0]->front_search_order;
+        $data = array();
 
-    }
+        $settings = $this->settings();
+
+        $sortby = $this->ci->input->get('sortby');
+
+        $perpage = $settings[0]->front_search;
+
+        if (!empty($sortby)) {
+
+            $orderby = $sortby;
+
+        } else {
+
+            $orderby = $settings[0]->front_search_order;
+
+        }
 
 // $passlist = $this->passwithrooms();
 
-    $rh = $this->ci->Pass_model->search_pass_front('', '', '', '', '');
+        $rh = $this->ci->Pass_model->search_pass_front('', '', '', '', '');
 
-    $pass = $this->ci->Pass_model->search_pass_front($perpage, $offset, $orderby);
+        $pass = $this->ci->Pass_model->search_pass_front($perpage, $offset, $orderby);
 
-    $data['all'] = $this->getResultObject($pass['all']);
+        $data['all'] = $this->getResultObject($pass['all']);
 
-    $data['paginationinfo'] = array('base' => 'pass/search', 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => 3);
+        $data['paginationinfo'] = array('base' => 'pass/search', 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => 3);
 
-    return $data;
-
-  }
-
-  function search_pass_by_text($cityid, $offset = null, $checkin = null, $checkout = null) {
-
-    $data = array();
-
-    $settings = $this->settings();
-
-    $sortby = $this->ci->input->get('sortby');
-
-    $perpage = $settings[0]->front_search;
-
-    if (!empty($sortby)) {
-
-      $orderby = $sortby;
+        return $data;
 
     }
 
-    else {
+    function search_pass_by_text($cityid, $offset = null, $checkin = null, $checkout = null)
+    {
 
-      $orderby = $settings[0]->front_search_order;
+        $data = array();
 
-    }
+        $settings = $this->settings();
+
+        $sortby = $this->ci->input->get('sortby');
+
+        $perpage = $settings[0]->front_search;
+
+        if (!empty($sortby)) {
+
+            $orderby = $sortby;
+
+        } else {
+
+            $orderby = $settings[0]->front_search_order;
+
+        }
 
 // $passlist = $this->passwithrooms();
 
-    $rh = $this->ci->Pass_model->search_pass_by_text($cityid, '', '', '', '');
+        $rh = $this->ci->Pass_model->search_pass_by_text($cityid, '', '', '', '');
 
-    $pass = $this->ci->Pass_model->search_pass_by_text($cityid, $perpage, $offset, $orderby, $checkin, $checkout);
+        $pass = $this->ci->Pass_model->search_pass_by_text($cityid, $perpage, $offset, $orderby, $checkin, $checkout);
 
-    $data['all'] = $this->getResultObject($pass['all']);
+        $data['all'] = $this->getResultObject($pass['all']);
 
-    $segments = '/' . $this->ci->uri->segment(3) . '/' . $this->ci->uri->segment(4) . '/' . $this->ci->uri->segment(5);
+        $segments = '/' . $this->ci->uri->segment(3) . '/' . $this->ci->uri->segment(4) . '/' . $this->ci->uri->segment(5);
 
-    $data['paginationinfo'] = array('base' => 'pass/search' . $segments, 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => 6);
+        $data['paginationinfo'] = array('base' => 'pass/search' . $segments, 'totalrows' => $rh['rows'], 'perpage' => $perpage, 'urisegment' => 6);
 
-    return $data;
+        return $data;
 
-  }
+    }
 
 // get pass images
 
-  function passImages($passid) {
+    function passImages($passid)
+    {
 
-    if (empty($passid)) {
+        if (empty($passid)) {
 
-      $passid = $this->passid;
+            $passid = $this->passid;
+
+        }
+
+        $this->db->where('himg_pass_id', $passid);
+
+        $this->db->where('himg_approved', '1');
+
+        $this->db->order_by('himg_order', 'asc');
+
+        $res = $this->db->get('pt_pass_images')->result();
+
+        if (empty($res)) {
+
+            $result[] = array("fullImage" => PT_HOTELS_SLIDER_THUMBS . PT_BLANK_IMG, "thumbImage" => PT_HOTELS_SLIDER_THUMBS . PT_BLANK_IMG);
+
+        } else {
+
+            foreach ($res as $r) {
+
+                $result[] = array("fullImage" => PT_HOTELS_SLIDER . $r->himg_image, "thumbImage" => PT_HOTELS_SLIDER_THUMBS . $r->himg_image);
+
+            }
+
+        }
+
+        return $result;
 
     }
-
-    $this->db->where('himg_pass_id', $passid);
-
-    $this->db->where('himg_approved', '1');
-
-    $this->db->order_by('himg_order', 'asc');
-
-    $res = $this->db->get('pt_pass_images')->result();
-
-    if (empty($res)) {
-
-      $result[] = array("fullImage" => PT_HOTELS_SLIDER_THUMBS . PT_BLANK_IMG, "thumbImage" => PT_HOTELS_SLIDER_THUMBS . PT_BLANK_IMG);
-
-    }
-
-    else {
-
-      foreach ($res as $r) {
-
-        $result[] = array("fullImage" => PT_HOTELS_SLIDER . $r->himg_image, "thumbImage" => PT_HOTELS_SLIDER_THUMBS . $r->himg_image);
-
-      }
-
-    }
-
-    return $result;
-
-  }
 
 // get pass rooms
 
-  function pass_rooms($passid = null, $checkin = null, $checkout = null) {
+    function pass_rooms($passid = null, $checkin = null, $checkout = null)
+    {
 
-    if (empty($passid)) {
+        if (empty($passid)) {
 
-      $passid = $this->passid;
+            $passid = $this->passid;
 
-    }
+        }
 
-    $this->db->select('room_id as id');
+        $this->db->select('room_id as id');
 
-    $this->db->where('room_pass', $passid);
+        $this->db->where('room_pass', $passid);
 
-    $this->db->where('room_status', 'Yes');
+        $this->db->where('room_status', 'Yes');
 
-    $this->db->where('room_min_stay <=', $this->stay);
+        $this->db->where('room_min_stay <=', $this->stay);
 
-    $this->db->order_by('room_id', 'desc');
+        $this->db->order_by('room_id', 'desc');
 
-    $q = $this->db->get('pt_rooms');
+        $q = $this->db->get('pt_rooms');
 
-    $data = $q->result();
+        $data = $q->result();
 
-    return $this->getRoomsResultObject($data, $checkin, $checkout);
-
-  }
-
-  function totalRooms($passid = null) {
-
-    if (empty($passid)) {
-
-      $passid = $this->passid;
+        return $this->getRoomsResultObject($data, $checkin, $checkout);
 
     }
 
-    $this->db->select('room_id');
+    function totalRooms($passid = null)
+    {
 
-    $this->db->where('room_pass', $passid);
+        if (empty($passid)) {
 
-    $this->db->where('room_status', 'Yes');
+            $passid = $this->passid;
 
-    return $this->db->get('pt_rooms')->num_rows();
+        }
 
-  }
+        $this->db->select('room_id');
+
+        $this->db->where('room_pass', $passid);
+
+        $this->db->where('room_status', 'Yes');
+
+        return $this->db->get('pt_rooms')->num_rows();
+
+    }
 
 // get Room images
 
-  function roomImages($id, $count = null) {
+    function roomImages($id, $count = null)
+    {
 
-    $result = array();
+        $result = array();
 
-    $this->db->where('rimg_room_id', $id);
+        $this->db->where('rimg_room_id', $id);
 
-    $this->db->where('rimg_approved', '1');
+        $this->db->where('rimg_approved', '1');
 
-    $this->db->order_by('rimg_order', 'asc');
+        $this->db->order_by('rimg_order', 'asc');
 
-    if (!empty($count)) {
+        if (!empty($count)) {
 
-      $this->db->limit($count);
+            $this->db->limit($count);
+
+        }
+
+        $res = $this->db->get('pt_room_images')->result();
+
+        if (!empty($res)) {
+
+            foreach ($res as $r) {
+
+                $result[] = array("fullImage" => PT_ROOMS_IMAGES . $r->rimg_image, "thumbImage" => PT_ROOMS_THUMBS . $r->rimg_image);
+
+            }
+
+        }
+
+        return $result;
 
     }
-
-    $res = $this->db->get('pt_room_images')->result();
-
-    if (!empty($res)) {
-
-      foreach ($res as $r) {
-
-        $result[] = array("fullImage" => PT_ROOMS_IMAGES . $r->rimg_image, "thumbImage" => PT_ROOMS_THUMBS . $r->rimg_image);
-
-      }
-
-    }
-
-    return $result;
-
-  }
 
 // get pass rooms with limited details
 
-  function rooms_id_title_only($passid = null) {
+    function rooms_id_title_only($passid = null)
+    {
 
-    $this->db->select('pt_rooms.room_id,pt_rooms.room_title,room_quantity,room_adults,room_children,room_min_stay');
+        $this->db->select('pt_rooms.room_id,pt_rooms.room_title,room_quantity,room_adults,room_children,room_min_stay');
 
-    if (empty($passid)) {
+        if (empty($passid)) {
 
-      $this->db->where('pt_rooms.room_pass', $this->passid);
+            $this->db->where('pt_rooms.room_pass', $this->passid);
+
+        } else {
+
+            $this->db->where('pt_rooms.room_pass', $passid);
+
+        }
+
+        $this->db->where('pt_rooms.room_status', 'Yes');
+
+        $this->db->order_by('pt_rooms.room_order', 'asc');
+
+        $q = $this->db->get('pt_rooms');
+
+        $data = $q->result();
+
+        return $data;
 
     }
-
-    else {
-
-      $this->db->where('pt_rooms.room_pass', $passid);
-
-    }
-
-    $this->db->where('pt_rooms.room_status', 'Yes');
-
-    $this->db->order_by('pt_rooms.room_order', 'asc');
-
-    $q = $this->db->get('pt_rooms');
-
-    $data = $q->result();
-
-    return $data;
-
-  }
 
 // Room Price
 
-  function room_price($roomid, $currsign = null, $currcode = null) {
+    function room_price($roomid, $currsign = null, $currcode = null)
+    {
 
-    $this->ci->load->helper('check');
+        $this->ci->load->helper('check');
 
-    $price = array();
+        $price = array();
 
-    $this->roomid = $roomid;
+        $this->roomid = $roomid;
 
-    $advprice = room_booking_adv_price($roomid, $this->checkin, $this->checkout);
+        $advprice = room_booking_adv_price($roomid, $this->checkin, $this->checkout);
 
-    $mulcur = "";
+        $mulcur = "";
 
-    $taxval = $this->tax_value;
+        $taxval = $this->tax_value;
 
-    $taxtype = $this->tax_type;
+        $taxtype = $this->tax_type;
 
-    $commtype = $this->comm_type;
+        $commtype = $this->comm_type;
 
-    $commval = $this->comm_value;
+        $commval = $this->comm_value;
 
-    if (empty($mulcur)) {
+        if (empty($mulcur)) {
 
-      $this->roompernight = $advprice;
+            $this->roompernight = $advprice;
 
-      $this->roomprice = $advprice * $this->stay * $this->roomscount;
+            $this->roomprice = $advprice * $this->stay * $this->roomscount;
 
-    }
+        } else {
 
-    else {
+            $mbasic = $this->ci->Pass_model->convert_price($advprice);
 
-      $mbasic = $this->ci->Pass_model->convert_price($advprice);
+            $this->roompernight = $mbasic['price'];
 
-      $this->roompernight = $mbasic['price'];
+            $this->roomprice = $mbasic['price'] * $this->stay * $this->roomscount;
 
-      $this->roomprice = $mbasic['price'] * $this->stay * $this->roomscount;
+            $this->currencycode = $mbasic['code'];
 
-      $this->currencycode = $mbasic['code'];
+            $this->currencysign = $mbasic['sign'];
 
-      $this->currencysign = $mbasic['sign'];
+        }
 
-    }
+        if ($this->tax_type == "fixed") {
 
-    if ($this->tax_type == "fixed") {
+            $this->taxamount = $this->tax_value;
 
-      $this->taxamount = $this->tax_value;
+            $this->bookingtotal = $this->roomprice + $this->taxamount;
 
-      $this->bookingtotal = $this->roomprice + $this->taxamount;
+        } else {
 
-    }
+            $this->taxamount = ($this->roomprice * $this->tax_value) / 100;
 
-    else {
+            $this->bookingtotal = $this->roomprice + $this->taxamount;
 
-      $this->taxamount = ($this->roomprice * $this->tax_value) / 100;
+        }
 
-      $this->bookingtotal = $this->roomprice + $this->taxamount;
-
-    }
-
-    $this->setDeposit($this->bookingtotal);
-
-  }
-
-  function pass_details() {
-    $this->db->where('id', $this->passid);
-
-    $details = $this->db->get('pt_pass')->result();
-    echo '<pre>';
-    print_r($this->passid);
-    echo '</pre>';die;
-    $detailResults = (object) array('id' => $details[0]->pass_id, 'title' => $title, 'slug' => $slug, 'bookingSlug' => $bookingSlug, 'thumbnail' => $thumbnail, 'stars' => pt_create_stars($stars), 'starsCount' => $stars, 'location' => $city->city, 'desc' => $desc, 'amenities' => $amenities, 'latitude' => $latitude, 'longitude' => $longitude, 'sliderImages' => $sliderImages, 'relatedItems' => $relatedPass, 'paymentOptions' => $paymentOptions, 'defcheckin' => $defcheckin, 'defcheckout' => $defcheckout, 'metadesc' => $metadesc, 'keywords' => $keywords, 'policy' => $policy, 'tripadvisorid' => $tripadvisorid, 'mapAddress' => $details[0]->pass_map_city);
-
-    return $detailResults;
-
-  }
-
-  function pass_short_details($id = null) {
-
-    if (empty($id)) {
-
-      $id = $this->passid;
+        $this->setDeposit($this->bookingtotal);
 
     }
 
-    $this->db->select('pass_id,pass_phone,pass_email,pass_website,pass_title,pass_desc,pass_policy,tripadvisor_id,pass_city,pass_basic_price,pass_basic_discount,pass_is_featured,
+    function pass_details()
+    {
+        $this->db->where('id', $this->passid);
+
+        $details = $this->db->get('pt_pass')->result();
+        echo '<pre>';
+        print_r($this->passid);
+        echo '</pre>';
+        die;
+        $detailResults = (object)array('id' => $details[0]->pass_id, 'title' => $title, 'slug' => $slug, 'bookingSlug' => $bookingSlug, 'thumbnail' => $thumbnail, 'stars' => pt_create_stars($stars), 'starsCount' => $stars, 'location' => $city->city, 'desc' => $desc, 'amenities' => $amenities, 'latitude' => $latitude, 'longitude' => $longitude, 'sliderImages' => $sliderImages, 'relatedItems' => $relatedPass, 'paymentOptions' => $paymentOptions, 'defcheckin' => $defcheckin, 'defcheckout' => $defcheckout, 'metadesc' => $metadesc, 'keywords' => $keywords, 'policy' => $policy, 'tripadvisorid' => $tripadvisorid, 'mapAddress' => $details[0]->pass_map_city);
+
+        return $detailResults;
+
+    }
+
+    function pass_short_details($id = null)
+    {
+
+        if (empty($id)) {
+
+            $id = $this->passid;
+
+        }
+
+        $this->db->select('pass_id,pass_phone,pass_email,pass_website,pass_title,pass_desc,pass_policy,tripadvisor_id,pass_city,pass_basic_price,pass_basic_discount,pass_is_featured,
 
 
 
    pass_trusted,pass_best_price,pass_stars,pass_slug,pass_refundable,pass_ratings,pass_arrivalpay,thumbnail_image,pass_amenities,pass_latitude,pass_longitude,pass_meta_keywords,pass_meta_desc,pass_created_at');
 
-    $this->db->where('pass_id', $id);
+        $this->db->where('pass_id', $id);
 
-    $details = $this->db->get('pt_pass')->result();
+        $details = $this->db->get('pt_pass')->result();
 
-    $this->tripadvisorid = $details[0]->tripadvisor_id;
+        $this->tripadvisorid = $details[0]->tripadvisor_id;
 
-    $this->title = $this->get_title($details[0]->pass_title);
+        $this->title = $this->get_title($details[0]->pass_title);
 
-    $this->stars = $details[0]->pass_stars;
+        $this->stars = $details[0]->pass_stars;
 
-    $this->desc = $this->get_description($details[0]->pass_desc);
+        $this->desc = $this->get_description($details[0]->pass_desc);
 
-    $this->policy = $this->get_policy($details[0]->pass_policy, NULL);
+        $this->policy = $this->get_policy($details[0]->pass_policy, NULL);
 
-    $this->keywords = $this->get_keywords($details[0]->pass_meta_keywords, $details[0]->pass_id);
+        $this->keywords = $this->get_keywords($details[0]->pass_meta_keywords, $details[0]->pass_id);
 
-    $this->metadesc = $this->get_metaDesc($details[0]->pass_meta_desc, $details[0]->pass_id);
+        $this->metadesc = $this->get_metaDesc($details[0]->pass_meta_desc, $details[0]->pass_id);
 
-    $this->createdAt = $details[0]->pass_created_at;
+        $this->createdAt = $details[0]->pass_created_at;
 
-    $passAmenities = explode(",", $details[0]->pass_amenities);
+        $passAmenities = explode(",", $details[0]->pass_amenities);
 
-    foreach ($passAmenities as $hm) {
+        foreach ($passAmenities as $hm) {
 
-      $amenities[] = $this->amenitiesTranslation($hm);
+            $amenities[] = $this->amenitiesTranslation($hm);
 
-    }
+        }
 
-    $this->amenities = $amenities;
+        $this->amenities = $amenities;
 
-    $this->thumbnail = PT_HOTELS_SLIDER_THUMBS . $details[0]->thumbnail_image;
+        $this->thumbnail = PT_HOTELS_SLIDER_THUMBS . $details[0]->thumbnail_image;
 
-    $this->isspecial = pt_is_special('pass', $this->passid);
+        $this->isspecial = pt_is_special('pass', $this->passid);
 
 //get country and city name for url slug
 
-    $locationInfoUrl = pt_LocationsInfo($details[0]->pass_city);
+        $locationInfoUrl = pt_LocationsInfo($details[0]->pass_city);
 
-    $countryName = url_title($locationInfoUrl->country, 'dash', true);
+        $countryName = url_title($locationInfoUrl->country, 'dash', true);
 
-    $cityName = url_title($locationInfoUrl->city, 'dash', true);
+        $cityName = url_title($locationInfoUrl->city, 'dash', true);
 
-    $this->slug = $countryName . '/' . $cityName . '/' . $details[0]->pass_slug . $this->checkinout;
+        $this->slug = $countryName . '/' . $cityName . '/' . $details[0]->pass_slug . $this->checkinout;
 
-    $this->bookingSlug = $details[0]->pass_slug . $this->checkinout;
+        $this->bookingSlug = $details[0]->pass_slug . $this->checkinout;
 
 //		$pricing = $this->pass_price($details[0]->pass_basic_price, $details[0]->pass_basic_discount);
 
@@ -783,471 +772,425 @@ $result = $this->db->get('pt_pass')->result();*/
 
 //			$this->discountprice = $pricing['discount'];
 
-    $city = pt_LocationsInfo($details[0]->pass_city, $this->lang);
+        $city = pt_LocationsInfo($details[0]->pass_city, $this->lang);
 
-    $this->location = $city->city;
+        $this->location = $city->city;
 
 //	$this->country = $location[0]->short_name;
 
-    $this->isfeatured = $this->is_featured();
+        $this->isfeatured = $this->is_featured();
 
-    $this->trusted = $details[0]->pass_trusted;
+        $this->trusted = $details[0]->pass_trusted;
 
 //	$this->bestprice = $details[0]->pass_best_price;
 
-    $this->refundable = $details[0]->pass_refundable;
+        $this->refundable = $details[0]->pass_refundable;
 
-    $this->arrivalpay = $details[0]->pass_arrivalpay;
+        $this->arrivalpay = $details[0]->pass_arrivalpay;
 
-    $this->website = $details[0]->pass_website;
+        $this->website = $details[0]->pass_website;
 
-    $this->phone = $details[0]->pass_phone;
+        $this->phone = $details[0]->pass_phone;
 
-    $this->email = $details[0]->pass_email;
+        $this->email = $details[0]->pass_email;
 
-    $taxcom = $this->pass_tax_commision();
+        $taxcom = $this->pass_tax_commision();
 
-    $this->comm_type = $taxcom['commtype'];
+        $this->comm_type = $taxcom['commtype'];
 
-    $this->comm_value = $taxcom['commval'];
+        $this->comm_value = $taxcom['commval'];
 
-    $this->tax_type = $taxcom['taxtype'];
+        $this->tax_type = $taxcom['taxtype'];
 
-    $this->tax_value = $taxcom['taxval'];
+        $this->tax_value = $taxcom['taxval'];
 
-    $this->latitude = $details[0]->pass_latitude;
+        $this->latitude = $details[0]->pass_latitude;
 
-    $this->longitude = $details[0]->pass_longitude;
+        $this->longitude = $details[0]->pass_longitude;
 
-    $this->sliderImages = $this->passImages(NULL);
+        $this->sliderImages = $this->passImages(NULL);
 
-    return $details;
-
-  }
-
-  function get_title($deftitle, $passid = null) {
-
-    if (empty($passid)) {
-
-      $passid = $this->passid;
+        return $details;
 
     }
 
-    if ($this->lang == $this->langdef) {
+    function get_title($deftitle, $passid = null)
+    {
 
-      $title = $deftitle;
+        if (empty($passid)) {
 
-    }
+            $passid = $this->passid;
 
-    else {
+        }
 
-      $this->db->where('item_id', $passid);
+        if ($this->lang == $this->langdef) {
 
-      $this->db->where('trans_lang', $this->lang);
+            $title = $deftitle;
 
-      $res = $this->db->get('pt_pass_translation')->result();
+        } else {
 
-      $title = $res[0]->trans_title;
+            $this->db->where('item_id', $passid);
 
-      if (empty($title)) {
+            $this->db->where('trans_lang', $this->lang);
 
-        $title = $deftitle;
+            $res = $this->db->get('pt_pass_translation')->result();
 
-      }
+            $title = $res[0]->trans_title;
 
-    }
+            if (empty($title)) {
 
-    return $title;
+                $title = $deftitle;
 
-  }
+            }
 
-  function get_description($defdesc, $passid = null) {
+        }
 
-    if (empty($passid)) {
-
-      $passid = $this->passid;
-
-    }
-
-    if ($this->lang == $this->langdef) {
-
-      $desc = $defdesc;
+        return $title;
 
     }
 
-    else {
+    function get_description($defdesc, $passid = null)
+    {
 
-      $this->db->where('item_id', $passid);
+        if (empty($passid)) {
 
-      $this->db->where('trans_lang', $this->lang);
+            $passid = $this->passid;
 
-      $res = $this->db->get('pt_pass_translation')->result();
+        }
 
-      $desc = $res[0]->trans_desc;
+        if ($this->lang == $this->langdef) {
 
-      if (empty($desc)) {
+            $desc = $defdesc;
 
-        $desc = $defdesc;
+        } else {
 
-      }
+            $this->db->where('item_id', $passid);
 
-    }
+            $this->db->where('trans_lang', $this->lang);
 
-    return $desc;
+            $res = $this->db->get('pt_pass_translation')->result();
 
-  }
+            $desc = $res[0]->trans_desc;
 
-  function get_policy($defpolicy, $passid) {
+            if (empty($desc)) {
 
-    if (empty($passid)) {
+                $desc = $defdesc;
 
-      $passid = $this->passid;
+            }
 
-    }
+        }
 
-    if ($this->lang == $this->langdef) {
-
-      $policy = $defpolicy;
-
-    }
-
-    else {
-
-      $this->db->where('item_id', $passid);
-
-      $this->db->where('trans_lang', $this->lang);
-
-      $res = $this->db->get('pt_pass_translation')->result();
-
-      $policy = $res[0]->trans_policy;
-
-      if (empty($policy)) {
-
-        $policy = $defpolicy;
-
-      }
+        return $desc;
 
     }
 
-    return $policy;
+    function get_policy($defpolicy, $passid)
+    {
 
-  }
+        if (empty($passid)) {
 
-  function get_keywords($defkeywords, $passid = null) {
+            $passid = $this->passid;
 
-    if (empty($passid)) {
+        }
 
-      $passid = $this->passid;
+        if ($this->lang == $this->langdef) {
 
-    }
+            $policy = $defpolicy;
 
-    if ($this->lang == $this->langdef) {
+        } else {
 
-      $keywords = $defkeywords;
+            $this->db->where('item_id', $passid);
 
-    }
+            $this->db->where('trans_lang', $this->lang);
 
-    else {
+            $res = $this->db->get('pt_pass_translation')->result();
 
-      $this->db->where('item_id', $passid);
+            $policy = $res[0]->trans_policy;
 
-      $this->db->where('trans_lang', $this->lang);
+            if (empty($policy)) {
 
-      $res = $this->db->get('pt_pass_translation')->result();
+                $policy = $defpolicy;
 
-      $keywords = $res[0]->metakeywords;
+            }
 
-      if (empty($keywords)) {
+        }
 
-        $keywords = $defkeywords;
-
-      }
-
-    }
-
-    return $keywords;
-
-  }
-
-  function get_metaDesc($defmeta, $passid = null) {
-
-    if (empty($passid)) {
-
-      $passid = $this->passid;
+        return $policy;
 
     }
 
-    if ($this->lang == $this->langdef) {
+    function get_keywords($defkeywords, $passid = null)
+    {
 
-      $meta = $defmeta;
+        if (empty($passid)) {
+
+            $passid = $this->passid;
+
+        }
+
+        if ($this->lang == $this->langdef) {
+
+            $keywords = $defkeywords;
+
+        } else {
+
+            $this->db->where('item_id', $passid);
+
+            $this->db->where('trans_lang', $this->lang);
+
+            $res = $this->db->get('pt_pass_translation')->result();
+
+            $keywords = $res[0]->metakeywords;
+
+            if (empty($keywords)) {
+
+                $keywords = $defkeywords;
+
+            }
+
+        }
+
+        return $keywords;
 
     }
 
-    else {
+    function get_metaDesc($defmeta, $passid = null)
+    {
 
-      $this->db->where('item_id', $passid);
+        if (empty($passid)) {
 
-      $this->db->where('trans_lang', $this->lang);
+            $passid = $this->passid;
 
-      $res = $this->db->get('pt_pass_translation')->result();
+        }
 
-      $meta = $res[0]->metadesc;
+        if ($this->lang == $this->langdef) {
 
-      if (empty($meta)) {
+            $meta = $defmeta;
 
-        $meta = $defmeta;
+        } else {
 
-      }
+            $this->db->where('item_id', $passid);
+
+            $this->db->where('trans_lang', $this->lang);
+
+            $res = $this->db->get('pt_pass_translation')->result();
+
+            $meta = $res[0]->metadesc;
+
+            if (empty($meta)) {
+
+                $meta = $defmeta;
+
+            }
+
+        }
+
+        return $meta;
 
     }
 
-    return $meta;
+    function passExtras($passid = null)
+    {
 
-  }
+        if (empty($passid)) {
 
-  function passExtras($passid = null) {
+            $passid = $this->passid;
 
-    if (empty($passid)) {
+        }
 
-      $passid = $this->passid;
+        $today = time();
 
-    }
-
-    $today = time();
-
-    $result = array();
+        $result = array();
 
 //	$this->db->where('extras_from  <=', $today);
 
 //	$this->db->where('extras_to >=', $today);
 
-    $this->db->where('extras_module', 'pass');
+        $this->db->where('extras_module', 'pass');
 
 //  $this->db->or_where('extras_forever','forever');
 
-    $this->db->order_by('extras_id', 'desc');
+        $this->db->order_by('extras_id', 'desc');
 
-    $this->db->like('extras_for', $passid, 'both');
+        $this->db->like('extras_for', $passid, 'both');
 
-    $this->db->having('extras_status', 'Yes');
+        $this->db->having('extras_status', 'Yes');
 
-    $ext = $this->db->get('pt_extras')->result();
+        $ext = $this->db->get('pt_extras')->result();
 
-    $this->ci->load->library('currconverter');
+        $this->ci->load->library('currconverter');
 
-    $curr = $this->ci->currconverter;
+        $curr = $this->ci->currconverter;
 
-    if (!empty($ext)) {
+        if (!empty($ext)) {
 
-      foreach ($ext as $e) {
+            foreach ($ext as $e) {
 
-        $trans = $this->extrasTranslation($e->extras_id, $e->extras_title, $e->extras_desc);
+                $trans = $this->extrasTranslation($e->extras_id, $e->extras_title, $e->extras_desc);
 
-        $price = $curr->convertPrice($e->extras_basic_price, 0);
+                $price = $curr->convertPrice($e->extras_basic_price, 0);
 
-        $result[] = (object) array("id" => $e->extras_id, "extraTitle" => $trans['title'], "extraDesc" => $trans['desc'], 'extraPrice' => $price, 'thumbnail' => PT_EXTRAS_IMAGES . $e->extras_image);
+                $result[] = (object)array("id" => $e->extras_id, "extraTitle" => $trans['title'], "extraDesc" => $trans['desc'], 'extraPrice' => $price, 'thumbnail' => PT_EXTRAS_IMAGES . $e->extras_image);
 
-      }
+            }
 
-    }
+        }
 
-    return $result;
-
-  }
-
-  function getHotelTypes() {
-
-    $htypes = pt_get_hsettings_data("htypes");
-
-    $result = array();
-
-    foreach ($htypes as $htype) {
-
-      $trans = $this->amenitiesTranslation($htype->sett_id);
-
-      $result[] = (object) array("id" => $htype->sett_id, "name" => $trans->name);
+        return $result;
 
     }
 
-    return $result;
+    function getHotelTypes()
+    {
 
-  }
-
-  function getHotelAmenities() {
-
-    $amts = pt_get_hsettings_data("hamenities");
-
-    $result = array();
-
-    foreach ($amts as $amt) {
-
-      $trans = $this->amenitiesTranslation($amt->sett_id);
-
-      $result[] = (object) array("id" => $amt->sett_id, 'icon' => PT_HOTELS_ICONS . $amt->sett_img, "name" => $trans->name);
-
-    }
-
-    return $result;
-
-  }
-
-// Hotel Amenities translation
-
-  function amenitiesTranslation($id) {
-
-    $language = $this->lang;
-
-    $result = new stdClass;
-
-    $this->db->select('sett_name,sett_img');
-
-    $this->db->where('sett_id', $id);
-
-    $this->db->where('sett_status', 'Yes');
-
-    $re = $this->db->get('pt_pass_types_settings')->result();
-
-    $result->icon = PT_HOTELS_ICONS . $re[0]->sett_img;
-
-    if ($language == $this->langdef) {
-
-      $result->name = $re[0]->sett_name;
-
-    }
-
-    else {
-
-      $this->db->select('trans_name');
-
-      $this->db->where('sett_id', $id);
-
-      $this->db->where('trans_lang', $language);
-
-      $r = $this->db->get('pt_pass_types_settings_translation')->result();
-
-      if (empty($r[0]->trans_name)) {
-
-        $result->name = $re[0]->sett_name;
-
-      }
-
-      else {
-
-        $result->name = $r[0]->trans_name;
-
-      }
-
-    }
-
-    return $result;
-
-  }
-
-  function extrasTranslation($id, $title, $desc) {
-
-    $language = $this->lang;
-
-    $this->db->select('trans_title,trans_desc');
-
-    $this->db->where('trans_extras_id', $id);
-
-    $this->db->where('trans_lang', $language);
-
-    $r = $this->db->get('pt_extras_translation')->result();
-
-    if (empty($r[0]->trans_title)) {
-
-      $result['title'] = $title;
-
-    }
-
-    else {
-
-      $result['title'] = $r[0]->trans_title;
-
-    }
-
-    if (empty($r[0]->trans_desc)) {
-
-      $result['desc'] = $desc;
-
-    }
-
-    else {
-
-      $result['desc'] = $r[0]->trans_desc;
-
-    }
-
-    return $result;
-
-  }
-
-// pass Price
-
-  function pass_price($basic, $discount) {
-
-    $price = array();
-
-    $price['code'] = $this->currencycode;
-
-    $price['sign'] = $this->currencysign;
-
-    $mulcur = "";
-
-    return $price;
-
-  }
-
-// pass Reviews
-
-  function passReviews($passid = null) {
-
-    if (empty($passid)) {
-
-      $passid = $this->passid;
-
-    }
-
-    $this->db->where('review_status', 'Yes');
-
-    $this->db->where('review_module', 'pass');
-
-    $this->db->where('review_itemid', $passid);
-
-    $this->db->order_by('review_id', 'desc');
-
-    return $this->db->get('pt_reviews')->result();
-
-  }
-
-// pass Reviews for API
-
-  function pass_reviews_for_api($passid) {
-
-    if (empty($passid)) {
-
-      $passid = $this->passid;
-
-    }
-
-    $this->set_id($passid);
-
-    $this->pass_short_details();
-
-    $tripAdvisorID = $this->tripadvisorid;
-
-    $tripStatus = $this->tripAdvisorStatus();
-
-    if ($tripStatus && !empty($tripAdvisorID)) {
-
-      $avgReviews = $this->tripAdvisorData($tripAdvisorID, NULL, TRUE);
-
-      if (empty($avgReviews->overall)) {
+        $htypes = pt_get_hsettings_data("htypes");
 
         $result = array();
 
-        $this->db->select('review_overall,review_name,review_comment,review_date');
+        foreach ($htypes as $htype) {
+
+            $trans = $this->amenitiesTranslation($htype->sett_id);
+
+            $result[] = (object)array("id" => $htype->sett_id, "name" => $trans->name);
+
+        }
+
+        return $result;
+
+    }
+
+    function getHotelAmenities()
+    {
+
+        $amts = pt_get_hsettings_data("hamenities");
+
+        $result = array();
+
+        foreach ($amts as $amt) {
+
+            $trans = $this->amenitiesTranslation($amt->sett_id);
+
+            $result[] = (object)array("id" => $amt->sett_id, 'icon' => PT_HOTELS_ICONS . $amt->sett_img, "name" => $trans->name);
+
+        }
+
+        return $result;
+
+    }
+
+// Hotel Amenities translation
+
+    function amenitiesTranslation($id)
+    {
+
+        $language = $this->lang;
+
+        $result = new stdClass;
+
+        $this->db->select('sett_name,sett_img');
+
+        $this->db->where('sett_id', $id);
+
+        $this->db->where('sett_status', 'Yes');
+
+        $re = $this->db->get('pt_pass_types_settings')->result();
+
+        $result->icon = PT_HOTELS_ICONS . $re[0]->sett_img;
+
+        if ($language == $this->langdef) {
+
+            $result->name = $re[0]->sett_name;
+
+        } else {
+
+            $this->db->select('trans_name');
+
+            $this->db->where('sett_id', $id);
+
+            $this->db->where('trans_lang', $language);
+
+            $r = $this->db->get('pt_pass_types_settings_translation')->result();
+
+            if (empty($r[0]->trans_name)) {
+
+                $result->name = $re[0]->sett_name;
+
+            } else {
+
+                $result->name = $r[0]->trans_name;
+
+            }
+
+        }
+
+        return $result;
+
+    }
+
+    function extrasTranslation($id, $title, $desc)
+    {
+
+        $language = $this->lang;
+
+        $this->db->select('trans_title,trans_desc');
+
+        $this->db->where('trans_extras_id', $id);
+
+        $this->db->where('trans_lang', $language);
+
+        $r = $this->db->get('pt_extras_translation')->result();
+
+        if (empty($r[0]->trans_title)) {
+
+            $result['title'] = $title;
+
+        } else {
+
+            $result['title'] = $r[0]->trans_title;
+
+        }
+
+        if (empty($r[0]->trans_desc)) {
+
+            $result['desc'] = $desc;
+
+        } else {
+
+            $result['desc'] = $r[0]->trans_desc;
+
+        }
+
+        return $result;
+
+    }
+
+// pass Price
+
+    function pass_price($basic, $discount)
+    {
+
+        $price = array();
+
+        $price['code'] = $this->currencycode;
+
+        $price['sign'] = $this->currencysign;
+
+        $mulcur = "";
+
+        return $price;
+
+    }
+
+// pass Reviews
+
+    function passReviews($passid = null)
+    {
+
+        if (empty($passid)) {
+
+            $passid = $this->passid;
+
+        }
 
         $this->db->where('review_status', 'Yes');
 
@@ -1257,939 +1200,24 @@ $result = $this->db->get('pt_pass')->result();*/
 
         $this->db->order_by('review_id', 'desc');
 
-        $rs = $this->db->get('pt_reviews')->result();
-
-        foreach ($rs as $r) {
-
-          $result[] = array("review_overall" => $r->review_overall, "review_name" => $r->review_name, "review_comment" => $r->review_comment, "review_date" => pt_show_date_php($r->review_date), 'maxRating' => 10);
-
-        }
-
-      }
-
-      else {
-
-        $result = $avgReviews->reviews;
-
-      }
+        return $this->db->get('pt_reviews')->result();
 
     }
 
-    else {
+// pass Reviews for API
 
-      $result = array();
-
-      $this->db->select('review_overall,review_name,review_comment,review_date');
-
-      $this->db->where('review_status', 'Yes');
-
-      $this->db->where('review_module', 'pass');
-
-      $this->db->where('review_itemid', $passid);
-
-      $this->db->order_by('review_id', 'desc');
-
-      $rs = $this->db->get('pt_reviews')->result();
-
-      foreach ($rs as $r) {
-
-        $result[] = array("review_overall" => $r->review_overall, "review_name" => $r->review_name, "review_comment" => $r->review_comment, "review_date" => pt_show_date_php($r->review_date), 'maxRating' => 10);
-
-      }
-
-    }
-
-    return $result;
-
-  }
-
-// pass Reviews Averages
-
-  function passReviewsAvg($passid = 0) {
-
-    $clean = 0;
-
-    $comfort = 0;
-
-    $location = 0;
-
-    $facilities = 0;
-
-    $staff = 0;
-
-    $totalreviews = 0;
-
-    $overall = 0;
-
-    if (pt_is_module_enabled('reviews')) {
-
-      if (empty($passid)) {
-
-        $passid = $this->passid;
-
-      }
-
-      $this->db->select("COUNT(*) AS totalreviews");
-
-      $this->db->select_avg('review_overall', 'overall');
-
-      $this->db->select_avg('review_clean', 'clean');
-
-      $this->db->select_avg('review_facilities', 'facilities');
-
-      $this->db->select_avg('review_staff', 'staff');
-
-      $this->db->select_avg('review_comfort', 'comfort');
-
-      $this->db->select_avg('review_location', 'location');
-
-      $this->db->where('review_status', 'Yes');
-
-      $this->db->where('review_module', 'pass');
-
-      $this->db->where('review_itemid', $passid);
-
-      $res = $this->db->get('pt_reviews')->result();
-
-      $clean = round($res[0]->clean, 1);
-
-      $comfort = round($res[0]->comfort, 1);
-
-      $location = round($res[0]->location, 1);
-
-      $facilities = round($res[0]->facilities, 1);
-
-      $staff = round($res[0]->staff, 1);
-
-      $totalreviews = $res[0]->totalreviews;
-
-      $overall = round($res[0]->overall, 1);
-
-    }
-
-    $result = (object) array('clean' => $clean, 'comfort' => $comfort, 'location' => $location, 'facilities' => $facilities, 'staff' => $staff, 'totalReviews' => $totalreviews, 'overall' => $overall);
-
-    return $result;
-
-  }
-
-  function getLocationsList() {
-
-    $resultLocations = array();
-
-    $this->db->select('pass_city');
-
-    $this->db->group_by('pass_city');
-
-    $locations = $this->db->get('pt_pass')->result();
-
-    foreach ($locations as $loc) {
-
-      $locInfo = pt_LocationsInfo($loc->pass_city, $this->lang);
-
-      if (!empty($locInfo->city)) {
-
-        $resultLocations[] = (object) array('id' => $locInfo->id, 'name' => $locInfo->city);
-
-      }
-
-    }
-
-    return $resultLocations;
-
-  }
-
-  function translated_data($lang) {
-
-    $this->db->where('item_id', $this->passid);
-
-    $this->db->where('trans_lang', $lang);
-
-    return $this->db->get('pt_pass_translation')->result();
-
-  }
-
-  function room_short_details($id) {
-
-    $this->db->select('room_id,room_quantity,room_type,room_title,room_desc,room_adults,room_children,room_amenities,thumbnail_image,extra_bed,extra_bed_charges');
-
-    $this->db->where('pt_rooms.room_id', $id);
-
-    $details = $this->db->get('pt_rooms')->result();
-
-//$this->roomtitle = $this->get_room_title($details[0]->room_title, $id);
-
-    $this->roomtitle = $this->getRoomType($details[0]->room_type);
-
-    $this->roomdesc = $this->get_room_description($details[0]->room_desc, $id);
-
-    $roomAmenities = explode(",", $details[0]->room_amenities);
-
-    foreach ($roomAmenities as $rm) {
-
-      $amtsRoom[] = $this->amenitiesTranslation($rm);
-
-    }
-
-    $details['amenities'] = $amtsRoom;
-
-// $this->room_price($id,$currsign,$currcode);
-
-    return $details;
-
-  }
-
-  function getRoomTitleOnly($id) {
-
-    $this->db->select('room_title,room_type');
-
-    $this->db->where('room_id', $id);
-
-    $details = $this->db->get('pt_rooms')->result();
-
-//$roomTitle = $this->get_room_title($details[0]->room_title, $id);
-
-    $roomTitle = $this->getRoomType($details[0]->room_type);
-
-    return $roomTitle;
-
-  }
-
-  function get_room_title($deftitle, $id) {
-
-    if ($this->lang == $this->langdef) {
-
-      $title = $deftitle;
-
-    }
-
-    else {
-
-      $this->db->where('item_id', $id);
-
-      $this->db->where('trans_lang', $this->lang);
-
-      $res = $this->db->get('pt_rooms_translation')->result();
-
-      $title = $res[0]->trans_title;
-
-      if (empty($title)) {
-
-        $title = $deftitle;
-
-      }
-
-    }
-
-    return $title;
-
-  }
-
-  function available_rooms() {
-
-    $this->ci->load->helper('check');
-
-    $result = array();
-
-    $rooms = $this->rooms_id_title_only();
-
-    foreach ($rooms as $room) {
-
-      $unavail = pt_is_room_unvailable($room->room_id, $this->checkin, $this->checkout);
-
-      $bookedrooms = pt_is_room_booked($room->room_id, $this->checkin, $this->checkout);
-
-      $maxadults = true;
-
-      $maxchild = true;
-
-      $minstay = $room->room_min_stay;
-
-      if ($this->adults > $room->room_adults) {
-
-        $maxadults = false;
-
-      }
-
-      else {
-
-        $maxadults = true;
-
-      }
-
-      if ($this->children > $room->room_children) {
-
-        $maxchild = false;
-
-      }
-
-      else {
-
-        $maxchild = true;
-
-      }
-
-      $totalroomscount = $room->room_quantity;
-
-      $availablerooms = $totalroomscount - $bookedrooms;
-
-      if (!$unavail && $availablerooms > 0 && $maxadults && $maxchild && $minstay <= $this->stay) {
-
-        $roomdetails = $this->room_short_details($room->room_id);
-
-        $result[] = array('passid' => $this->passid, 'id' => $room->room_id, 'roomlargethumb' => $this->roomlargethumb, 'roomsmallthumb' => $this->roomsmallthumb, 'roomtitle' => $this->roomtitle, 'desc' => $this->roomdesc, 'roomprice' => $this->roomprice, 'available_quantity' => $availablerooms, 'totalquantity' => $room->room_quantity, 'room_children' => $roomdetails[0]->room_children, 'room_adults' => $roomdetails[0]->room_adults, 'room_size' => $roomdetails[0]->room_size, 'room_bed_size' => $roomdetails[0]->room_bed_size, 'roomspecials' => $this->roomspecials, 'roomadditional' => $this->roomadditional, 'room_amenities' => $roomdetails[0]->room_amenities);
-
-      }
-
-    }
-
-    if (!empty($result)) {
-
-      $this->roomsavailable = true;
-
-    }
-
-    else {
-
-      $this->roomsavailable = false;
-
-    }
-
-    return $result;
-
-  }
-
-  function validroomscount($shortdetails) {
-
-    $this->roomscounterror = "";
-
-// $unavail =  pt_is_room_unvailable($shortdetails[0]->room_id,$this->checkin,$this->checkout);
-
-    $bookedrooms = pt_is_room_booked($shortdetails[0]->room_id, $this->checkin, $this->checkout);
-
-    $availablerooms = $shortdetails[0]->room_quantity - $bookedrooms;
-
-    if ($this->children > $shortdetails[0]->room_children) {
-
-      $this->roomscounterror = "Maximum children exceeded.";
-
-    }
-
-    if ($this->adults > $shortdetails[0]->room_adults) {
-
-      $this->roomscounterror = "Maximum Adults exceeded.";
-
-    }
-
-    if ($availablerooms < $this->roomscount) {
-
-      $this->roomscounterror = "Room Not available for booking.";
-
-    }
-
-  }
-
-  function get_room_description($defdesc, $id) {
-
-    if ($this->lang == $this->langdef) {
-
-      $desc = $defdesc;
-
-    }
-
-    else {
-
-      $this->db->where('item_id', $id);
-
-      $this->db->where('trans_lang', $this->lang);
-
-      $res = $this->db->get('pt_rooms_translation')->result();
-
-      $desc = $res[0]->trans_desc;
-
-      if (empty($desc)) {
-
-        $desc = $defdesc;
-
-      }
-
-    }
-
-    return $desc;
-
-  }
-
-  function rooms_translated_data($lang, $id) {
-
-    $this->db->where('item_id', $id);
-
-    $this->db->where('trans_lang', $lang);
-
-    return $this->db->get('pt_rooms_translation')->result();
-
-  }
-
-  function room_total_quantity($id) {
-
-    $this->db->select('room_quantity');
-
-    $this->db->where('room_id', $id);
-
-    $res = $this->db->get('pt_rooms')->result();
-
-    if (!empty($res)) {
-
-      return $res[0]->room_quantity;
-
-    }
-
-    else {
-
-      return '0';
-
-    }
-
-  }
-
-  function pass_tax_commision() {
-
-    $res = array();
-
-    $this->db->select('pass_comm_fixed,pass_comm_percentage,pass_tax_fixed,pass_tax_percentage');
-
-    $this->db->where('pass_id', $this->passid);
-
-    $result = $this->db->get('pt_pass')->result();
-
-    $commfixed = $result[0]->pass_comm_fixed;
-
-    $commper = $result[0]->pass_comm_percentage;
-
-    $taxfixed = $result[0]->pass_tax_fixed;
-
-    $taxper = $result[0]->pass_tax_percentage;
-
-    $res['commtype'] = "percentage";
-
-    $res['commval'] = $commper;
-
-    $res['taxtype'] = "percentage";
-
-    $res['taxval'] = $taxper;
-
-    if ($commfixed > 0) {
-
-      $res['commtype'] = "fixed";
-
-      $res['commval'] = $commfixed;
-
-    }
-
-    if ($taxfixed > 0) {
-
-      $res['taxtype'] = "fixed";
-
-      $res['taxval'] = $taxfixed;
-
-    }
-
-    return $res;
-
-  }
-
-  function is_featured() {
-
-    $this->db->select('pass_id');
-
-    $this->db->where('pass_is_featured', 'yes');
-
-    $this->db->where('pass_featured_from <', time());
-
-    $this->db->where('pass_featured_to >', time());
-
-    $this->db->where('pass_id', $this->passid);
-
-    return $this->db->get('pt_pass')->num_rows();
-
-  }
-
-  function specialofferslist($limit = 0) {
-
-    $this->db->select('offer_item');
-
-    $this->db->where('pt_special_offers.offer_from <=', time());
-
-    $this->db->where('pt_special_offers.offer_to >=', time());
-
-    $this->db->where_in('pt_special_offers.offer_module', 'pass');
-
-    $this->db->where('pt_special_offers.offer_status', '1');
-
-    $this->db->order_by('pt_special_offers.offer_item', 'desc');
-
-    $this->db->limit($limit);
-
-    return $this->db->get('pt_special_offers')->result();
-
-  }
-
-  function featured_pass_list() {
-
-    $settings = $this->settings();
-
-    $limit = $settings[0]->front_homepage;
-
-    $orderby = $settings[0]->front_homepage_order;
-
-    $this->db->select('pass_id,pass_order,pass_title,pass_status');
-
-    $this->db->where('pass_is_featured', 'yes');
-
-    $this->db->where('pass_featured_from <', time());
-
-    $this->db->where('pass_featured_to >', time());
-
-    $this->db->or_where('pass_featured_forever', 'forever');
-
-    $this->db->having('pass_status', 'Yes');
-
-    $this->db->limit($limit);
-
-    if ($orderby == "za") {
-
-      $this->db->order_by('pt_pass.pass_title', 'desc');
-
-    }
-
-    elseif ($orderby == "az") {
-
-      $this->db->order_by('pt_pass.pass_title', 'asc');
-
-    }
-
-    elseif ($orderby == "oldf") {
-
-      $this->db->order_by('pt_pass.pass_id', 'asc');
-
-    }
-
-    elseif ($orderby == "newf") {
-
-      $this->db->order_by('pt_pass.pass_id', 'desc');
-
-    }
-
-    elseif ($orderby == "ol") {
-
-      $this->db->order_by('pt_pass.pass_order', 'asc');
-
-    }
-
-    return $this->db->get('pt_pass')->result();
-
-  }
-
-  function getFeaturedPass() {
-
-    $pass = $this->featured_pass_list();
-
-    $result = $this->getResultObject($pass);
-
-    return $result;
-
-  }
-
-  function getTopRatedPass() {
-
-    $pass = $this->ci->Pass_model->popular_pass_front();
-
-    $result = $this->getResultObject($pass);
-
-    return $result;
-
-  }
-
-  function getRelatedPass($pass) {
-
-    $resultpass = array();
-
-    $result = array();
-
-    $settings = $this->settings();
-
-    $limit = $settings[0]->front_related;
-
-    $count = 0;
-
-    if (!empty($pass)) {
-
-      foreach ($pass as $h) {
-
-        $count++;
-
-        if($count <= $limit){
-
-        $resultpass[] = (object) array('pass_id' => $h);
-
-        }
-
-      }
-
-    }
-
-    $result = $this->getLimitedResultObject($resultpass);
-
-    return $result;
-
-  }
-
-  function hero_pass_list() {
-
-    $this->db->select('front_homepage_hero');
-
-    $rslt = $this->db->get('pt_front_settings')->result();
-
-    $pass = $rslt[0]->front_homepage_hero;
-
-    if (!empty($pass)) {
-
-      $heropass = explode(",", $pass);
-
-    }
-
-    else {
-
-      $heropass = "";
-
-    }
-
-    return $heropass;
-
-  }
-
-  function mini_hero_pass_list() {
-
-    $this->db->select('front_homepage_small_hero');
-
-    $rslt = $this->db->get('pt_front_settings')->result();
-
-    $minipass = $rslt[0]->front_homepage_small_hero;
-
-    if (!empty($minipass)) {
-
-      $miniheropass = explode(",", $minipass);
-
-    }
-
-    else {
-
-      $miniheropass = "";
-
-    }
-
-    return $miniheropass;
-
-  }
-
-// List 2 top rated pass from each city passed to to this function
-
-  function top_rated_pass($city) {
-
-    $this->db->select('pt_pass.pass_id');
-
-    $this->db->select_avg('pt_reviews.review_overall', 'overall');
-
-    $this->db->where('pt_pass.pass_city', $city);
-
-    $this->db->group_by('pt_pass.pass_id');
-
-    $this->db->join('pt_reviews', 'pt_pass.pass_id = pt_reviews.review_itemid', 'left');
-
-    $this->db->where('pt_pass.pass_status', '1');
-
-    $this->db->order_by('pt_reviews.review_overall', 'desc');
-
-    $this->db->limit(2);
-
-    return $this->db->get('pt_pass')->result();
-
-  }
-
-  function bestPrice($passid = null) {
-
-    $this->ci->load->library('currconverter');
-
-    $curr = $this->ci->currconverter;
-
-    if (empty($passid)) {
-
-      $passid = $this->passid;
-
-    }
-
-    $this->ci->load->model('Pass/Rooms_model');
-
-    $this->db->select('room_id');
-
-    $this->db->where('room_pass', $passid);
-
-    $res = $this->db->get('pt_rooms')->result();
-
-    foreach ($res as $r) {
-
-      $p = $this->ci->Rooms_model->getRoomPrice($r->room_id, $this->checkin, $this->checkout);
-
-      $result[] = $p['perNight'];
-
-//  $result[] = $p;
-
-    }
-
-    $price = $curr->convertPrice(min($result));
-
-    return $price;
-
-//  return $result;
-
-  }
-
-  function passwithrooms() {
-
-    $this->ci->load->helper('check');
-
-    $result = array();
-
-    $this->db->select('pass_id');
-
-    $this->db->where('pass_status', 'Yes');
-
-    $pass = $this->db->get('pt_pass')->result();
-
-    foreach ($pass as $pass) {
-
-      $rooms = $this->rooms_id_title_only($pass->pass_id);
-
-      foreach ($rooms as $room) {
-
-        $unavail = pt_is_room_unvailable($room->room_id, $this->checkin, $this->checkout);
-
-        $bookedrooms = pt_is_room_booked($room->room_id, $this->checkin, $this->checkout);
-
-        $totalroomscount = $room->room_quantity;
-
-        $availablerooms = $totalroomscount - $bookedrooms;
-
-        if (!$unavail && $availablerooms > 0) {
-
-          if (!in_array($pass->pass_id, $result['pass'])) {
-
-            $result['pass'][] = $pass->pass_id;
-
-          }
-
-          $result['rooms'][] = $room->room_id;
-
-        }
-
-      }
-
-    }
-
-    return $result;
-
-  }
-
-  function paymethodFee($id, $total) {
-
-    $result = 0;
-
-    $this->db->select('payment_percentage');
-
-    $this->db->where('payment_id', $id);
-
-    $res = $this->db->get('pt_payment_gateways')->result();
-
-    if (!empty($res) && $total > 0) {
-
-      $result = round($total * $res[0]->payment_percentage / 100, 2);
-
-    }
-
-    return $result;
-
-  }
-
-  function extrasFee($exts) {
-
-    $extFee = 0;
-
-    $result['extrasIndividualFee'] = array();
-
-    $result['extrasInfo'] = array();
-
-    $result['extrasTotalFee'] = array();
-
-    $this->ci->load->library('currconverter');
-
-    $curr = $this->ci->currconverter;
-
-    if (isset($exts) && ! empty($exts))
-
+    function pass_reviews_for_api($passid)
     {
-      $exts = is_array($exts)?$exts:[$exts];
 
-      foreach ($exts as $ext) {
+        if (empty($passid)) {
 
-        $this->db->select('extras_title,extras_desc,extras_discount,extras_basic_price');
-
-        $this->db->where('extras_id', $ext);
-
-        $rs = $this->db->get('pt_extras')->result();
-
-        $amount = $rs[0]->extras_basic_price;
-
-        $price = $curr->convertPriceFloat($amount, 2);
-
-        $extFee += $amount;
-
-        $info = $this->extrasTranslation($ext, $rs[0]->extras_title, $rs[0]->extras_desc);
-
-        $result['extrasIndividualFee'][] = array("id" => $ext, "price" => $price);
-
-        $result['extrasInfo'][] = array("title" => $info['title'], "price" => $price);
-
-      }
-
-    }
-
-    $result['extrasTotalFee'] = $extFee;
-
-    return $result;
-
-  }
-
-  function setDeposit($total) {
-
-    if ($this->comm_type == "fixed") {
-
-      $this->deposit = round($this->comm_value, 2);
-
-    }
-
-    else {
-
-      $this->deposit = round(($total * $this->comm_value) / 100, 2);
-
-    }
-
-  }
-
-  function setTax($amount) {
-
-    if ($this->tax_type == "fixed") {
-
-      $this->taxamount = round($this->tax_value, 2);
-
-    }
-
-    else {
-
-      $this->taxamount = round(($amount * $this->tax_value) / 100, 2);
-
-    }
-  }
-
-//make a result object all data of pass array
-
-  function getResultObject($pass) {
-
-    $this->ci->load->library('currconverter');
-
-    $result = array();
-
-    $curr = $this->ci->currconverter;
-
-    foreach ($pass as $h) {
-
-      $this->set_id($h->pass_id);
-
-      $this->pass_short_details();
-
-      $bestprice = $this->bestPrice();
-
-      $price = $bestprice;
-
-      $tripAdvisorID = $this->tripadvisorid;
-
-      $tripStatus = $this->tripAdvisorStatus();
-
-      if ($tripStatus && !empty($tripAdvisorID)) {
-
-        $avgReviews = $this->tripAdvisorData($tripAdvisorID);
-
-        if (empty($avgReviews->overall)) {
-
-          $avgReviews = $this->passReviewsAvg();
+            $passid = $this->passid;
 
         }
 
-      }
-
-      else {
-
-        $avgReviews = $this->passReviewsAvg(NULL);
-
-      }
-
-      $priceRange = $this->priceRange(@$_GET['price']);
-
-      if (!empty($_GET['price'])) {
-
-        if (($price >= $priceRange->minprice) && ($price <= $priceRange->maxprice)) {
-
-          $result[] = (object) array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'desc' => strip_tags($this->desc), 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'amenities' => $this->amenities, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
-
-        }
-
-      }
-
-      else {
-
-        $result[] = (object) array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'desc' => strip_tags($this->desc), 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'amenities' => $this->amenities, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
-
-      }
-
-    }
-
-    $this->currencycode = $curr->code;
-
-    $this->currencysign = $curr->symbol;
-
-    return $result;
-
-  }
-
-//make a result object limited data of pass array
-
-  function getLimitedResultObject($pass) {
-
-    $this->ci->load->library('currconverter');
-
-    $result = array();
-
-    $curr = $this->ci->currconverter;
-
-    if (!empty($pass)) {
-
-      foreach ($pass as $h) {
-
-        $this->set_id($h->pass_id);
+        $this->set_id($passid);
 
         $this->pass_short_details();
-
-        $bestprice = $this->bestPrice();
-
-        $price = $bestprice;
 
         $tripAdvisorID = $this->tripadvisorid;
 
@@ -2197,398 +1225,1341 @@ $result = $this->db->get('pt_pass')->result();*/
 
         if ($tripStatus && !empty($tripAdvisorID)) {
 
-          $avgReviews = $this->tripAdvisorData($tripAdvisorID);
+            $avgReviews = $this->tripAdvisorData($tripAdvisorID, NULL, TRUE);
 
-          if (empty($avgReviews->overall)) {
+            if (empty($avgReviews->overall)) {
 
-            $avgReviews = $this->passReviewsAvg();
+                $result = array();
 
-          }
+                $this->db->select('review_overall,review_name,review_comment,review_date');
+
+                $this->db->where('review_status', 'Yes');
+
+                $this->db->where('review_module', 'pass');
+
+                $this->db->where('review_itemid', $passid);
+
+                $this->db->order_by('review_id', 'desc');
+
+                $rs = $this->db->get('pt_reviews')->result();
+
+                foreach ($rs as $r) {
+
+                    $result[] = array("review_overall" => $r->review_overall, "review_name" => $r->review_name, "review_comment" => $r->review_comment, "review_date" => pt_show_date_php($r->review_date), 'maxRating' => 10);
+
+                }
+
+            } else {
+
+                $result = $avgReviews->reviews;
+
+            }
+
+        } else {
+
+            $result = array();
+
+            $this->db->select('review_overall,review_name,review_comment,review_date');
+
+            $this->db->where('review_status', 'Yes');
+
+            $this->db->where('review_module', 'pass');
+
+            $this->db->where('review_itemid', $passid);
+
+            $this->db->order_by('review_id', 'desc');
+
+            $rs = $this->db->get('pt_reviews')->result();
+
+            foreach ($rs as $r) {
+
+                $result[] = array("review_overall" => $r->review_overall, "review_name" => $r->review_name, "review_comment" => $r->review_comment, "review_date" => pt_show_date_php($r->review_date), 'maxRating' => 10);
+
+            }
 
         }
 
-        else {
-
-          $avgReviews = $this->passReviewsAvg();
-
-        }
-
-        if (!empty($this->title)) {
-
-          $result[] = (object) array('id' => $this->passid, 'title' => $this->title, 'desc' => $this->desc, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars),'starsCount' => $this->stars, 'location' => $this->location, 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
-
-        }
-
-      }
+        return $result;
 
     }
 
-    $this->currencycode = $curr->code;
+// pass Reviews Averages
 
-    $this->currencysign = $curr->symbol;
+    function passReviewsAvg($passid = 0)
+    {
 
-    return $result;
+        $clean = 0;
 
-  }
+        $comfort = 0;
+
+        $location = 0;
+
+        $facilities = 0;
+
+        $staff = 0;
+
+        $totalreviews = 0;
+
+        $overall = 0;
+
+        if (pt_is_module_enabled('reviews')) {
+
+            if (empty($passid)) {
+
+                $passid = $this->passid;
+
+            }
+
+            $this->db->select("COUNT(*) AS totalreviews");
+
+            $this->db->select_avg('review_overall', 'overall');
+
+            $this->db->select_avg('review_clean', 'clean');
+
+            $this->db->select_avg('review_facilities', 'facilities');
+
+            $this->db->select_avg('review_staff', 'staff');
+
+            $this->db->select_avg('review_comfort', 'comfort');
+
+            $this->db->select_avg('review_location', 'location');
+
+            $this->db->where('review_status', 'Yes');
+
+            $this->db->where('review_module', 'pass');
+
+            $this->db->where('review_itemid', $passid);
+
+            $res = $this->db->get('pt_reviews')->result();
+
+            $clean = round($res[0]->clean, 1);
+
+            $comfort = round($res[0]->comfort, 1);
+
+            $location = round($res[0]->location, 1);
+
+            $facilities = round($res[0]->facilities, 1);
+
+            $staff = round($res[0]->staff, 1);
+
+            $totalreviews = $res[0]->totalreviews;
+
+            $overall = round($res[0]->overall, 1);
+
+        }
+
+        $result = (object)array('clean' => $clean, 'comfort' => $comfort, 'location' => $location, 'facilities' => $facilities, 'staff' => $staff, 'totalReviews' => $totalreviews, 'overall' => $overall);
+
+        return $result;
+
+    }
+
+    function getLocationsList()
+    {
+
+        $resultLocations = array();
+
+        $this->db->select('pass_city');
+
+        $this->db->group_by('pass_city');
+
+        $locations = $this->db->get('pt_pass')->result();
+
+        foreach ($locations as $loc) {
+
+            $locInfo = pt_LocationsInfo($loc->pass_city, $this->lang);
+
+            if (!empty($locInfo->city)) {
+
+                $resultLocations[] = (object)array('id' => $locInfo->id, 'name' => $locInfo->city);
+
+            }
+
+        }
+
+        return $resultLocations;
+
+    }
+
+    function translated_data($lang)
+    {
+
+        $this->db->where('item_id', $this->passid);
+
+        $this->db->where('trans_lang', $lang);
+
+        return $this->db->get('pt_pass_translation')->result();
+
+    }
+
+    function room_short_details($id)
+    {
+
+        $this->db->select('room_id,room_quantity,room_type,room_title,room_desc,room_adults,room_children,room_amenities,thumbnail_image,extra_bed,extra_bed_charges');
+
+        $this->db->where('pt_rooms.room_id', $id);
+
+        $details = $this->db->get('pt_rooms')->result();
+
+//$this->roomtitle = $this->get_room_title($details[0]->room_title, $id);
+
+        $this->roomtitle = $this->getRoomType($details[0]->room_type);
+
+        $this->roomdesc = $this->get_room_description($details[0]->room_desc, $id);
+
+        $roomAmenities = explode(",", $details[0]->room_amenities);
+
+        foreach ($roomAmenities as $rm) {
+
+            $amtsRoom[] = $this->amenitiesTranslation($rm);
+
+        }
+
+        $details['amenities'] = $amtsRoom;
+
+// $this->room_price($id,$currsign,$currcode);
+
+        return $details;
+
+    }
+
+    function getRoomTitleOnly($id)
+    {
+
+        $this->db->select('room_title,room_type');
+
+        $this->db->where('room_id', $id);
+
+        $details = $this->db->get('pt_rooms')->result();
+
+//$roomTitle = $this->get_room_title($details[0]->room_title, $id);
+
+        $roomTitle = $this->getRoomType($details[0]->room_type);
+
+        return $roomTitle;
+
+    }
+
+    function get_room_title($deftitle, $id)
+    {
+
+        if ($this->lang == $this->langdef) {
+
+            $title = $deftitle;
+
+        } else {
+
+            $this->db->where('item_id', $id);
+
+            $this->db->where('trans_lang', $this->lang);
+
+            $res = $this->db->get('pt_rooms_translation')->result();
+
+            $title = $res[0]->trans_title;
+
+            if (empty($title)) {
+
+                $title = $deftitle;
+
+            }
+
+        }
+
+        return $title;
+
+    }
+
+    function available_rooms()
+    {
+
+        $this->ci->load->helper('check');
+
+        $result = array();
+
+        $rooms = $this->rooms_id_title_only();
+
+        foreach ($rooms as $room) {
+
+            $unavail = pt_is_room_unvailable($room->room_id, $this->checkin, $this->checkout);
+
+            $bookedrooms = pt_is_room_booked($room->room_id, $this->checkin, $this->checkout);
+
+            $maxadults = true;
+
+            $maxchild = true;
+
+            $minstay = $room->room_min_stay;
+
+            if ($this->adults > $room->room_adults) {
+
+                $maxadults = false;
+
+            } else {
+
+                $maxadults = true;
+
+            }
+
+            if ($this->children > $room->room_children) {
+
+                $maxchild = false;
+
+            } else {
+
+                $maxchild = true;
+
+            }
+
+            $totalroomscount = $room->room_quantity;
+
+            $availablerooms = $totalroomscount - $bookedrooms;
+
+            if (!$unavail && $availablerooms > 0 && $maxadults && $maxchild && $minstay <= $this->stay) {
+
+                $roomdetails = $this->room_short_details($room->room_id);
+
+                $result[] = array('passid' => $this->passid, 'id' => $room->room_id, 'roomlargethumb' => $this->roomlargethumb, 'roomsmallthumb' => $this->roomsmallthumb, 'roomtitle' => $this->roomtitle, 'desc' => $this->roomdesc, 'roomprice' => $this->roomprice, 'available_quantity' => $availablerooms, 'totalquantity' => $room->room_quantity, 'room_children' => $roomdetails[0]->room_children, 'room_adults' => $roomdetails[0]->room_adults, 'room_size' => $roomdetails[0]->room_size, 'room_bed_size' => $roomdetails[0]->room_bed_size, 'roomspecials' => $this->roomspecials, 'roomadditional' => $this->roomadditional, 'room_amenities' => $roomdetails[0]->room_amenities);
+
+            }
+
+        }
+
+        if (!empty($result)) {
+
+            $this->roomsavailable = true;
+
+        } else {
+
+            $this->roomsavailable = false;
+
+        }
+
+        return $result;
+
+    }
+
+    function validroomscount($shortdetails)
+    {
+
+        $this->roomscounterror = "";
+
+// $unavail =  pt_is_room_unvailable($shortdetails[0]->room_id,$this->checkin,$this->checkout);
+
+        $bookedrooms = pt_is_room_booked($shortdetails[0]->room_id, $this->checkin, $this->checkout);
+
+        $availablerooms = $shortdetails[0]->room_quantity - $bookedrooms;
+
+        if ($this->children > $shortdetails[0]->room_children) {
+
+            $this->roomscounterror = "Maximum children exceeded.";
+
+        }
+
+        if ($this->adults > $shortdetails[0]->room_adults) {
+
+            $this->roomscounterror = "Maximum Adults exceeded.";
+
+        }
+
+        if ($availablerooms < $this->roomscount) {
+
+            $this->roomscounterror = "Room Not available for booking.";
+
+        }
+
+    }
+
+    function get_room_description($defdesc, $id)
+    {
+
+        if ($this->lang == $this->langdef) {
+
+            $desc = $defdesc;
+
+        } else {
+
+            $this->db->where('item_id', $id);
+
+            $this->db->where('trans_lang', $this->lang);
+
+            $res = $this->db->get('pt_rooms_translation')->result();
+
+            $desc = $res[0]->trans_desc;
+
+            if (empty($desc)) {
+
+                $desc = $defdesc;
+
+            }
+
+        }
+
+        return $desc;
+
+    }
+
+    function rooms_translated_data($lang, $id)
+    {
+
+        $this->db->where('item_id', $id);
+
+        $this->db->where('trans_lang', $lang);
+
+        return $this->db->get('pt_rooms_translation')->result();
+
+    }
+
+    function room_total_quantity($id)
+    {
+
+        $this->db->select('room_quantity');
+
+        $this->db->where('room_id', $id);
+
+        $res = $this->db->get('pt_rooms')->result();
+
+        if (!empty($res)) {
+
+            return $res[0]->room_quantity;
+
+        } else {
+
+            return '0';
+
+        }
+
+    }
+
+    function pass_tax_commision()
+    {
+
+        $res = array();
+
+        $this->db->select('pass_comm_fixed,pass_comm_percentage,pass_tax_fixed,pass_tax_percentage');
+
+        $this->db->where('pass_id', $this->passid);
+
+        $result = $this->db->get('pt_pass')->result();
+
+        $commfixed = $result[0]->pass_comm_fixed;
+
+        $commper = $result[0]->pass_comm_percentage;
+
+        $taxfixed = $result[0]->pass_tax_fixed;
+
+        $taxper = $result[0]->pass_tax_percentage;
+
+        $res['commtype'] = "percentage";
+
+        $res['commval'] = $commper;
+
+        $res['taxtype'] = "percentage";
+
+        $res['taxval'] = $taxper;
+
+        if ($commfixed > 0) {
+
+            $res['commtype'] = "fixed";
+
+            $res['commval'] = $commfixed;
+
+        }
+
+        if ($taxfixed > 0) {
+
+            $res['taxtype'] = "fixed";
+
+            $res['taxval'] = $taxfixed;
+
+        }
+
+        return $res;
+
+    }
+
+    function is_featured()
+    {
+
+        $this->db->select('pass_id');
+
+        $this->db->where('pass_is_featured', 'yes');
+
+        $this->db->where('pass_featured_from <', time());
+
+        $this->db->where('pass_featured_to >', time());
+
+        $this->db->where('pass_id', $this->passid);
+
+        return $this->db->get('pt_pass')->num_rows();
+
+    }
+
+    function specialofferslist($limit = 0)
+    {
+
+        $this->db->select('offer_item');
+
+        $this->db->where('pt_special_offers.offer_from <=', time());
+
+        $this->db->where('pt_special_offers.offer_to >=', time());
+
+        $this->db->where_in('pt_special_offers.offer_module', 'pass');
+
+        $this->db->where('pt_special_offers.offer_status', '1');
+
+        $this->db->order_by('pt_special_offers.offer_item', 'desc');
+
+        $this->db->limit($limit);
+
+        return $this->db->get('pt_special_offers')->result();
+
+    }
+
+    function featured_pass_list()
+    {
+
+        $settings = $this->settings();
+
+        $limit = $settings[0]->front_homepage;
+
+        $orderby = $settings[0]->front_homepage_order;
+
+        $this->db->select('pass_id,pass_order,pass_title,pass_status');
+
+        $this->db->where('pass_is_featured', 'yes');
+
+        $this->db->where('pass_featured_from <', time());
+
+        $this->db->where('pass_featured_to >', time());
+
+        $this->db->or_where('pass_featured_forever', 'forever');
+
+        $this->db->having('pass_status', 'Yes');
+
+        $this->db->limit($limit);
+
+        if ($orderby == "za") {
+
+            $this->db->order_by('pt_pass.pass_title', 'desc');
+
+        } elseif ($orderby == "az") {
+
+            $this->db->order_by('pt_pass.pass_title', 'asc');
+
+        } elseif ($orderby == "oldf") {
+
+            $this->db->order_by('pt_pass.pass_id', 'asc');
+
+        } elseif ($orderby == "newf") {
+
+            $this->db->order_by('pt_pass.pass_id', 'desc');
+
+        } elseif ($orderby == "ol") {
+
+            $this->db->order_by('pt_pass.pass_order', 'asc');
+
+        }
+
+        return $this->db->get('pt_pass')->result();
+
+    }
+
+    function getFeaturedPass()
+    {
+
+        $pass = $this->featured_pass_list();
+
+        $result = $this->getResultObject($pass);
+
+        return $result;
+
+    }
+
+    function getTopRatedPass()
+    {
+
+        $pass = $this->ci->Pass_model->popular_pass_front();
+
+        $result = $this->getResultObject($pass);
+
+        return $result;
+
+    }
+
+    function getRelatedPass($pass)
+    {
+
+        $resultpass = array();
+
+        $result = array();
+
+        $settings = $this->settings();
+
+        $limit = $settings[0]->front_related;
+
+        $count = 0;
+
+        if (!empty($pass)) {
+
+            foreach ($pass as $h) {
+
+                $count++;
+
+                if ($count <= $limit) {
+
+                    $resultpass[] = (object)array('pass_id' => $h);
+
+                }
+
+            }
+
+        }
+
+        $result = $this->getLimitedResultObject($resultpass);
+
+        return $result;
+
+    }
+
+    function hero_pass_list()
+    {
+
+        $this->db->select('front_homepage_hero');
+
+        $rslt = $this->db->get('pt_front_settings')->result();
+
+        $pass = $rslt[0]->front_homepage_hero;
+
+        if (!empty($pass)) {
+
+            $heropass = explode(",", $pass);
+
+        } else {
+
+            $heropass = "";
+
+        }
+
+        return $heropass;
+
+    }
+
+    function mini_hero_pass_list()
+    {
+
+        $this->db->select('front_homepage_small_hero');
+
+        $rslt = $this->db->get('pt_front_settings')->result();
+
+        $minipass = $rslt[0]->front_homepage_small_hero;
+
+        if (!empty($minipass)) {
+
+            $miniheropass = explode(",", $minipass);
+
+        } else {
+
+            $miniheropass = "";
+
+        }
+
+        return $miniheropass;
+
+    }
+
+// List 2 top rated pass from each city passed to to this function
+
+    function top_rated_pass($city)
+    {
+
+        $this->db->select('pt_pass.pass_id');
+
+        $this->db->select_avg('pt_reviews.review_overall', 'overall');
+
+        $this->db->where('pt_pass.pass_city', $city);
+
+        $this->db->group_by('pt_pass.pass_id');
+
+        $this->db->join('pt_reviews', 'pt_pass.pass_id = pt_reviews.review_itemid', 'left');
+
+        $this->db->where('pt_pass.pass_status', '1');
+
+        $this->db->order_by('pt_reviews.review_overall', 'desc');
+
+        $this->db->limit(2);
+
+        return $this->db->get('pt_pass')->result();
+
+    }
+
+    function bestPrice($passid = null)
+    {
+
+        $this->ci->load->library('currconverter');
+
+        $curr = $this->ci->currconverter;
+
+        if (empty($passid)) {
+
+            $passid = $this->passid;
+
+        }
+
+        $this->ci->load->model('Pass/Rooms_model');
+
+        $this->db->select('room_id');
+
+        $this->db->where('room_pass', $passid);
+
+        $res = $this->db->get('pt_rooms')->result();
+
+        foreach ($res as $r) {
+
+            $p = $this->ci->Rooms_model->getRoomPrice($r->room_id, $this->checkin, $this->checkout);
+
+            $result[] = $p['perNight'];
+
+//  $result[] = $p;
+
+        }
+
+        $price = $curr->convertPrice(min($result));
+
+        return $price;
+
+//  return $result;
+
+    }
+
+    function passwithrooms()
+    {
+
+        $this->ci->load->helper('check');
+
+        $result = array();
+
+        $this->db->select('pass_id');
+
+        $this->db->where('pass_status', 'Yes');
+
+        $pass = $this->db->get('pt_pass')->result();
+
+        foreach ($pass as $pass) {
+
+            $rooms = $this->rooms_id_title_only($pass->pass_id);
+
+            foreach ($rooms as $room) {
+
+                $unavail = pt_is_room_unvailable($room->room_id, $this->checkin, $this->checkout);
+
+                $bookedrooms = pt_is_room_booked($room->room_id, $this->checkin, $this->checkout);
+
+                $totalroomscount = $room->room_quantity;
+
+                $availablerooms = $totalroomscount - $bookedrooms;
+
+                if (!$unavail && $availablerooms > 0) {
+
+                    if (!in_array($pass->pass_id, $result['pass'])) {
+
+                        $result['pass'][] = $pass->pass_id;
+
+                    }
+
+                    $result['rooms'][] = $room->room_id;
+
+                }
+
+            }
+
+        }
+
+        return $result;
+
+    }
+
+    function paymethodFee($id, $total)
+    {
+
+        $result = 0;
+
+        $this->db->select('payment_percentage');
+
+        $this->db->where('payment_id', $id);
+
+        $res = $this->db->get('pt_payment_gateways')->result();
+
+        if (!empty($res) && $total > 0) {
+
+            $result = round($total * $res[0]->payment_percentage / 100, 2);
+
+        }
+
+        return $result;
+
+    }
+
+    function extrasFee($exts)
+    {
+
+        $extFee = 0;
+
+        $result['extrasIndividualFee'] = array();
+
+        $result['extrasInfo'] = array();
+
+        $result['extrasTotalFee'] = array();
+
+        $this->ci->load->library('currconverter');
+
+        $curr = $this->ci->currconverter;
+
+        if (isset($exts) && !empty($exts)) {
+            $exts = is_array($exts) ? $exts : [$exts];
+
+            foreach ($exts as $ext) {
+
+                $this->db->select('extras_title,extras_desc,extras_discount,extras_basic_price');
+
+                $this->db->where('extras_id', $ext);
+
+                $rs = $this->db->get('pt_extras')->result();
+
+                $amount = $rs[0]->extras_basic_price;
+
+                $price = $curr->convertPriceFloat($amount, 2);
+
+                $extFee += $amount;
+
+                $info = $this->extrasTranslation($ext, $rs[0]->extras_title, $rs[0]->extras_desc);
+
+                $result['extrasIndividualFee'][] = array("id" => $ext, "price" => $price);
+
+                $result['extrasInfo'][] = array("title" => $info['title'], "price" => $price);
+
+            }
+
+        }
+
+        $result['extrasTotalFee'] = $extFee;
+
+        return $result;
+
+    }
+
+    function setDeposit($total)
+    {
+
+        if ($this->comm_type == "fixed") {
+
+            $this->deposit = round($this->comm_value, 2);
+
+        } else {
+
+            $this->deposit = round(($total * $this->comm_value) / 100, 2);
+
+        }
+
+    }
+
+    function setTax($amount)
+    {
+
+        if ($this->tax_type == "fixed") {
+
+            $this->taxamount = round($this->tax_value, 2);
+
+        } else {
+
+            $this->taxamount = round(($amount * $this->tax_value) / 100, 2);
+
+        }
+    }
+
+//make a result object all data of pass array
+
+    function getResultObject($pass)
+    {
+
+        $this->ci->load->library('currconverter');
+
+        $result = array();
+
+        $curr = $this->ci->currconverter;
+
+        foreach ($pass as $h) {
+
+            $this->set_id($h->pass_id);
+
+            $this->pass_short_details();
+
+            $bestprice = $this->bestPrice();
+
+            $price = $bestprice;
+
+            $tripAdvisorID = $this->tripadvisorid;
+
+            $tripStatus = $this->tripAdvisorStatus();
+
+            if ($tripStatus && !empty($tripAdvisorID)) {
+
+                $avgReviews = $this->tripAdvisorData($tripAdvisorID);
+
+                if (empty($avgReviews->overall)) {
+
+                    $avgReviews = $this->passReviewsAvg();
+
+                }
+
+            } else {
+
+                $avgReviews = $this->passReviewsAvg(NULL);
+
+            }
+
+            $priceRange = $this->priceRange(@$_GET['price']);
+
+            if (!empty($_GET['price'])) {
+
+                if (($price >= $priceRange->minprice) && ($price <= $priceRange->maxprice)) {
+
+                    $result[] = (object)array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'desc' => strip_tags($this->desc), 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'amenities' => $this->amenities, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
+
+                }
+
+            } else {
+
+                $result[] = (object)array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'desc' => strip_tags($this->desc), 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'amenities' => $this->amenities, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
+
+            }
+
+        }
+
+        $this->currencycode = $curr->code;
+
+        $this->currencysign = $curr->symbol;
+
+        return $result;
+
+    }
+
+//make a result object limited data of pass array
+
+    function getLimitedResultObject($pass)
+    {
+
+        $this->ci->load->library('currconverter');
+
+        $result = array();
+
+        $curr = $this->ci->currconverter;
+
+        if (!empty($pass)) {
+
+            foreach ($pass as $h) {
+
+                $this->set_id($h->pass_id);
+
+                $this->pass_short_details();
+
+                $bestprice = $this->bestPrice();
+
+                $price = $bestprice;
+
+                $tripAdvisorID = $this->tripadvisorid;
+
+                $tripStatus = $this->tripAdvisorStatus();
+
+                if ($tripStatus && !empty($tripAdvisorID)) {
+
+                    $avgReviews = $this->tripAdvisorData($tripAdvisorID);
+
+                    if (empty($avgReviews->overall)) {
+
+                        $avgReviews = $this->passReviewsAvg();
+
+                    }
+
+                } else {
+
+                    $avgReviews = $this->passReviewsAvg();
+
+                }
+
+                if (!empty($this->title)) {
+
+                    $result[] = (object)array('id' => $this->passid, 'title' => $this->title, 'desc' => $this->desc, 'slug' => base_url() . 'pass/' . $this->slug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'avgReviews' => $avgReviews, 'latitude' => $this->latitude, 'longitude' => $this->longitude);
+
+                }
+
+            }
+
+        }
+
+        $this->currencycode = $curr->code;
+
+        $this->currencysign = $curr->symbol;
+
+        return $result;
+
+    }
 
 //make a result object of Rooms Array
 
-  function getRoomsResultObject($rooms, $checkin = null, $checkout = null) {
+    function getRoomsResultObject($rooms, $checkin = null, $checkout = null)
+    {
 
-    if (empty($checkin)) {
+        if (empty($checkin)) {
 
-      $checkin = $this->checkin;
-
-    }
-
-    if (empty($checkout)) {
-
-      $checkout = $this->checkout;
-
-    }
-
-    $this->ci->load->library('currconverter');
-
-    $this->ci->load->helper('check');
-
-    $Roomresult = array();
-
-    $curr = $this->ci->currconverter;
-
-    $this->ci->load->model('Pass/Rooms_model');
-
-    foreach ($rooms as $room) {
-
-      $details = $this->room_short_details($room->id);
-
-      $extrabeds = $details[0]->extra_bed;
-
-      $images = $this->roomImages($room->id, 5);
-      $this->ci->Rooms_model->adults = $this->adults;
-      $this->ci->Rooms_model->children = $this->children;
-      $roomprice = $this->ci->Rooms_model->getRoomPrice($room->id, $checkin, $checkout);
-      $bookedRooms = pt_is_room_booked($room->id, $checkin, $checkout);
-
-      $checkAvail = ptRoomAvailability($room->id, $checkin, $checkout);
-
-      $chkArray = $checkAvail->dateByDate;
-
-      if ($checkAvail->isAvailable) {
-
-        if (!empty($chkArray)) {
-
-          if ($chkArray[0] > 0 && $chkArray[0] != $details[0]->room_quantity) {
-
-            $availQuantity = $chkArray[0] - $bookedRooms;
-
-          }
-
-          else {
-
-            $availQuantity = $details[0]->room_quantity - $bookedRooms;
-
-          }
+            $checkin = $this->checkin;
 
         }
 
-        else {
+        if (empty($checkout)) {
 
-          $availQuantity = $details[0]->room_quantity - $bookedRooms;
+            $checkout = $this->checkout;
 
         }
 
-      }
+        $this->ci->load->library('currconverter');
 
-      else {
+        $this->ci->load->helper('check');
 
-        $availQuantity = 0;
+        $Roomresult = array();
 
-      }
+        $curr = $this->ci->currconverter;
 
-      $bedcharges = $curr->convertPriceFloat($roomprice['extrabed'], 0);
+        $this->ci->load->model('Pass/Rooms_model');
 
-      $price = $curr->convertPrice($roomprice['totalPrice'], 0);
+        foreach ($rooms as $room) {
 
-      if ($roomprice['maxAdults'] >= $this->adults && $roomprice['maxChild'] >= $this->children) {
+            $details = $this->room_short_details($room->id);
 
-        $Roomresult[] = (object) array('id' => $room->id, 'title' => $this->roomtitle, 'desc' => $this->roomdesc, 'maxAdults' => $details[0]->room_adults, 'maxChild' => $details[0]->room_children, 'maxQuantity' => $availQuantity, 'thumbnail' => PT_ROOMS_THUMBS . $details[0]->thumbnail_image, 'Images' => $images, 'Amenities' => $details['amenities'], 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'Info' => $roomprice, 'extraBeds' => $extrabeds, 'extrabedCharges' => $bedcharges);
+            $extrabeds = $details[0]->extra_bed;
 
-      }
+            $images = $this->roomImages($room->id, 5);
+            $this->ci->Rooms_model->adults = $this->adults;
+            $this->ci->Rooms_model->children = $this->children;
+            $roomprice = $this->ci->Rooms_model->getRoomPrice($room->id, $checkin, $checkout);
+            $bookedRooms = pt_is_room_booked($room->id, $checkin, $checkout);
+
+            $checkAvail = ptRoomAvailability($room->id, $checkin, $checkout);
+
+            $chkArray = $checkAvail->dateByDate;
+
+            if ($checkAvail->isAvailable) {
+
+                if (!empty($chkArray)) {
+
+                    if ($chkArray[0] > 0 && $chkArray[0] != $details[0]->room_quantity) {
+
+                        $availQuantity = $chkArray[0] - $bookedRooms;
+
+                    } else {
+
+                        $availQuantity = $details[0]->room_quantity - $bookedRooms;
+
+                    }
+
+                } else {
+
+                    $availQuantity = $details[0]->room_quantity - $bookedRooms;
+
+                }
+
+            } else {
+
+                $availQuantity = 0;
+
+            }
+
+            $bedcharges = $curr->convertPriceFloat($roomprice['extrabed'], 0);
+
+            $price = $curr->convertPrice($roomprice['totalPrice'], 0);
+
+            if ($roomprice['maxAdults'] >= $this->adults && $roomprice['maxChild'] >= $this->children) {
+
+                $Roomresult[] = (object)array('id' => $room->id, 'title' => $this->roomtitle, 'desc' => $this->roomdesc, 'maxAdults' => $details[0]->room_adults, 'maxChild' => $details[0]->room_children, 'maxQuantity' => $availQuantity, 'thumbnail' => PT_ROOMS_THUMBS . $details[0]->thumbnail_image, 'Images' => $images, 'Amenities' => $details['amenities'], 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'Info' => $roomprice, 'extraBeds' => $extrabeds, 'extrabedCharges' => $bedcharges);
+
+            }
+
+        }
+
+        return $Roomresult;
 
     }
-
-    return $Roomresult;
-
-  }
 
 //make a result object of Rooms Array
 
-  function getBookResultObject($passid, $roomid, $roomscount, $extrabeds = 0, $checkin = null, $checkout = null) {
+    function getBookResultObject($passid, $roomid, $roomscount, $extrabeds = 0, $checkin = null, $checkout = null)
+    {
 
-    if (empty($checkin)) {
+        if (empty($checkin)) {
 
-      $checkin = $this->checkin;
+            $checkin = $this->checkin;
 
-    }
+        }
 
-    if (empty($checkout)) {
+        if (empty($checkout)) {
 
-      $checkout = $this->checkout;
+            $checkout = $this->checkout;
 
-    }
+        }
 
-    $extrasCheckUrl = base_url() . 'admin/passajaxcalls/passExtrasBooking';
+        $extrasCheckUrl = base_url() . 'admin/passajaxcalls/passExtrasBooking';
 
-    $this->ci->load->library('currconverter');
+        $this->ci->load->library('currconverter');
 
-    $result = array();
+        $result = array();
 
-    $curr = $this->ci->currconverter;
+        $curr = $this->ci->currconverter;
 
-    $this->ci->load->model('Pass/Rooms_model');
+        $this->ci->load->model('Pass/Rooms_model');
 
 //room details for booking page
 
-    $details = $this->room_short_details($roomid);
+        $details = $this->room_short_details($roomid);
 
-    $this->ci->Rooms_model->adults = $this->adults; 
-    $this->ci->Rooms_model->children = $this->children; 
-    
-    $roomprice = $this->ci->Rooms_model->getRoomPrice($roomid, $checkin, $checkout);
+        $this->ci->Rooms_model->adults = $this->adults;
+        $this->ci->Rooms_model->children = $this->children;
 
-    $perNight = $curr->convertPrice($roomprice['perNight']);
+        $roomprice = $this->ci->Rooms_model->getRoomPrice($roomid, $checkin, $checkout);
+
+        $perNight = $curr->convertPrice($roomprice['perNight']);
 
 //pass details for booking page
 
-    $this->set_id($passid);
+        $this->set_id($passid);
 
-    $this->pass_short_details();
+        $this->pass_short_details();
 
-    $extras = $this->passExtras();
+        $extras = $this->passExtras();
 
-    $extrabedcharges = $roomprice['extrabed'] * $extrabeds;
+        $extrabedcharges = $roomprice['extrabed'] * $extrabeds;
 
-    $totalSum = ($roomprice['totalPrice'] * $roomscount) + $extrabedcharges;
-    
-    $this->setTax($totalSum);
+        $totalSum = ($roomprice['totalPrice'] * $roomscount) + $extrabedcharges;
 
-    $taxAmount = $curr->convertPrice($this->taxamount);
+        $this->setTax($totalSum);
 
-    $totalPrice = $totalSum;// + $this->taxamount;
+        $taxAmount = $curr->convertPrice($this->taxamount);
 
-    $bedcharges = $curr->convertPrice($extrabedcharges);
+        $totalPrice = $totalSum;// + $this->taxamount;
 
-    $price = $curr->convertPrice($totalPrice);
+        $bedcharges = $curr->convertPrice($extrabedcharges);
 
-    $this->setDeposit($totalPrice);
+        $price = $curr->convertPrice($totalPrice);
 
-    $depositAmount = $curr->convertPrice($this->deposit);
+        $this->setDeposit($totalPrice);
 
-    $result["room"] = (object) array('id' => $roomid, 'title' => $this->roomtitle, 'desc' => $this->roomdesc, 'maxAdults' => $details[0]->room_adults, 'maxChild' => $details[0]->room_children, 'maxQuantity' => $details[0]->room_quantity, 'thumbnail' => PT_ROOMS_THUMBS . $details[0]->thumbnail_image, 'Images' => $images, 'Amenities' => $details['amenities'], 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'perNight' => $perNight, 'Info' => $roomprice, 'stay' => $roomprice['stay'], 'roomscount' => $roomscount, 'extraBedCharges' => $bedcharges, 'extraBedsCount' => $extrabeds);
+        $depositAmount = $curr->convertPrice($this->deposit);
+
+        $result["room"] = (object)array('id' => $roomid, 'title' => $this->roomtitle, 'desc' => $this->roomdesc, 'maxAdults' => $details[0]->room_adults, 'maxChild' => $details[0]->room_children, 'maxQuantity' => $details[0]->room_quantity, 'thumbnail' => PT_ROOMS_THUMBS . $details[0]->thumbnail_image, 'Images' => $images, 'Amenities' => $details['amenities'], 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'perNight' => $perNight, 'Info' => $roomprice, 'stay' => $roomprice['stay'], 'roomscount' => $roomscount, 'extraBedCharges' => $bedcharges, 'extraBedsCount' => $extrabeds);
 
 //end room details for booking page
 
-    $result["pass"] = (object) array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'bookingSlug' => $this->bookingSlug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'checkin' => $checkin, 'checkout' => $checkout, 'metadesc' => $this->metadesc, 'keywords' => $this->keywords, 'extras' => $extras, 'taxAmount' => $taxAmount, 'depositAmount' => $depositAmount, 'policy' => $this->policy, 'extraChkUrl' => $extrasCheckUrl, 'adults' => $this->adults, 'children' => $this->children);
+        $result["pass"] = (object)array('id' => $this->passid, 'title' => $this->title, 'slug' => base_url() . 'pass/' . $this->slug, 'bookingSlug' => $this->bookingSlug, 'thumbnail' => $this->thumbnail, 'stars' => pt_create_stars($this->stars), 'starsCount' => $this->stars, 'location' => $this->location, 'checkin' => $checkin, 'checkout' => $checkout, 'metadesc' => $this->metadesc, 'keywords' => $this->keywords, 'extras' => $extras, 'taxAmount' => $taxAmount, 'depositAmount' => $depositAmount, 'policy' => $this->policy, 'extraChkUrl' => $extrasCheckUrl, 'adults' => $this->adults, 'children' => $this->children);
 
 //end pass details for booking page
 
-    return $result;
+        return $result;
 
-  }
+    }
 
 //get updated values of booking data after extras and payment method updates
 
-  function getUpdatedDataBookResultObject($passid, $roomid, $checkin, $checkout, $roomscount, $extras, $extrabeds = 0, $adults = 0, $_taxamount = 0) {
+    function getUpdatedDataBookResultObject($passid, $roomid, $checkin, $checkout, $roomscount, $extras, $extrabeds = 0, $adults = 0, $_taxamount = 0)
+    {
 
-    $this->ci->load->library('currconverter');
+        $this->ci->load->library('currconverter');
 
-    $result = array();
+        $result = array();
 
-    $curr = $this->ci->currconverter;
+        $curr = $this->ci->currconverter;
 
-    $this->ci->load->model('Pass/Rooms_model');
+        $this->ci->load->model('Pass/Rooms_model');
 
 //room details for booking page
 
-    $details = $this->room_short_details($roomid);
+        $details = $this->room_short_details($roomid);
 
-    $extratotal = $this->extrasFee($extras);
+        $extratotal = $this->extrasFee($extras);
 
-    $this->ci->Rooms_model->adults = $adults;
-    $this->ci->Rooms_model->children = 0;
+        $this->ci->Rooms_model->adults = $adults;
+        $this->ci->Rooms_model->children = 0;
 
-    $roomprice = $this->ci->Rooms_model->getRoomPrice($roomid, $checkin, $checkout);
+        $roomprice = $this->ci->Rooms_model->getRoomPrice($roomid, $checkin, $checkout);
 
-    $extrabedcharges = $roomprice['extrabed'] * $extrabeds;
+        $extrabedcharges = $roomprice['extrabed'] * $extrabeds;
 
-    $total = ($roomprice['totalPrice'] * $roomscount) + $extratotal['extrasTotalFee'] + $extrabedcharges; // Tax will only impose on basic price.
+        $total = ($roomprice['totalPrice'] * $roomscount) + $extratotal['extrasTotalFee'] + $extrabedcharges; // Tax will only impose on basic price.
 
-    $paymethodTotal = 0; //$this->paymethodFee($this->ci->input->post('paymethod'),$total);
+        $paymethodTotal = 0; //$this->paymethodFee($this->ci->input->post('paymethod'),$total);
 
-    $this->set_id($passid);
+        $this->set_id($passid);
 
-    $this->pass_short_details();
+        $this->pass_short_details();
 
-    $this->setTax($total);
+        $this->setTax($total);
 
-    if (!empty($_taxamount)) { // on extra for single room.
-      $this->taxamount = $_taxamount;
-    }
-    if ($_taxamount == 'ignore') {
-      $this->taxamount = 0;
-    }
-    
-    $taxAmount = $curr->convertPrice($this->taxamount);
+        if (!empty($_taxamount)) { // on extra for single room.
+            $this->taxamount = $_taxamount;
+        }
+        if ($_taxamount == 'ignore') {
+            $this->taxamount = 0;
+        }
 
-    $grandTotal = $total + $paymethodTotal + $this->taxamount;
+        $taxAmount = $curr->convertPrice($this->taxamount);
 
-    $this->setDeposit($grandTotal);
+        $grandTotal = $total + $paymethodTotal + $this->taxamount;
 
-    $depositAmount = $curr->convertPrice($this->deposit);
+        $this->setDeposit($grandTotal);
 
-    $bedcharges = $curr->convertPrice($extrabedcharges);
+        $depositAmount = $curr->convertPrice($this->deposit);
 
-    $price = $curr->convertPrice($grandTotal);
+        $bedcharges = $curr->convertPrice($extrabedcharges);
 
-    $perNight = $curr->convertPriceFloat($roomprice['perNight'], 2);
+        $price = $curr->convertPrice($grandTotal);
 
-    $extrasHtml = "";
+        $perNight = $curr->convertPriceFloat($roomprice['perNight'], 2);
 
-    if(isset($extratotal['extrasInfo']) && ! empty($extratotal['extrasInfo'])) {
+        $extrasHtml = "";
 
-      foreach ($extratotal['extrasInfo'] as $einfo) {
+        if (isset($extratotal['extrasInfo']) && !empty($extratotal['extrasInfo'])) {
 
-        $extrasHtml .= "<tr class='allextras'><td>" . $einfo['title'] . "</td>
+            foreach ($extratotal['extrasInfo'] as $einfo) {
+
+                $extrasHtml .= "<tr class='allextras'><td>" . $einfo['title'] . "</td>
 
                       <td class='text-right'>" . $curr->code . " " . $curr->symbol . $einfo['price'] . "</td></tr>";
 
-      }
+            }
 
-    }
+        }
 
-    
 
-    $subitem = array("id" => $roomid, "price" => $perNight, "count" => $roomscount);
+        $subitem = array("id" => $roomid, "price" => $perNight, "count" => $roomscount);
 
-    $result = (object) array('grandTotal' => $price, 'taxAmount' => $taxAmount, 'depositAmount' => $depositAmount, 'extrashtml' => $extrasHtml, 'bookingType' => "pass", 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'subitem' => $subitem, 'stay' => $roomprice['stay'], 'extrasInfo' => $extratotal, 'extraBedCharges' => $bedcharges);
+        $result = (object)array('grandTotal' => $price, 'taxAmount' => $taxAmount, 'depositAmount' => $depositAmount, 'extrashtml' => $extrasHtml, 'bookingType' => "pass", 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'subitem' => $subitem, 'stay' => $roomprice['stay'], 'extrasInfo' => $extratotal, 'extraBedCharges' => $bedcharges);
 
 //end pass details for booking page
 
-    return json_encode($result);
+        return json_encode($result);
 
-  }
+    }
 
 //convert price
 
-  public function convertAmount($price) {
+    public function convertAmount($price)
+    {
 
-    $this->ci->load->library('currconverter');
+        $this->ci->load->library('currconverter');
 
-    $curr = $this->ci->currconverter;
+        $curr = $this->ci->currconverter;
 
-    return $curr->convertPriceFloat($price, 0);
-
-  }
-
-  public function convertPriceRange($price) {
-
-    $this->ci->load->library('currconverter');
-
-    $curr = $this->ci->currconverter;
-
-    return $curr->convertPriceRange($price, 0);
-
-  }
-
-  public function priceRange($sprice) {
-
-    $sprice = str_replace(";", ",", $sprice);
-
-    $sprice = explode(",", $sprice);
-
-    $result = new stdClass;
-
-    $result->minprice = $sprice[0];
-
-    $result->maxprice = isset($sprice[1]) ? $sprice[1] : 0;
-
-    return $result;
-
-  }
-
-  public function siteMapData() {
-
-    $passData = array();
-
-    $this->db->select('pass_id');
-
-    $this->db->where('pass_status', 'Yes');
-
-    $result = $this->db->get('pt_pass');
-
-    $pass = $result->result();
-
-    if (!empty($pass)) {
-
-      $passData = $this->getLimitedResultObject($pass);
+        return $curr->convertPriceFloat($price, 0);
 
     }
 
-    return $passData;
+    public function convertPriceRange($price)
+    {
 
-  }
+        $this->ci->load->library('currconverter');
+
+        $curr = $this->ci->currconverter;
+
+        return $curr->convertPriceRange($price, 0);
+
+    }
+
+    public function priceRange($sprice)
+    {
+
+        $sprice = str_replace(";", ",", $sprice);
+
+        $sprice = explode(",", $sprice);
+
+        $result = new stdClass;
+
+        $result->minprice = $sprice[0];
+
+        $result->maxprice = isset($sprice[1]) ? $sprice[1] : 0;
+
+        return $result;
+
+    }
+
+    public function siteMapData()
+    {
+
+        $passData = array();
+
+        $this->db->select('pass_id');
+
+        $this->db->where('pass_status', 'Yes');
+
+        $result = $this->db->get('pt_pass');
+
+        $pass = $result->result();
+
+        if (!empty($pass)) {
+
+            $passData = $this->getLimitedResultObject($pass);
+
+        }
+
+        return $passData;
+
+    }
 
 // Get Room Type to show instead of title
 
-  function getRoomType($id) {
+    function getRoomType($id)
+    {
 
-    $language = $this->lang;
+        $language = $this->lang;
 
-    $result = new stdClass;
+        $result = new stdClass;
 
-    $this->db->select('sett_name,sett_img');
+        $this->db->select('sett_name,sett_img');
 
-    $this->db->where('sett_id', $id);
+        $this->db->where('sett_id', $id);
 
-    $this->db->where('sett_type', "rtypes");
+        $this->db->where('sett_type', "rtypes");
 
-    $re = $this->db->get('pt_pass_types_settings')->result();
+        $re = $this->db->get('pt_pass_types_settings')->result();
 
-    if ($language == $this->langdef) {
+        if ($language == $this->langdef) {
 
-      $result = $re[0]->sett_name;
+            $result = $re[0]->sett_name;
+
+        } else {
+
+            $this->db->select('trans_name');
+
+            $this->db->where('sett_id', $id);
+
+            $this->db->where('trans_lang', $language);
+
+            $r = $this->db->get('pt_pass_types_settings_translation')->result();
+
+            if (empty($r[0]->trans_name)) {
+
+                $result = $re[0]->sett_name;
+
+            } else {
+
+                $result = $r[0]->trans_name;
+
+            }
+
+        }
+
+        return $result;
 
     }
 
-    else {
-
-      $this->db->select('trans_name');
-
-      $this->db->where('sett_id', $id);
-
-      $this->db->where('trans_lang', $language);
-
-      $r = $this->db->get('pt_pass_types_settings_translation')->result();
-
-      if (empty($r[0]->trans_name)) {
-
-        $result = $re[0]->sett_name;
-
-      }
-
-      else {
-
-        $result = $r[0]->trans_name;
-
-      }
-
-    }
-
-    return $result;
-
-  }
-
-    public function suggestionResults_v2($query) {
+    public function suggestionResults_v2($query)
+    {
 
         $response = array();
 
@@ -2626,11 +2597,11 @@ $result = $this->db->get('pt_pass')->result();*/
 
                 $locInfo = pt_LocationsInfo($l->id, $this->lang);
 
-                $locations[] = (object) array(
+                $locations[] = (object)array(
 
-                    'id' => str_replace(' ','-',strtolower($locInfo->country))."/".str_replace(' ','-',strtolower($l->city)),
+                    'id' => str_replace(' ', '-', strtolower($locInfo->country)) . "/" . str_replace(' ', '-', strtolower($l->city)),
 
-                    'text' => $locInfo->city.", ".$locInfo->country,
+                    'text' => $locInfo->city . ", " . $locInfo->country,
 
                     'module' => 'location',
 
@@ -2646,15 +2617,15 @@ $result = $this->db->get('pt_pass')->result();*/
 
             foreach ($res as $r) {
 
-                $title = (empty($r->trans_title))?$r->pass_title:$r->trans_title;
+                $title = (empty($r->trans_title)) ? $r->pass_title : $r->trans_title;
 
                 $title = $this->get_title($title, $r->id);
 
-                $pass[] = (object) array(
+                $pass[] = (object)array(
 
-                    'id' => str_replace(' ','-',strtolower($r->city))."/".str_replace(' ','-',strtolower($r->pass_title)),
+                    'id' => str_replace(' ', '-', strtolower($r->city)) . "/" . str_replace(' ', '-', strtolower($r->pass_title)),
 
-                    'text' => $title.", ".$r->city,
+                    'text' => $title . ", " . $r->city,
 
                     'module' => 'pass',
 
@@ -2667,29 +2638,26 @@ $result = $this->db->get('pt_pass')->result();*/
         }
 
 
-
         $hh = array("text" => "Pass", "children" => $pass);
 
         $ll = array("text" => "Locations", "children" => $locations);
 
-        if(!empty($pass)){
+        if (!empty($pass)) {
 
             $response[] = $hh;
 
         }
 
-        if(!empty($locations)){
+        if (!empty($locations)) {
 
             $response[] = $ll;
 
         }
 
 
-
         $responseApi = array_merge($pass, $locations);
 
         $dataResponse['forApi'] = array("items" => $responseApi);
-
 
 
         $dataResponse['forWeb'] = $response;
@@ -2699,232 +2667,232 @@ $result = $this->db->get('pt_pass')->result();*/
     }
 
 
+    public function suggestionResults($query)
+    {
 
-  public function suggestionResults($query) {
+        $response = array();
 
-    $response = array();
+        $this->db->select('pt_pass_translation.trans_title as title,pt_pass.pass_id as id,pt_pass.pass_title as title');
 
-    $this->db->select('pt_pass_translation.trans_title as title,pt_pass.pass_id as id,pt_pass.pass_title as title');
+        $this->db->like('pt_pass.pass_title', $query);
 
-    $this->db->like('pt_pass.pass_title', $query);
+        $this->db->or_like('pt_pass_translation.trans_title', $query);
 
-    $this->db->or_like('pt_pass_translation.trans_title', $query);
+        $this->db->join('pt_pass_translation', 'pt_pass.pass_id = pt_pass_translation.item_id', 'left');
 
-    $this->db->join('pt_pass_translation', 'pt_pass.pass_id = pt_pass_translation.item_id', 'left');
+        $this->db->group_by('pt_pass.pass_id');
 
-    $this->db->group_by('pt_pass.pass_id');
+        $this->db->limit('25');
 
-    $this->db->limit('25');
+        $res = $this->db->get('pt_pass')->result();
 
-    $res = $this->db->get('pt_pass')->result();
+        $pass = array();
 
-    $pass = array();
+        $locations = array();
 
-    $locations = array();
+        $this->db->select('id,location');
 
-    $this->db->select('id,location');
-
-    $this->db->like('location', $query);
+        $this->db->like('location', $query);
 
 //$this->db->or_like('country',$query);
 
-    $this->db->limit('25');
+        $this->db->limit('25');
 
-    $locres = $this->db->get('pt_locations')->result();
+        $locres = $this->db->get('pt_locations')->result();
 
-    if (!empty($locres)) {
+        if (!empty($locres)) {
 
-      //$locations[] = (object) array('id' => '', 'name' => '', 'module' => 'location', 'disabled' => true);
+            //$locations[] = (object) array('id' => '', 'name' => '', 'module' => 'location', 'disabled' => true);
 
-      foreach ($locres as $l) {
+            foreach ($locres as $l) {
 
-        $locInfo = pt_LocationsInfo($l->id, $this->lang);
+                $locInfo = pt_LocationsInfo($l->id, $this->lang);
 
-        $locations[] = (object) array('id' => $l->id, 'text' => $locInfo->city.", ".$locInfo->country, 'module' => 'location', 'disabled' => false);
+                $locations[] = (object)array('id' => $l->id, 'text' => $locInfo->city . ", " . $locInfo->country, 'module' => 'location', 'disabled' => false);
 
-      }
+            }
+
+        }
+
+        if (!empty($res)) {
+
+            foreach ($res as $r) {
+
+                $title = $this->get_title($r->title, $r->id);
+
+                $pass[] = (object)array('id' => $r->id, 'text' => trim($title), 'module' => 'pass', 'disabled' => false);
+
+            }
+
+        }
+
+        $hh = array("text" => "Pass", "children" => $pass);
+
+        $ll = array("text" => "Locations", "children" => $locations);
+
+        if (!empty($pass)) {
+
+            $response[] = $hh;
+
+        }
+
+        if (!empty($locations)) {
+
+            $response[] = $ll;
+
+        }
+
+
+        $responseApi = array_merge($pass, $locations);
+
+        $dataResponse['forApi'] = array("items" => $responseApi);
+
+
+        $dataResponse['forWeb'] = $response;
+
+        return $dataResponse;
 
     }
-
-    if (!empty($res)) {
-
-      foreach ($res as $r) {
-
-        $title = $this->get_title($r->title, $r->id);
-
-        $pass[] = (object) array('id' => $r->id, 'text' => trim($title), 'module' => 'pass', 'disabled' => false);
-
-      }
-
-    }
-
-    $hh = array("text" => "Pass", "children" => $pass);
-
-    $ll = array("text" => "Locations", "children" => $locations);
-
-    if(!empty($pass)){
-
-      $response[] = $hh;
-
-    }
-
-  if(!empty($locations)){
-
-    $response[] = $ll;
-
-  }
-
-
-
-  $responseApi = array_merge($pass, $locations);
-
-  $dataResponse['forApi'] = array("items" => $responseApi);
-
-
-
-   $dataResponse['forWeb'] = $response;
-
-   return $dataResponse;
-
-  }
 
 // TripAdvisor Reviews Averages
 
-  function tripAdvisorData($id, $tripInfo = null, $fromApi = false) 
-
-  {
-
-    if (!empty($tripInfo)) 
+    function tripAdvisorData($id, $tripInfo = null, $fromApi = false)
 
     {
 
-      $info = $tripInfo;
+        if (!empty($tripInfo)) {
+
+            $info = $tripInfo;
+
+        } else {
+
+            $info = tripAdvisorInfo($id);
+
+        }
+
+
+        $reviewsData = array();
+
+        if (property_exists($info, "reviews")) {
+
+            $reviews = $info->reviews;
+
+            foreach ($reviews as $rev) {
+
+                $date = explode("T", $rev->published_date);
+
+                $fdate = strtotime($date[0]);
+
+                if ($fromApi) {
+
+                    $fdate = pt_show_date_php(strtotime($date[0]));
+
+                }
+
+                $reviewsData[] = (object)array('id' => $rev->id, 'review_comment' => $rev->text, 'review_name' => $rev->user->username, 'review_overall' => $rev->rating, 'maxRating' => 5, 'reviewUrl' => $rev->url, 'review_date' => $fdate);
+
+            }
+
+        }
+
+
+        $result = (object)array(
+
+            'totalReviews' => @$info->num_reviews,
+
+            'overall' => @$info->rating,
+
+            'imgUrl' => @$info->rating_image_url,
+
+            'reviews' => $reviewsData
+
+        );
+
+        return $result;
 
     }
 
-    else {
-
-      $info = tripAdvisorInfo($id);
-
-    }
-
-    
-
-    $reviewsData = array();
-
-    if (property_exists($info, "reviews"))
-
+    function tripAdvisorStatus()
     {
 
-        $reviews = $info->reviews;
+        $tripmodule = $this->ci->ptmodules->is_mod_available_enabled("tripadvisor");
 
-        foreach ($reviews as $rev) {
-
-          $date = explode("T", $rev->published_date);
-
-          $fdate = strtotime($date[0]);
-
-          if ($fromApi) {
-
-            $fdate = pt_show_date_php(strtotime($date[0]));
-
-          }
-
-          $reviewsData[] = (object) array('id' => $rev->id, 'review_comment' => $rev->text, 'review_name' => $rev->user->username, 'review_overall' => $rev->rating, 'maxRating' => 5, 'reviewUrl' => $rev->url, 'review_date' => $fdate);
-
-        }
+        return $tripmodule;
 
     }
 
+    function getLatestPassForAPI()
+    {
 
+        $this->ci->db->select('pass_id,pass_created_at');
 
-    $result = (object) array(
+        $this->ci->db->order_by('pass_created_at', 'desc');
 
-      'totalReviews' => @$info->num_reviews, 
+        $this->ci->db->limit('10');
 
-      'overall' => @$info->rating, 
+        $items = $this->ci->db->get('pt_pass')->result();
 
-      'imgUrl' => @$info->rating_image_url, 
+        $this->ci->load->library('currconverter');
 
-      'reviews' => $reviewsData
+        $result = array();
 
-    );
+        $curr = $this->ci->currconverter;
 
-    return $result;
+        if (!empty($items)) {
 
-  }
+            foreach ($items as $h) {
 
-  function tripAdvisorStatus() {
+                $this->set_id($h->pass_id);
 
-    $tripmodule = $this->ci->ptmodules->is_mod_available_enabled("tripadvisor");
+                $this->pass_short_details();
 
-    return $tripmodule;
+                $bestprice = $this->bestPrice();
 
-  }
+                $price = $bestprice;
 
-  function getLatestPassForAPI() {
+                $tripAdvisorID = $this->tripadvisorid;
 
-    $this->ci->db->select('pass_id,pass_created_at');
+                $tripStatus = $this->tripAdvisorStatus();
 
-    $this->ci->db->order_by('pass_created_at', 'desc');
+                if ($tripStatus && !empty($tripAdvisorID)) {
 
-    $this->ci->db->limit('10');
+                    $avgReviews = $this->tripAdvisorData($tripAdvisorID);
 
-    $items = $this->ci->db->get('pt_pass')->result();
+                    if (empty($avgReviews->overall)) {
 
-    $this->ci->load->library('currconverter');
+                        $avgReviews = $this->passReviewsAvg();
 
-    $result = array();
+                    }
 
-    $curr = $this->ci->currconverter;
+                } else {
 
-    if (!empty($items)) {
+                    $avgReviews = $this->passReviewsAvg();
 
-      foreach ($items as $h) {
+                }
 
-        $this->set_id($h->pass_id);
+                if (!empty($this->title)) {
 
-        $this->pass_short_details();
+                    $result[] = (object)array('id' => $h->pass_id, 'title' => $this->title, 'thumbnail' => $this->thumbnail, 'starsCount' => $this->stars, 'location' => $this->location, 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'avgReviews' => $avgReviews, 'createdAt' => $this->createdAt, 'module' => 'pass');
 
-        $bestprice = $this->bestPrice();
+                }
 
-        $price = $bestprice;
-
-        $tripAdvisorID = $this->tripadvisorid;
-
-        $tripStatus = $this->tripAdvisorStatus();
-
-        if ($tripStatus && !empty($tripAdvisorID)) {
-
-          $avgReviews = $this->tripAdvisorData($tripAdvisorID);
-
-          if (empty($avgReviews->overall)) {
-
-            $avgReviews = $this->passReviewsAvg();
-
-          }
+            }
 
         }
 
-        else {
-
-          $avgReviews = $this->passReviewsAvg();
-
-        }
-
-        if (!empty($this->title)) {
-
-          $result[] = (object) array('id' => $h->pass_id, 'title' => $this->title, 'thumbnail' => $this->thumbnail, 'starsCount' => $this->stars, 'location' => $this->location, 'price' => $price, 'currCode' => $curr->code, 'currSymbol' => $curr->symbol, 'avgReviews' => $avgReviews, 'createdAt' => $this->createdAt, 'module' => 'pass');
-
-        }
-
-      }
+        return $result;
 
     }
-
-    return $result;
-
-  }
-
+    // Get pass category
+    function passTypes(){
+        $passTypes = array();
+        $this->db->select('*');
+        $this->db->where('status', 'Yes');
+        $types = $this->db->get('pt_pass_categories')->result();
+        foreach ($types as $t) {
+            $passTypes[] = (object) array('id' => $t->id, 'name' => $t->name);
+        }
+        return $passTypes;
+    }
 }
 
