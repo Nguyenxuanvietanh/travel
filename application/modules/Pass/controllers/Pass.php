@@ -343,8 +343,8 @@ class Pass extends MX_Controller {
       $search_params = [
         'name'        => $this->input->get('name'),
         'type'        => $this->input->get('type'),
-        'category_id' => $this->input->get('category'),
-        'ammount'     => $this->input->get('price')
+        'category_id' => $this->input->get('category_id'),
+        'ammount'     => $this->input->get('ammount')
       ];
       // $search_result = $this->Pass_model->get_search_result($search_params);
       $search_result = $this->Pass_lib->show_pass($search_params);

@@ -66,7 +66,7 @@
 
   <div class="clearfix"></div>
   <?php if(!$ismobile): ?>
-  <div class="col-md-3 hidden-sm hidden-xs filter"></div>
+  <div class="col-md-3 hidden-sm hidden-xs"></div>
   <?php endif; ?>
   <div class="col-md-9 col-xs-12">
     <div class="itemscontainer">

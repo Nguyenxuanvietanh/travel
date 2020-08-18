@@ -2759,5 +2759,17 @@ $result = $this->db->get('pt_pass')->result();*/
 
   }
 
+  // Get pass category
+  function passTypes(){
+        $passTypes = array();
+        $this->db->select('*');
+        $this->db->where('status', 'Yes');
+        $types = $this->db->get('pt_pass_categories')->result();
+        foreach ($types as $t) {
+            $passTypes[] = (object) array('id' => $t->id, 'name' => $t->name);
+        }
+        return $passTypes;
+    }
+
 }
 
