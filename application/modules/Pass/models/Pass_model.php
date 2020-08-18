@@ -3070,5 +3070,24 @@ $this->db->or_where('MATCH (pt_pass.pass_city) AGAINST ("'. $searchtxt .'")', NU
 		}
 
 
+		function insert_pass_booking($params){
+			$response = null;
+			$data = [
+				'pass_id' => $params['pass_id'],
+				'fullname' => $params['firstname'] . ' ' . $params['lastname'],
+				'email' => $params['email'],
+				'phone' => $params['phone'],
+				'address' => $params['address'],
+				'country' => $params['country'],
+				'notes' => $params['note']
+			  ];
+
+			$this->db->insert('pt_pass_booking', $data);
+
+			$response = $this->db->insert_id();
+
+			return $response;
+		}
+
 }
 

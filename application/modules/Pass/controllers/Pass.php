@@ -561,9 +561,12 @@ class Pass extends MX_Controller {
 
     function book()
     {
-
       if($this->input->post()){
-
+        $post_data = $this->input->post();
+        $booking_id = $this->Pass_model->insert_pass_booking($post_data);
+        if($booking_id){
+          redirect(base_url() . 'invoice/pass/?id=' . $this->input->post('pass_id'));
+        }
       }else{
         $this->data['pass_id'] = $this->input->get('pass_id');
         $this->theme->view('modules/pass/booking', $this->data, $this);
